@@ -2,20 +2,29 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
+  <!-- Balise viewport pour l'affichage sur mobile -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chez Amiri - Inspiré d'Apple</title>
   
-  <!-- =============================================================================
-       FICHIER UNIQUE HTML + CSS + JS
-       Ce code est fortement commenté pour faciliter les modifications ultérieures.
-       Sections : Header, Hero, À propos, Produits, Panier, Formulaire personnalisé,
-       Message de remerciement et Toast.
-  ============================================================================= -->
+  <!-- 
+  =============================================================================
+  FICHIER UNIQUE HTML + CSS + JS
+  =============================================================================
+  Ce code a été mis à jour pour offrir :
+  - Un design responsive (PC & mobiles)
+  - Des effets de transition (fade in) lors du scroll
+  - Une navigation fluide (scroll-behavior)
+  - Un header qui passe de transparent à solide au scroll
+  =============================================================================
+  -->
   
   <style>
-    /* *******************************
-       BASE - Typographie & Couleurs
-    ******************************** */
+    /* --------------------------------------
+       STYLE DE BASE & VARIABLES
+    -------------------------------------- */
+    html {
+      scroll-behavior: smooth; /* Pour des transitions fluides au clic sur les ancres */
+    }
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -25,19 +34,24 @@
     }
     a { text-decoration: none; color: inherit; }
     
-    /* **************************************
-       HEADER - Navigation en haut (style Apple)
-    **************************************** */
+    /* --------------------------------------
+       HEADER - Navigation
+       On applique une transition de fond pour passer de transparent à solide
+    -------------------------------------- */
     header {
-      background: #000;
-      color: #fff;
-      padding: 20px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
       position: sticky;
       top: 0;
       z-index: 100;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.5s ease;
+      background-color: rgba(0, 0, 0, 0.3); /* transparent au départ */
+    }
+    /* Quand le header a la classe "scrolled", on affiche un fond noir complet */
+    header.scrolled {
+      background-color: rgba(0, 0, 0, 1);
     }
     header .logo {
       font-size: 1.8em;
@@ -57,21 +71,30 @@
       letter-spacing: 0.5px;
       transition: color 0.3s;
     }
-    nav ul li a:hover { color: #ccc; }
+    nav ul li a:hover {
+      color: #ccc;
+    }
     
-    /* *****************************************************
-       HERO / ACCUEIL - Section d'accueil avec dégradé
-    ***************************************************** */
+    /* --------------------------------------
+       HERO / ACCUEIL - Section avec dégradé et fade in
+    -------------------------------------- */
     .hero {
       background: linear-gradient(135deg, #283E51, #4B79A1);
       color: #fff;
       text-align: center;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       min-height: 70vh;
       padding: 30px 20px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    .hero.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
     .hero h1 {
       font-size: 3em;
@@ -93,11 +116,14 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-    .hero .hero-btn:hover { background: #005bb5; }
+    .hero .hero-btn:hover {
+      background: #005bb5;
+    }
     
-    /* *******************************************
+    /* --------------------------------------
        SECTIONS GENERALES (À propos, Produits, etc.)
-    ******************************************* */
+       On applique aussi un effet "fade in" pour chaque section.
+    -------------------------------------- */
     section {
       margin: 40px auto;
       max-width: 1000px;
@@ -105,6 +131,13 @@
       border-radius: 12px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.05);
       padding: 60px 20px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
     section h2 {
       text-align: center;
@@ -123,9 +156,9 @@
     }
     #about ul { list-style: disc inside; margin: 20px auto; padding: 0; }
     
-    /* ********************************************
-       PRODUITS - Grille de produits
-    ******************************************** */
+    /* --------------------------------------
+       PRODUITS - Grille
+    -------------------------------------- */
     .product-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -172,9 +205,9 @@
     }
     .button:hover { background: #005bb5; }
     
-    /* **********************************************
-       PANIER - Récapitulatif et Total
-    ********************************************** */
+    /* --------------------------------------
+       PANIER - Récapitulatif et total
+    -------------------------------------- */
     #panier-section {
       margin-top: 40px;
     }
@@ -209,12 +242,12 @@
       margin-top: 10px;
     }
     
-    /* ******************************************************
-       FORMULAIRE PERSONNALISÉ - Pour recevoir les commandes
-    ****************************************************** */
+    /* --------------------------------------
+       FORMULAIRE PERSONNALISÉ - Pour envoyer la commande via AJAX
+    -------------------------------------- */
     #formulaire-commande-custom {
       margin-top: 40px;
-      display: none; /* S'affiche lors de la validation du panier */
+      display: none; /* S'affiche sur demande */
     }
     #formulaire-commande-custom h2 {
       text-align: center;
@@ -253,9 +286,9 @@
     }
     .form-container button:hover { background: #005bb5; }
     
-    /* ***************************************************
-       MESSAGE DE REMERCIEMENT - Affiché après envoi
-    *************************************************** */
+    /* --------------------------------------
+       MESSAGE DE REMERCIEMENT
+    -------------------------------------- */
     #merci {
       display: none;
       text-align: center;
@@ -273,9 +306,9 @@
       color: #2e7d32;
     }
     
-    /* ***************************************************
-       TOAST - Notification d'ajout d'un produit
-    *************************************************** */
+    /* --------------------------------------
+       TOAST - Notification d'ajout de produit
+    -------------------------------------- */
     #toast {
       position: fixed;
       bottom: 20px;
@@ -291,9 +324,9 @@
       font-size: 0.95em;
     }
     
-    /* ********************************************
-       RESPONSIVITÉ - Adaptation mobile
-    ******************************************** */
+    /* --------------------------------------
+       RESPONSIVITÉ
+    -------------------------------------- */
     @media (max-width: 600px) {
       .hero h1 { font-size: 2em; }
       .hero p { font-size: 0.95em; }
@@ -304,9 +337,9 @@
 </head>
 <body>
   <!-- =====================================================
-       HEADER - En-tête du site (Logo + Navigation)
+       HEADER - En-tête avec logo et navigation
   ===================================================== -->
-  <header>
+  <header id="header">
     <div class="logo">Chez Amiri</div>
     <nav>
       <ul>
@@ -321,7 +354,7 @@
   <!-- =====================================================
        HERO / ACCUEIL - Section d'accueil avec dégradé
   ===================================================== -->
-  <div class="hero" id="accueil">
+  <div class="hero fade-in" id="accueil">
     <h1>Bienvenue CHEZ AMIRI !</h1>
     <p>Votre spécialiste en produits alimentaires en gros. Service rapide et fiable.</p>
     <a class="hero-btn" href="#produits">Découvrir nos produits</a>
@@ -330,7 +363,7 @@
   <!-- =====================================================
        À PROPOS - Présentation de l'entreprise
   ===================================================== -->
-  <section id="about">
+  <section class="fade-in" id="about">
     <h2>À propos de nous</h2>
     <p>
       Depuis plusieurs années, notre entreprise familiale est spécialisée dans la distribution en gros de produits d’alimentation générale, avec un engagement fort envers la qualité, la disponibilité et le service.
@@ -352,9 +385,9 @@
   </section>
   
   <!-- =====================================================
-       PRODUITS - Grille de produits
+       PRODUITS - Grille des produits
   ===================================================== -->
-  <section id="produits">
+  <section class="fade-in" id="produits">
     <h2>Nos Produits</h2>
     <div class="product-grid">
       <!-- Produit 1 -->
@@ -376,17 +409,17 @@
       <!-- Produit 3 -->
       <div class="product">
         <img src="https://via.placeholder.com/300x200.png?text=Produits+en+bo%C3%AEtes" alt="Produits en boîtes" />
-        <h3>Confiture</h3>
+        <h3>Produits en boîtes</h3>
         <p class="price">Prix unitaire : 4,50 €</p>
-        <p>Pour des matins gourmands et des pauses sucrées.</p>
+        <p>Large sélection de produits en boîtes pour faciliter votre quotidien.</p>
         <button class="button add-to-cart" data-name="Produits en boîtes" data-price="4.50">Ajouter</button>
       </div>
       <!-- Produit 4 -->
       <div class="product">
         <img src="https://via.placeholder.com/300x200.png?text=Boissons+vari%C3%A9es" alt="Boissons variées" />
-        <h3>Harissa</h3>
+        <h3>Boissons variées</h3>
         <p class="price">Prix unitaire : 1,75 €</p>
-        <p>Intensité, authenticité, et saveurs orientales.</p>
+        <p>Rafraîchissez-vous avec notre gamme variée de boissons.</p>
         <button class="button add-to-cart" data-name="Boissons variées" data-price="1.75">Ajouter</button>
       </div>
     </div>
@@ -395,7 +428,7 @@
   <!-- =====================================================
        PANIER - Récapitulatif du panier
   ===================================================== -->
-  <section id="panier-section">
+  <section class="fade-in" id="panier-section">
     <h2>Votre Panier</h2>
     <table id="panier-table">
       <thead>
@@ -421,13 +454,12 @@
   </section>
   
   <!-- =====================================================
-       FORMULAIRE PERSONNALISÉ - Pour recevoir les commandes
-       Ce formulaire envoie les données via AJAX à Formspree.
+       FORMULAIRE PERSONNALISÉ - Pour envoyer la commande via AJAX
   ===================================================== -->
-  <section id="formulaire-commande-custom">
+  <section class="fade-in" id="formulaire-commande-custom">
     <h2>Passer Commande</h2>
     <div class="form-container">
-      <form id="customOrderForm" method="POST" action="https://formspree.io/f/mpwpkwby">
+      <form id="customOrderForm" method="POST" action="https://formspree.io/f/mopkdbpy">
         <!-- Remplace "mopkdbpy" par ton identifiant Formspree réel -->
         <label>
           Nom et Prénom:<br />
@@ -449,9 +481,9 @@
   </section>
   
   <!-- =====================================================
-       MESSAGE DE REMERCIEMENT - Après envoi de la commande
+       MESSAGE DE REMERCIEMENT - Après envoi
   ===================================================== -->
-  <section id="merci">
+  <section class="fade-in" id="merci">
     <h3>COMMANDE BIEN PASSÉE !</h3>
     <p>
       Nous allons vous contacter au plus vite pour finaliser le paiement et organiser la livraison.<br />
@@ -462,18 +494,18 @@
   </section>
   
   <!-- =====================================================
-       TOAST - Notification lors d'un ajout au panier
+       TOAST - Notification d'ajout d'un produit
   ===================================================== -->
   <div id="toast"></div>
   
   <!-- =====================================================
-       SCRIPT JS - Gestion du panier, soumission AJAX et notifications
+       SCRIPT JS - Gestion du panier, envoi AJAX et animations
   ===================================================== -->
   <script>
     /***************************************************************
      * VARIABLES & ÉLÉMENTS DU DOM
     ***************************************************************/
-    const cart = {}; // Exemple: { "Produit A": { price: 2.50, quantity: 2 }, ... }
+    const cart = {}; // Exemple: { "Produit": { price: 2.50, quantity: 1 }, ... }
     const cartBody = document.getElementById('cart-body');
     const totalDisplay = document.getElementById('total');
     const checkoutBtn = document.getElementById('checkout-btn');
@@ -568,8 +600,7 @@
   
     /***************************************************************
      * PRÉREMPLISSAGE DU FORMULAIRE PERSONNALISÉ
-     * Avant envoi, on génère le récapitulatif du panier
-     * et on le place dans le champ caché "orderDetails"
+     * Génère le récapitulatif du panier et l'insère dans le champ caché
     ***************************************************************/
     function genererRecapCommande() {
       let recap = "";
@@ -581,22 +612,18 @@
     }
   
     customOrderForm.addEventListener('submit', async function(e) {
-      e.preventDefault(); // Empêcher l'envoi classique du formulaire
+      e.preventDefault();  // Empêche la soumission classique
       // Met à jour le champ caché avec le récapitulatif du panier
       document.getElementById('orderDetails').value = genererRecapCommande();
   
-      // Envoi AJAX vers Formspree
       try {
         const formData = new FormData(customOrderForm);
         const response = await fetch(customOrderForm.action, {
           method: 'POST',
           body: formData,
-          headers: {
-            'Accept': 'application/json'
-          }
+          headers: { 'Accept': 'application/json' }
         });
         if (response.ok) {
-          // Affiche le message de remerciement
           document.getElementById('formulaire-commande-custom').style.display = 'none';
           document.getElementById('merci').style.display = 'block';
           // Vider le panier
@@ -611,12 +638,48 @@
     });
   
     /***************************************************************
-     * VALIDATION DU PANIER - Afficher le formulaire personnalisé
+     * VALIDATION DU PANIER - Affiche le formulaire personnalisé
     ***************************************************************/
     checkoutBtn.addEventListener('click', () => {
-      // Affiche la section du formulaire personnalisé
       document.getElementById('formulaire-commande-custom').style.display = 'block';
       document.getElementById('formulaire-commande-custom').scrollIntoView({ behavior: 'smooth' });
+    });
+  
+    /***************************************************************
+     * ANIMATION AU SCROLL - Effet "fade in" pour les sections
+    ***************************************************************/
+    const faders = document.querySelectorAll('.fade-in');
+    const appearOptions = {
+      threshold: 0.2,
+      rootMargin: "0px 0px -50px 0px"
+    };
+  
+    const appearOnScroll = new IntersectionObserver((entries, appearOnScroll) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) {
+          return;
+        } else {
+          entry.target.classList.add('visible');
+          appearOnScroll.unobserve(entry.target);
+        }
+      });
+    }, appearOptions);
+  
+    faders.forEach(fader => {
+      appearOnScroll.observe(fader);
+    });
+  
+    /***************************************************************
+     * CHANGEMENT DU HEADER AU SCROLL
+     * Le header passe de transparent à noir solide après un certain scroll
+    ***************************************************************/
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('header');
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
     });
   </script>
 </body>
