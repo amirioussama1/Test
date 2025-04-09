@@ -2,20 +2,22 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <!-- Balise viewport pour une mise en page responsive -->
+  <!-- Balise viewport pour le responsive -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CHEZ AMIRI - Inspiré d'Apple</title>
   
   <!--
   =============================================================================
-  VERSION RÉVISÉE
-  - 4 produits dans l'ordre : Tomates DCT, Harissa, Sauce Pizza, Confiture.
-  - Pour les 3 premiers, des options radio (1/2 et 4/4) sans prix affiché dans le label,
-    le prix s'affiche uniquement après sélection.
-  - Possibilité de décocher (toggle) une option si l'utilisateur clique sur le même radio.
-  - Bordure bleue sur la carte produit dès qu'une option est sélectionnée.
-  - Affichage des produits en 2 colonnes sur PC (≥768px) et 1 colonne sur mobile.
-  - Texte "À propos" désormais en une seule ligne (via white-space).
+  VERSION FINALE
+    - 4 produits : Tomates DCT, Harissa, Sauce Pizza (avec options radio) et Confiture (sans option).
+    - Pour les 3 premiers, le prix (en DA) n'apparait qu'après sélection d’une option.
+    - Possibilité de toggle (cliquer à nouveau pour désélectionner) une option.
+    - Bordure bleue de la carte et mise à jour dynamique du prix.
+    - Le panier permet de saisir les quantités (calcul dynamique sans débordement).
+    - Une ligne en dessous du tableau affiche le total en lettres (dinar(s) et centime(s)).
+    - Disposition responsive : 2 colonnes sur PC, 1 colonne sur mobile.
+    - Navigation « À propos » sur une seule ligne.
+    - Fade‑in unique élégant pour chaque section.
   =============================================================================
   -->
   
@@ -28,7 +30,7 @@
     }
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
                    "Open Sans", "Helvetica Neue", sans-serif;
       color: #333;
       background: #f2f2f2;
@@ -51,7 +53,7 @@
     .fade-in.visible {
       animation: fadeInUp 1s forwards ease;
     }
-    
+
     /* ==============================
        HEADER – Navigation Collante
     ============================== */
@@ -82,23 +84,22 @@
       margin: 0;
       padding: 0;
     }
-    /* Force "À propos" sur une seule ligne */
     nav ul li a {
       color: #fff;
       font-size: 1em;
       letter-spacing: 0.5px;
       transition: color 0.3s;
-      white-space: nowrap;
+      white-space: nowrap; /* Force une seule ligne */
     }
     nav ul li a:hover { color: #ccc; }
 
     /* ==============================
-       Décalage pour les sections pour éviter que le header masque le titre
+       Décalage pour les sections (pour éviter que le header masque le titre)
     ============================== */
     .hero, section {
       scroll-margin-top: 80px;
     }
-    
+
     /* ==============================
        HERO / ACCUEIL
     ============================== */
@@ -134,8 +135,10 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-    .hero .hero-btn:hover { background: #005bb5; }
-    
+    .hero .hero-btn:hover {
+      background: #005bb5;
+    }
+
     /* ==============================
        SECTIONS GÉNÉRALES
     ============================== */
@@ -168,9 +171,10 @@
       margin: 20px auto;
       padding: 0;
     }
-    
+
     /* ==============================
-       PRODUITS – Grille (2 colonnes sur PC, 1 sur mobile)
+       PRODUITS – Grille
+       2 colonnes sur PC, 1 colonne sur mobile
     ============================== */
     .product-grid {
       display: grid;
@@ -195,7 +199,6 @@
       transform: translateY(-5px);
       box-shadow: 0 6px 18px rgba(0,0,0,0.1);
     }
-    /* Bordure bleue quand une option est sélectionnée */
     .product.selected {
       border-color: #0071e3;
     }
@@ -209,15 +212,15 @@
       font-size: 1.3em;
       letter-spacing: 0.5px;
     }
-    /* Avant sélection, afficher "Prix à découvrir" */
-    .product .price {
+    /* Avant option sélectionnée, afficher "Prix à découvrir" */
+    .price-unselected {
+      font-style: italic;
+      color: #555;
+    }
+    .price {
       font-weight: 600;
       color: #0071e3;
       margin-bottom: 10px;
-    }
-    .product.price-unselected {
-      font-style: italic;
-      color: #555;
     }
     .button {
       background: #0071e3;
@@ -273,7 +276,11 @@
 
     /* ==============================
        PANIER – Récapitulatif
+       On ajoute une règle pour éviter les débordements
     ============================== */
+    #panier-table th, #panier-table td {
+      overflow-wrap: break-word;
+    }
     #panier-table {
       width: 100%;
       border-collapse: collapse;
@@ -291,6 +298,14 @@
       font-size: 1.2em;
       margin-top: 10px;
       font-weight: 600;
+    }
+    /* Ligne pour le total en lettres */
+    #totalWords {
+      text-align: right;
+      font-size: 0.95em;
+      margin-top: 5px;
+      font-style: italic;
+      color: #555;
     }
     #checkout-btn {
       margin-top: 20px;
@@ -388,7 +403,7 @@
     }
 
     /* ==============================
-       MEDIA QUERIES – Mobile
+       MEDIA QUERIES – Adaptation Mobile
     ============================== */
     @media (max-width: 600px) {
       header { padding: 10px 20px; }
@@ -457,7 +472,6 @@
       <div class="product" data-product-name="Tomates DCT">
         <img src="https://via.placeholder.com/300x200.png?text=Tomates" alt="Tomates DCT" />
         <h3>Tomates DCT</h3>
-        <!-- Avant sélection d'option -->
         <p class="price price-unselected">Prix à découvrir</p>
         <p>Choisissez entre 1/2 ou 4/4 pour adapter à vos recettes.</p>
         <div class="options">
@@ -534,6 +548,8 @@
       </tbody>
     </table>
     <div id="total">Total : 0,00 DA</div>
+    <!-- Ligne pour afficher le total en lettres -->
+    <p id="totalWords"></p>
     <button id="checkout-btn" class="button" style="display:none;">Valider la commande</button>
     <div id="rappel-form">
       N'oubliez pas de remplir le formulaire ci-dessous pour être contacté.
@@ -578,7 +594,9 @@
   <!-- TOAST – Notification -->
   <div id="toast"></div>
   
-  <!-- SCRIPT JS -->
+  <!-- ==============================
+       SCRIPT JS
+  ============================== -->
   <script>
     /***************************************************************
      * VARIABLES & ÉLÉMENTS DU DOM
@@ -586,6 +604,7 @@
     const cart = {};
     const cartBody = document.getElementById('cart-body');
     const totalDisplay = document.getElementById('total');
+    const totalWordsElem = document.getElementById('totalWords');
     const checkoutBtn = document.getElementById('checkout-btn');
     const toast = document.getElementById('toast');
     const customOrderForm = document.getElementById('customOrderForm');
@@ -606,10 +625,7 @@
      * FADE-IN UNIQUE – IntersectionObserver
     ***************************************************************/
     const fadeElements = document.querySelectorAll('.fade-in');
-    const observerOptions = {
-      threshold: 0.2,
-      rootMargin: "0px 0px -50px 0px"
-    };
+    const observerOptions = { threshold: 0.2, rootMargin: "0px 0px -50px 0px" };
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -621,33 +637,26 @@
     fadeElements.forEach(el => observer.observe(el));
 
     /***************************************************************
-     * GESTION DES OPTIONS RADIO – Autoriser le toggle
-     * Pour chaque produit comportant des options, on permet de décocher en recliquant
+     * GESTION DES OPTIONS RADIO – Toggle (désélection possible)
     ***************************************************************/
     document.querySelectorAll('.product').forEach(prod => {
       const radioButtons = prod.querySelectorAll('input[type="radio"]');
       if (radioButtons.length > 0) {
         radioButtons.forEach(rb => {
-          rb.addEventListener('mousedown', function() {
-            this.wasChecked = this.checked;
-          });
+          rb.addEventListener('pointerdown', function() { this.wasChecked = this.checked; });
           rb.addEventListener('click', function(e) {
-            if (this.wasChecked) {
-              this.checked = false; // Permet de désélectionner
-              // Retirer la classe "selected" si aucune option n'est cochée
+            if (this.wasChecked) { // Si déjà sélectionné, désélectionner
+              this.checked = false;
               let anyChecked = false;
               radioButtons.forEach(r => { if (r.checked) anyChecked = true; });
               if (!anyChecked) {
                 prod.classList.remove('selected');
-                // Réinitialiser le texte du prix
                 const priceElem = prod.querySelector('.price');
                 priceElem.textContent = "Prix à découvrir";
                 priceElem.classList.add('price-unselected');
               }
             } else {
-              // Lorsqu'une option est sélectionnée, on ajoute la classe "selected"
               prod.classList.add('selected');
-              // Mettre à jour le texte du prix du produit, avec le prix de l'option sélectionnée
               const chosenPrice = this.getAttribute('data-price');
               const priceElem = prod.querySelector('.price');
               priceElem.textContent = "Prix : " + chosenPrice + " DA";
@@ -659,17 +668,16 @@
     });
 
     /***************************************************************
-     * AJOUT AU PANIER – Lors du clic sur le bouton "Ajouter"
+     * AJOUT AU PANIER – Lors du clic sur "Ajouter"
     ***************************************************************/
     document.querySelectorAll('.add-to-cart').forEach(button => {
       button.addEventListener('click', () => {
         let productName = button.getAttribute('data-name');
-        let price = parseFloat(button.getAttribute('data-price')); // pour les produits sans option
+        let price = parseFloat(button.getAttribute('data-price')); // Pour les produits sans option
         const productDiv = button.closest('.product');
         const radioButtons = productDiv.querySelectorAll('input[type="radio"]');
         const errorMsg = productDiv.querySelector('.error-message');
         if (errorMsg) errorMsg.style.display = 'none';
-        // Si le produit a des options, vérifier qu'une est sélectionnée
         if (radioButtons.length > 0) {
           let chosenOption = null;
           let chosenPrice = null;
@@ -690,7 +698,6 @@
             price = chosenPrice;
           }
         }
-        // Ajouter le produit au panier
         if (cart[productName]) {
           cart[productName].quantity += 1;
         } else {
@@ -702,7 +709,7 @@
     });
 
     /***************************************************************
-     * PANIER – Mise à jour affichage et calcul du total
+     * PANIER – Mise à jour et calcul du total
     ***************************************************************/
     function updateCartDisplay() {
       cartBody.innerHTML = '';
@@ -722,8 +729,7 @@
               <td>${item}</td>
               <td>${unitPrice.toFixed(2)} DA</td>
               <td>
-                <input type="number" min="1" value="${qty}" style="width:60px; text-align:center;" onclick="hideThanks()"
-                  oninput="updateQuantity('${item}', this.value)" />
+                <input type="number" min="1" value="${qty}" style="width:60px; text-align:center;" onclick="hideThanks()" oninput="updateQuantity('${item}', this.value)" />
               </td>
               <td>${lineTotal.toFixed(2)} DA</td>
               <td>
@@ -735,6 +741,8 @@
         checkoutBtn.style.display = 'block';
       }
       totalDisplay.textContent = `Total : ${total.toFixed(2)} DA`;
+      // Mettre à jour la ligne du total en lettres
+      totalWordsElem.textContent = convertCurrencyToWords(total);
     }
     function updateQuantity(productName, newQty) {
       if (!cart[productName]) return;
@@ -770,16 +778,66 @@
     }
 
     /***************************************************************
-     * FORMULAIRE – Préremplissage du champ caché et envoi AJAX
+     * CONVERSION DU TOTAL EN LETTRES
+       Fonction de conversion très simplifiée pour des nombres jusqu'à 999999.
     ***************************************************************/
-    function genererRecapCommande() {
-      let recap = "";
-      for (const produit in cart) {
-        const details = cart[produit];
-        recap += `${produit} (${details.quantity} x ${details.price.toFixed(2)} DA)\n`;
+    function convertNumberToWords(n) {
+      if (n === 0) return "zéro";
+      const ones = ["", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", 
+                    "dix", "onze", "douze", "treize", "quatorze", "quinze", "seize", "dix-sept", 
+                    "dix-huit", "dix-neuf"];
+      const tens = ["", "", "vingt", "trente", "quarante", "cinquante", "soixante", "soixante", 
+                    "quatre-vingt", "quatre-vingt"];
+      let result = "";
+      if(n < 20) {
+        result = ones[n];
+      } else if(n < 100) {
+        let ten = Math.floor(n / 10);
+        let unit = n % 10;
+        // Cas particuliers pour 71, 91 etc.
+        if(ten === 7 || ten === 9) {
+          ten--;
+          unit += 10;
+        }
+        result = tens[ten];
+        if(unit === 1 && (ten === 1 || ten === 7 || ten === 9))
+          result += " et " + ones[unit];
+        else if(unit > 0)
+          result += "-" + ones[unit];
+      } else if(n < 1000) {
+        let hundred = Math.floor(n / 100);
+        let rest = n % 100;
+        result = (hundred === 1 ? "cent" : ones[hundred] + " cent");
+        if(rest > 0) result += " " + convertNumberToWords(rest);
+      } else if(n < 1000000) {
+        let thousand = Math.floor(n / 1000);
+        let rest = n % 1000;
+        result = (thousand === 1 ? "mille" : convertNumberToWords(thousand) + " mille");
+        if(rest > 0) result += " " + convertNumberToWords(rest);
+      } else {
+        result = n; // Pour les très grands nombres, on retourne le nombre
       }
-      return recap || "Aucun produit commandé";
+      return result;
     }
+
+    function convertCurrencyToWords(total) {
+      total = parseFloat(total.toFixed(2));
+      const integerPart = Math.floor(total);
+      const decimalPart = Math.round((total - integerPart) * 100);
+      let wordsInt = convertNumberToWords(integerPart);
+      wordsInt = wordsInt.charAt(0).toUpperCase() + wordsInt.slice(1);
+      let result = wordsInt + " dinar" + (integerPart > 1 ? "s" : "");
+      if(decimalPart > 0) {
+        let wordsDec = convertNumberToWords(decimalPart);
+        wordsDec = wordsDec.charAt(0).toUpperCase() + wordsDec.slice(1);
+        result += " et " + wordsDec + " centime" + (decimalPart > 1 ? "s" : "");
+      }
+      return result;
+    }
+
+    /***************************************************************
+     * FORMULAIRE – Préremplissage et envoi AJAX
+    ***************************************************************/
     customOrderForm.addEventListener('submit', async function(e) {
       e.preventDefault();
       document.getElementById('orderDetails').value = genererRecapCommande();
@@ -804,7 +862,7 @@
     });
 
     /***************************************************************
-     * VALIDER LE PANIER – Afficher le formulaire de commande
+     * VALIDATION DU PANIER – Afficher le formulaire
     ***************************************************************/
     checkoutBtn.addEventListener('click', () => {
       document.getElementById('formulaire-commande-custom').style.display = 'block';
