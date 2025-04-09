@@ -2,24 +2,26 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <!-- Viewport pour le responsive -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CHEZ AMIRI - Inspiré d'Apple</title>
   
   <!--
   =============================================================================
-  VERSION FINALE
-    - 4 produits : Tomates DCT, Harissa, Sauce Pizza (avec options) et Confiture (pas d’option).
-    - Le tableau du panier est en "table-responsive" pour éviter les débordements sur mobile.
-    - Quantités saisies directement dans le panier => recalcul dynamique (total + total en lettres).
-    - Toggle radio : re-cliquer sur la même option la désélectionne.
-    - Les prix ne sont révélés que lorsque l’option est sélectionnée (sinon "Prix à découvrir").
-    - Sous le tableau, une ligne affiche le total en lettres (format : “xxx dinars et y centimes”).
+  VERSION AJUSTÉE
+    - Pas de cumul de quantités au clic multiple sur "Ajouter". 
+      => Si le produit/option est déjà dans le panier, on ne fait rien 
+         (on invite l’utilisateur à modifier la quantité dans le panier).
+    - Le tableau du panier a table-layout: fixed; et overflow-x: auto 
+      pour éviter les débordements sur mobile et limiter les “mouvements”.
+    - Les quantités peuvent être très grandes, tout est calculé dynamiquement 
+      => total + total en lettres.
+    - Options radio (produits en 1/2 ou 4/4) désélectionnables en recliquant.
+    - Le prix n’apparaît qu’une fois une option cochée (sinon "Prix à découvrir").
   =============================================================================
   -->
   
   <style>
-    /* ==============================
+    /* ============================== 
        BASE – Typographie & Couleurs
     ============================== */
     html {
@@ -39,7 +41,7 @@
     }
 
     /* ==============================
-       KEYFRAMES – Fade In Unique
+       KEYFRAMES – Fade in (unique)
     ============================== */
     @keyframes fadeInUp {
       0%   { opacity: 0; transform: translateY(30px); }
@@ -89,19 +91,19 @@
       font-size: 1em;
       letter-spacing: 0.5px;
       transition: color 0.3s;
-      white-space: nowrap; /* Force "À propos" sur une seule ligne */
+      white-space: nowrap; /* Forcer "À propos" sur une seule ligne */
     }
     nav ul li a:hover {
       color: #ccc;
     }
 
     /* ==============================
-       Décalage pour sections (éviter que le header masque le titre)
+       Décalage pour les sections (éviter que le header recouvre le titre)
     ============================== */
     .hero, section {
-      scroll-margin-top: 80px;
+      scroll-margin-top: 80px; 
     }
-    
+
     /* ==============================
        HERO / ACCUEIL
     ============================== */
@@ -137,9 +139,7 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-    .hero .hero-btn:hover {
-      background: #005bb5;
-    }
+    .hero .hero-btn:hover { background: #005bb5; }
 
     /* ==============================
        SECTIONS GÉNÉRALES
@@ -175,7 +175,8 @@
     }
     
     /* ==============================
-       PRODUITS – Grille (2 colonnes sur PC, 1 sur mobile)
+       PRODUITS – Grille 
+       (2 colonnes sur PC >=768px, 1 colonne sur mobile)
     ============================== */
     .product-grid {
       display: grid;
@@ -239,7 +240,8 @@
     }
 
     /* ==============================
-       OPTIONS RADIO
+       OPTIONS RADIO 
+       (Sans affichage de prix dans le label)
     ============================== */
     .options {
       display: flex;
@@ -258,12 +260,8 @@
       border-radius: 20px;
       transition: background 0.3s, border-color 0.3s;
     }
-    .option-label:hover {
-      background: #f0f0f0;
-    }
-    input[type="radio"] {
-      display: none;
-    }
+    .option-label:hover { background: #f0f0f0; }
+    input[type="radio"] { display: none; }
     input[type="radio"]:checked + .option-label {
       background: #0071e3;
       color: #fff;
@@ -281,30 +279,26 @@
     }
 
     /* ==============================
-       PANIER – Tableau & style
-       On ajoute un conteneur table-responsive
+       PANIER 
     ============================== */
     .table-responsive {
       width: 100%;
       overflow-x: auto; /* Scroll horizontal si besoin */
     }
     #panier-table {
-      table-layout: fixed; 
+      table-layout: fixed;
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 20px;
       font-size: 0.95em;
     }
-    #panier-table th,
-    #panier-table td {
+    #panier-table th, #panier-table td {
       border: 1px solid #ddd;
       padding: 12px;
       text-align: center;
-      word-wrap: break-word;  /* Empêche le débordement */
+      word-wrap: break-word;
     }
-    #panier-table th {
-      background: #f9f9f9;
-    }
+    #panier-table th { background: #f9f9f9; }
     #total {
       text-align: right;
       font-size: 1.2em;
@@ -333,7 +327,7 @@
     }
     
     /* ==============================
-       FORMULAIRE – Envoi AJAX
+       FORMULAIRE 
     ============================== */
     #formulaire-commande-custom {
       margin-top: 40px;
@@ -484,7 +478,7 @@
   <section class="fade-in" id="produits">
     <h2>Nos Produits</h2>
     <div class="product-grid">
-      <!-- 1) Tomates DCT (Options 1/2 ou 4/4) -->
+      <!-- 1) Tomates DCT -->
       <div class="product" data-product-name="Tomates DCT">
         <img src="https://via.placeholder.com/300x200.png?text=Tomates" alt="Tomates DCT" />
         <h3>Tomates DCT</h3>
@@ -500,7 +494,7 @@
         <button class="button add-to-cart" data-name="Tomates DCT" data-price="">Ajouter</button>
       </div>
       
-      <!-- 2) Harissa (1/2 ou 4/4) -->
+      <!-- 2) Harissa -->
       <div class="product" data-product-name="Harissa">
         <img src="https://via.placeholder.com/300x200.png?text=Harissa" alt="Harissa" />
         <h3>Harissa</h3>
@@ -516,12 +510,12 @@
         <button class="button add-to-cart" data-name="Harissa" data-price="">Ajouter</button>
       </div>
       
-      <!-- 3) Sauce Pizza (1/2 ou 4/4) -->
+      <!-- 3) Sauce Pizza -->
       <div class="product" data-product-name="Sauce Pizza">
         <img src="https://via.placeholder.com/300x200.png?text=Sauce+Pizza" alt="Sauce Pizza" />
         <h3>Sauce Pizza</h3>
         <p class="price price-unselected">Prix à découvrir</p>
-        <p>Pour une base de pizza savoureuse.</p>
+        <p>Délicieuse base pour vos pizzas.</p>
         <div class="options">
           <input type="radio" id="pizza-12" name="pizzaOptions" value="1/2" data-price="240" />
           <label for="pizza-12" class="option-label">1/2</label>
@@ -547,6 +541,7 @@
   <!-- PANIER -->
   <section class="fade-in" id="panier-section">
     <h2>Votre Panier</h2>
+    <!-- Conteneur responsive pour éviter débordements -->
     <div class="table-responsive">
       <table id="panier-table">
         <thead>
@@ -565,8 +560,11 @@
         </tbody>
       </table>
     </div>
+    <!-- Total en chiffres -->
     <div id="total">Total : 0,00 DA</div>
+    <!-- Total en lettres -->
     <p id="totalWords"></p>
+    
     <button id="checkout-btn" class="button" style="display:none;">Valider la commande</button>
     <div id="rappel-form">
       N'oubliez pas de remplir le formulaire ci-dessous pour être contacté.
@@ -577,7 +575,7 @@
   <section class="fade-in" id="formulaire-commande-custom">
     <h2>Passer Commande</h2>
     <div class="form-container">
-      <!-- Remplacez l'URL par votre identifiant Formspree réel -->
+      <!-- Remplacez l'URL ci-dessous par votre identifiant Formspree réel -->
       <form id="customOrderForm" method="POST" action="https://formspree.io/f/XXXXXXXXX">
         <label>
           Nom et Prénom:<br />
@@ -611,7 +609,6 @@
   <!-- TOAST – Notification -->
   <div id="toast"></div>
   
-  <!-- SCRIPT JS -->
   <script>
     /***************************************************************
      * VARIABLES & ÉLÉMENTS DU DOM
@@ -652,7 +649,7 @@
     fadeElements.forEach(el => observer.observe(el));
 
     /***************************************************************
-     * GESTION DES OPTIONS (toggle) – Pour décocher en recliquant
+     * GESTION OPTIONS RADIO – Toggle
     ***************************************************************/
     document.querySelectorAll('.product').forEach(prod => {
       const radioButtons = prod.querySelectorAll('input[type="radio"]');
@@ -662,21 +659,17 @@
             this.wasChecked = this.checked;
           });
           rb.addEventListener('click', function(e) {
-            // Si on reclique sur un radio déjà coché => on le décoche
             if (this.wasChecked) {
               this.checked = false;
-              // Vérifier s’il reste une option cochée
               let anyChecked = false;
-              radioButtons.forEach(r => { if (r.checked) anyChecked = true; });
-              if (!anyChecked) {
-                // Retirer la bordure bleue + "Prix à découvrir"
+              radioButtons.forEach(r => { if(r.checked) anyChecked = true; });
+              if(!anyChecked) {
                 prod.classList.remove('selected');
                 const priceElem = prod.querySelector('.price');
                 priceElem.textContent = "Prix à découvrir";
                 priceElem.classList.add('price-unselected');
               }
             } else {
-              // Option sélectionnée
               prod.classList.add('selected');
               const chosenPrice = this.getAttribute('data-price');
               const priceElem = prod.querySelector('.price');
@@ -689,18 +682,19 @@
     });
 
     /***************************************************************
-     * AJOUT AU PANIER – Bouton "Ajouter"
+     * AJOUT AU PANIER – 
+     * Si déjà présent => message "existe déjà, modifiez la quantité dans le panier"
     ***************************************************************/
     document.querySelectorAll('.add-to-cart').forEach(button => {
       button.addEventListener('click', () => {
         let productName = button.getAttribute('data-name');
-        let price = parseFloat(button.getAttribute('data-price')) || 0; 
+        let price = parseFloat(button.getAttribute('data-price')) || 0;
         const productDiv = button.closest('.product');
         const radioButtons = productDiv.querySelectorAll('input[type="radio"]');
         const errorMsg = productDiv.querySelector('.error-message');
         if (errorMsg) errorMsg.style.display = 'none';
 
-        // Si le produit a des options
+        // Gérer les produits à options
         if (radioButtons.length > 0) {
           let chosenOption = null;
           let chosenPrice = null;
@@ -710,7 +704,7 @@
               chosenPrice = parseFloat(rb.getAttribute('data-price'));
             }
           });
-          if (!chosenOption) {
+          if(!chosenOption) {
             if (errorMsg) {
               errorMsg.textContent = "Veuillez sélectionner une option.";
               errorMsg.style.display = 'block';
@@ -722,9 +716,11 @@
           }
         }
 
-        // Ajouter au panier
+        // Vérifier si le produit/option est déjà dans le panier
         if (cart[productName]) {
-          cart[productName].quantity += 1;
+          showToast(`"${productName}" est déjà dans votre panier. 
+  Modifiez la quantité directement dans le panier.`);
+          return;
         } else {
           cart[productName] = { price: price, quantity: 1 };
         }
@@ -740,7 +736,7 @@
       cartBody.innerHTML = '';
       let total = 0;
       const items = Object.keys(cart);
-      if (items.length === 0) {
+      if(items.length === 0) {
         cartBody.innerHTML = `<tr id="empty-cart-msg"><td colspan="5">Votre panier est vide.</td></tr>`;
         checkoutBtn.style.display = 'none';
       } else {
@@ -754,7 +750,7 @@
               <td>${item}</td>
               <td>${unitPrice.toFixed(2)} DA</td>
               <td>
-                <input type="number" min="1" value="${qty}" style="width:60px; text-align:center;" 
+                <input type="number" min="1" value="${qty}" style="width:70px; text-align:center;" 
                   oninput="updateQuantity('${item}', this.value)" onclick="hideThanks()" />
               </td>
               <td>${lineTotal.toFixed(2)} DA</td>
@@ -767,18 +763,18 @@
         checkoutBtn.style.display = 'block';
       }
       totalDisplay.textContent = `Total : ${total.toFixed(2)} DA`;
-      // Mettre à jour la ligne du total en lettres
+      // Mise à jour du total en lettres
       totalWordsElem.textContent = convertCurrencyToWords(total);
     }
     function updateQuantity(productName, newQty) {
-      if (!cart[productName]) return;
+      if(!cart[productName]) return;
       const qty = parseInt(newQty);
-      if (qty < 1 || isNaN(qty)) return;
+      if(qty < 1 || isNaN(qty)) return;
       cart[productName].quantity = qty;
       updateCartDisplay();
     }
     function removeItem(productName) {
-      if (cart[productName]) {
+      if(cart[productName]) {
         delete cart[productName];
         updateCartDisplay();
       }
@@ -798,53 +794,54 @@
     }
     function hideThanks() {
       const thanksSection = document.getElementById('merci');
-      if (thanksSection.style.display === 'block') {
+      if(thanksSection.style.display === 'block') {
         thanksSection.style.display = 'none';
       }
     }
 
     /***************************************************************
-     * CONVERTIR MONTANT EN LETTRES
+     * CONVERSION DU MONTANT EN LETTRES
+       (Code simplifié pour la démonstration)
     ***************************************************************/
     function convertNumberToWords(n) {
-      if (n === 0) return "zéro";
+      if(n === 0) return "zéro";
       const ones = ["", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", 
                     "dix", "onze", "douze", "treize", "quatorze", "quinze", "seize", "dix-sept", 
                     "dix-huit", "dix-neuf"];
       const tens = ["", "", "vingt", "trente", "quarante", "cinquante", "soixante", "soixante", 
                     "quatre-vingt", "quatre-vingt"];
       let result = "";
-      if (n < 20) {
+      if(n < 20) {
         result = ones[n];
-      } else if (n < 100) {
+      } else if(n < 100) {
         let ten = Math.floor(n / 10);
         let unit = n % 10;
-        if (ten === 7 || ten === 9) {
+        if(ten === 7 || ten === 9) {
           ten--;
           unit += 10;
         }
         result = tens[ten];
-        if (unit === 1 && (ten === 1 || ten === 7 || ten === 9)) {
+        if(unit === 1 && (ten === 1 || ten === 7 || ten === 9)) {
           result += " et " + ones[unit];
-        } else if (unit > 0) {
+        } else if(unit > 0) {
           result += "-" + ones[unit];
         }
-      } else if (n < 1000) {
+      } else if(n < 1000) {
         let hundred = Math.floor(n / 100);
         let rest = n % 100;
         result = (hundred === 1 ? "cent" : ones[hundred] + " cent");
-        if (rest > 0) {
+        if(rest > 0) {
           result += " " + convertNumberToWords(rest);
         }
-      } else if (n < 1000000) {
+      } else if(n < 1000000) {
         let thousand = Math.floor(n / 1000);
         let rest = n % 1000;
         result = (thousand === 1 ? "mille" : convertNumberToWords(thousand) + " mille");
-        if (rest > 0) {
+        if(rest > 0) {
           result += " " + convertNumberToWords(rest);
         }
       } else {
-        result = n; // pour de très grands nombres
+        result = n; // pour les très grands nombres
       }
       return result;
     }
@@ -853,22 +850,24 @@
       const integerPart = Math.floor(total);
       const decimalPart = Math.round((total - integerPart) * 100);
       let wordsInt = convertNumberToWords(integerPart);
-      if (wordsInt.length > 0) {
+      if(wordsInt.length > 0) {
         wordsInt = wordsInt.charAt(0).toUpperCase() + wordsInt.slice(1);
       } else {
         wordsInt = "Zéro";
       }
       let result = wordsInt + " dinar" + (integerPart > 1 ? "s" : "");
-      if (decimalPart > 0) {
+      if(decimalPart > 0) {
         let wordsDec = convertNumberToWords(decimalPart);
-        wordsDec = wordsDec.charAt(0).toUpperCase() + wordsDec.slice(1);
+        if(wordsDec.length > 0) {
+          wordsDec = wordsDec.charAt(0).toUpperCase() + wordsDec.slice(1);
+        }
         result += " et " + wordsDec + " centime" + (decimalPart > 1 ? "s" : "");
       }
       return result;
     }
 
     /***************************************************************
-     * FORMULAIRE – Préremplissage & Envoi (AJAX)
+     * FORMULAIRE – Préremplissage & Envoi
     ***************************************************************/
     customOrderForm.addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -880,10 +879,10 @@
           body: formData,
           headers: { 'Accept': 'application/json' }
         });
-        if (response.ok) {
+        if(response.ok) {
           document.getElementById('formulaire-commande-custom').style.display = 'none';
           document.getElementById('merci').style.display = 'block';
-          for (let key in cart) { delete cart[key]; }
+          for(let key in cart) { delete cart[key]; }
           updateCartDisplay();
         } else {
           alert("Une erreur s'est produite lors de l'envoi. Veuillez réessayer.");
@@ -894,7 +893,7 @@
     });
     function genererRecapCommande() {
       let recap = "";
-      for (const produit in cart) {
+      for(const produit in cart) {
         const details = cart[produit];
         recap += `${produit} (${details.quantity} x ${details.price.toFixed(2)} DA)\n`;
       }
