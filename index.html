@@ -2,59 +2,59 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <!-- Balise viewport indispensable pour une mise en page responsive -->
+  <!-- Balise viewport indispensable pour l'affichage sur smartphone -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chez Amiri - Inspiré d'Apple</title>
   
   <!-- 
   =============================================================================
-  FICHIER UNIQUE HTML + CSS + JS
-  =============================================================================
-  Ce code a été ajusté pour une compatibilité totale sur PC et smartphones,
-  et pour appliquer une animation continue (un effet "float") sur plusieurs éléments.
-  
-  Les points clés :
-  - Utilisation de largeurs flexibles et media queries pour garantir un affichage mobile optimal.
-  - Ajout d'une animation CSS "float" appliquée aux sections (hero, à propos, produits, etc.).
-  - Le header passe de transparent à opaque au scroll.
+  CODE SIMPLIFIÉ – Mise en page responsive + fade-in unique type “Apple”
+  Points clés :
+    • Pas d’animations continues
+    • Fade-in discret et unique quand l’utilisateur atteint une section
+    • Scroll-margin-top pour que le titre ne soit pas masqué par le header sticky
+    • Ajustements CSS pour mobile
   =============================================================================
   -->
   
   <style>
-    /* --------------------------------------
+    /* ==============================
        BASE – Typographie & Couleurs
-    -------------------------------------- */
+    ============================== */
     html {
-      scroll-behavior: smooth;
+      scroll-behavior: smooth; /* Navigation fluide quand on clique sur un lien ancre */
     }
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, 
+                   "Open Sans", "Helvetica Neue", sans-serif;
       color: #333;
       background: #f2f2f2;
       line-height: 1.6;
     }
     a { text-decoration: none; color: inherit; }
     
-    /* --------------------------------------
-       KEYFRAMES POUR L'ANIMATION CONTINUE (float)
-    -------------------------------------- */
-    @keyframes float {
-      0%   { transform: translate(0, 0); }
-      25%  { transform: translate(-5px, 5px); }
-      50%  { transform: translate(5px, -5px); }
-      75%  { transform: translate(-5px, -5px); }
-      100% { transform: translate(0, 0); }
+    /* ==============================
+       KEYFRAMES Fade In
+    ============================== */
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
     
-    /* Classe utilitaire pour l'animation continue */
-    .float {
-      animation: float 5s infinite ease-in-out;
+    /* Classe utilitaire “fade-in” */
+    .fade-in {
+      opacity: 0; /* Invisible par défaut */
+      transform: translateY(30px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    .fade-in.visible {
+      animation: fadeInUp 1s forwards ease; /* Un fade-in unique */
     }
     
-    /* --------------------------------------
-       HEADER – Navigation
-    -------------------------------------- */
+    /* ==============================
+       HEADER – Navigation collante
+    ============================== */
     header {
       position: sticky;
       top: 0;
@@ -73,6 +73,7 @@
       font-size: 1.8em;
       font-weight: bold;
       letter-spacing: 1px;
+      color: #fff;
     }
     nav ul {
       list-style: none;
@@ -87,11 +88,22 @@
       letter-spacing: 0.5px;
       transition: color 0.3s;
     }
-    nav ul li a:hover { color: #ccc; }
+    nav ul li a:hover {
+      color: #ccc;
+    }
     
-    /* --------------------------------------
+    /* ==============================
+       Gérer le décalage quand on clique sur une ancre
+       pour éviter que le header sticky masque le titre
+    ============================== */
+    section, .hero {
+      scroll-margin-top: 80px; 
+      /* Ajuste cette valeur si tu veux plus ou moins d'espace */
+    }
+    
+    /* ==============================
        HERO / ACCUEIL
-    -------------------------------------- */
+    ============================== */
     .hero {
       background: linear-gradient(135deg, #283E51, #4B79A1);
       color: #fff;
@@ -102,7 +114,6 @@
       justify-content: center;
       min-height: 70vh;
       padding: 30px 20px;
-      /* On ajoute la classe float pour un mouvement continu */
     }
     .hero h1 {
       font-size: 3em;
@@ -124,11 +135,13 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-    .hero .hero-btn:hover { background: #005bb5; }
+    .hero .hero-btn:hover {
+      background: #005bb5;
+    }
     
-    /* --------------------------------------
-       SECTIONS GÉNÉRALES (À propos, Produits, etc.)
-    -------------------------------------- */
+    /* ==============================
+       SECTIONS GÉNÉRALES
+    ============================== */
     section {
       margin: 40px auto;
       width: 90%;
@@ -153,14 +166,15 @@
       font-size: 1em;
       color: #666;
     }
-    #about ul { list-style: disc inside; margin: 20px auto; padding: 0; }
+    #about ul { 
+      list-style: disc inside; 
+      margin: 20px auto; 
+      padding: 0; 
+    }
     
-    /* On applique l'animation float à toutes les sections avec la classe "float" */
-    .float { animation: float 5s infinite ease-in-out; }
-    
-    /* --------------------------------------
+    /* ==============================
        PRODUITS – Grille de produits
-    -------------------------------------- */
+    ============================== */
     .product-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -207,9 +221,9 @@
     }
     .button:hover { background: #005bb5; }
     
-    /* --------------------------------------
-       PANIER – Récapitulatif et total
-    -------------------------------------- */
+    /* ==============================
+       PANIER – Récapitulatif
+    ============================== */
     #panier-section {
       margin-top: 40px;
     }
@@ -244,9 +258,9 @@
       margin-top: 10px;
     }
     
-    /* --------------------------------------
-       FORMULAIRE PERSONNALISÉ – Envoi de commande (via AJAX)
-    -------------------------------------- */
+    /* ==============================
+       FORMULAIRE PERSONNALISÉ – AJAX
+    ============================== */
     #formulaire-commande-custom {
       margin-top: 40px;
       display: none;
@@ -288,9 +302,9 @@
     }
     .form-container button:hover { background: #005bb5; }
     
-    /* --------------------------------------
-       MESSAGE DE REMERCIEMENT – Après envoi
-    -------------------------------------- */
+    /* ==============================
+       MESSAGE DE REMERCIEMENT
+    ============================== */
     #merci {
       display: none;
       text-align: center;
@@ -308,9 +322,9 @@
       color: #2e7d32;
     }
     
-    /* --------------------------------------
-       TOAST – Notification d'ajout de produit
-    -------------------------------------- */
+    /* ==============================
+       TOAST – Notification
+    ============================== */
     #toast {
       position: fixed;
       bottom: 20px;
@@ -326,9 +340,9 @@
       font-size: 0.95em;
     }
     
-    /* --------------------------------------
-       MEDIA QUERIES – Pour l'adaptation mobile
-    -------------------------------------- */
+    /* ==============================
+       MEDIA QUERIES – Adaptation mobile
+    ============================== */
     @media (max-width: 600px) {
       header { padding: 10px 20px; }
       header .logo { font-size: 1.5em; }
@@ -339,17 +353,25 @@
       .hero h1 { font-size: 2em; }
       .hero p { font-size: 0.95em; }
       
-      section { padding: 30px 15px; margin: 20px auto; }
-      #panier-table th, #panier-table td { padding: 8px; font-size: 0.85em; }
+      section {
+        padding: 30px 15px;
+        margin: 20px auto;
+      }
+      #panier-table th, #panier-table td {
+        padding: 8px;
+        font-size: 0.85em;
+      }
       .form-container { padding: 15px; }
-      .button { padding: 8px 15px; font-size: 0.9em; }
+      .button {
+        padding: 8px 15px;
+        font-size: 0.9em;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- =====================================================
-       HEADER – En-tête du site
-  ===================================================== -->
+  
+  <!-- HEADER -->
   <header id="header">
     <div class="logo">Chez Amiri</div>
     <nav>
@@ -362,25 +384,23 @@
     </nav>
   </header>
   
-  <!-- =====================================================
-       HERO – Section d'accueil avec dégradé
-  ===================================================== -->
-  <div class="hero float fade-in" id="accueil">
+  <!-- HERO -->
+  <div class="hero fade-in" id="accueil">
     <h1>Bienvenue CHEZ AMIRI !</h1>
     <p>Votre spécialiste en produits alimentaires en gros. Service rapide et fiable.</p>
     <a class="hero-btn" href="#produits">Découvrir nos produits</a>
   </div>
   
-  <!-- =====================================================
-       À PROPOS – Présentation de l'entreprise
-  ===================================================== -->
-  <section class="float fade-in" id="about">
+  <!-- À PROPOS -->
+  <section class="fade-in" id="about">
     <h2>À propos de nous</h2>
     <p>
-      Depuis plusieurs années, notre entreprise familiale est spécialisée dans la distribution en gros de produits d’alimentation générale, avec un engagement fort envers la qualité, la disponibilité et le service.
+      Depuis plusieurs années, notre entreprise familiale est spécialisée dans la distribution en gros 
+      de produits d’alimentation générale, avec un engagement fort envers la qualité, la disponibilité et le service.
     </p>
     <p>
-      Nous proposons une large gamme de produits alimentaires destinés aux épiceries, supermarchés, restaurateurs et autres professionnels :
+      Nous proposons une large gamme de produits alimentaires destinés aux épiceries, supermarchés, 
+      restaurateurs et autres professionnels :
     </p>
     <ul>
       <li>Conserves de tomates</li>
@@ -390,18 +410,16 @@
       <li>Et bien d'autres articles de consommation courante</li>
     </ul>
     <p>
-      Situés à Guelma, nous assurons des délais de livraison courts et un service fiable.
-      Ce site a été conçu pour faciliter l’accès à notre catalogue, permettre une commande rapide et offrir un service humain, réactif et professionnel.
+      Situés à Guelma, nous assurons des délais de livraison courts et un service fiable. 
+      Ce site a été conçu pour faciliter l’accès à notre catalogue, permettre une commande rapide 
+      et offrir un service humain, réactif et professionnel.
     </p>
   </section>
   
-  <!-- =====================================================
-       PRODUITS – Grille de produits
-  ===================================================== -->
-  <section class="float fade-in" id="produits">
+  <!-- PRODUITS -->
+  <section class="fade-in" id="produits">
     <h2>Nos Produits</h2>
     <div class="product-grid">
-      <!-- Produit 1 : Confiture -->
       <div class="product">
         <img src="https://via.placeholder.com/300x200.png?text=Confiture" alt="Confiture" />
         <h3>Confiture</h3>
@@ -409,7 +427,6 @@
         <p>Une explosion de douceur artisanale.</p>
         <button class="button add-to-cart" data-name="Confiture" data-price="3.50">Ajouter</button>
       </div>
-      <!-- Produit 2 : Harissa -->
       <div class="product">
         <img src="https://via.placeholder.com/300x200.png?text=Harissa" alt="Harissa" />
         <h3>Harissa</h3>
@@ -417,29 +434,12 @@
         <p>Le piquant authentique du Maghreb.</p>
         <button class="button add-to-cart" data-name="Harissa" data-price="2.00">Ajouter</button>
       </div>
-      <!-- Produit 3 -->
-      <div class="product">
-        <img src="https://via.placeholder.com/300x200.png?text=Produits+en+bo%C3%AEtes" alt="Produits en boîtes" />
-        <h3>Produits en boîtes</h3>
-        <p class="price">Prix unitaire : 4,50 €</p>
-        <p>Large sélection de produits en boîtes pour faciliter votre quotidien.</p>
-        <button class="button add-to-cart" data-name="Produits en boîtes" data-price="4.50">Ajouter</button>
-      </div>
-      <!-- Produit 4 -->
-      <div class="product">
-        <img src="https://via.placeholder.com/300x200.png?text=Boissons+vari%C3%A9es" alt="Boissons variées" />
-        <h3>Boissons variées</h3>
-        <p class="price">Prix unitaire : 1,75 €</p>
-        <p>Rafraîchissez-vous avec notre gamme variée de boissons.</p>
-        <button class="button add-to-cart" data-name="Boissons variées" data-price="1.75">Ajouter</button>
-      </div>
+      <!-- Ajoute d'autres produits au besoin -->
     </div>
   </section>
   
-  <!-- =====================================================
-       PANIER – Récapitulatif du panier
-  ===================================================== -->
-  <section class="float fade-in" id="panier-section">
+  <!-- PANIER -->
+  <section class="fade-in" id="panier-section">
     <h2>Votre Panier</h2>
     <table id="panier-table">
       <thead>
@@ -464,37 +464,29 @@
     </div>
   </section>
   
-  <!-- =====================================================
-       FORMULAIRE PERSONNALISÉ – Pour envoyer la commande (via AJAX)
-  ===================================================== -->
-  <section class="float fade-in" id="formulaire-commande-custom">
+  <!-- FORMULAIRE COMMANDE -->
+  <section class="fade-in" id="formulaire-commande-custom">
     <h2>Passer Commande</h2>
     <div class="form-container">
-      <form id="customOrderForm" method="POST" action="https://formspree.io/f/mopkdbpy">
-        <!-- Remplace "mopkdbpy" par ton identifiant Formspree réel -->
-        <label>
-          Nom et Prénom:<br />
+      <form id="customOrderForm" method="POST" action="https://formspree.io/f/XXXXXXXX">
+        <!-- Remplace XXXXXXXXX par l'identifiant Formspree -->
+        <label>Nom et Prénom:<br />
           <input type="text" name="name" required />
         </label>
-        <label>
-          Numéro de téléphone:<br />
+        <label>Numéro de téléphone:<br />
           <input type="tel" name="phone" required />
         </label>
-        <label>
-          Date de livraison souhaitée:<br />
+        <label>Date de livraison souhaitée:<br />
           <input type="date" name="deliveryDate" required />
         </label>
-        <!-- Champ caché pour le récapitulatif de commande -->
         <input type="hidden" name="orderDetails" id="orderDetails" value="" />
         <button type="submit" class="button">Envoyer la commande</button>
       </form>
     </div>
   </section>
   
-  <!-- =====================================================
-       MESSAGE DE REMERCIEMENT – Après envoi
-  ===================================================== -->
-  <section class="float fade-in" id="merci">
+  <!-- MESSAGE DE REMERCIEMENT -->
+  <section class="fade-in" id="merci">
     <h3>COMMANDE BIEN PASSÉE !</h3>
     <p>
       Nous allons vous contacter au plus vite pour finaliser le paiement et organiser la livraison.<br />
@@ -504,35 +496,31 @@
     </p>
   </section>
   
-  <!-- =====================================================
-       TOAST – Notification d'ajout d'un produit
-  ===================================================== -->
+  <!-- TOAST -->
   <div id="toast"></div>
   
-  <!-- =====================================================
-       SCRIPT JS – Gestion du panier, soumission AJAX, animations, header dynamique
-  ===================================================== -->
+  <!-- SCRIPT -->
   <script>
     /***************************************************************
      * VARIABLES & ÉLÉMENTS DU DOM
     ***************************************************************/
-    const cart = {};
+    const cart = {}; // Ex: { "Confiture": { price: 3.50, quantity: 2 }, ... }
     const cartBody = document.getElementById('cart-body');
     const totalDisplay = document.getElementById('total');
     const checkoutBtn = document.getElementById('checkout-btn');
     const toast = document.getElementById('toast');
     const customOrderForm = document.getElementById('customOrderForm');
-  
-    /***************************************************************
-     * FONCTIONS UTILITAIRES
-    ***************************************************************/
+    
+    /* --------------------------------
+       FONCTIONS UTILITAIRES
+    -------------------------------- */
     function hideThanks() {
       const thanksSection = document.getElementById('merci');
       if (thanksSection.style.display === 'block') {
         thanksSection.style.display = 'none';
       }
     }
-  
+    
     function showToast(message) {
       toast.textContent = message;
       toast.style.display = 'block';
@@ -542,7 +530,7 @@
         setTimeout(() => { toast.style.display = 'none'; }, 500);
       }, 2500);
     }
-  
+    
     function updateCartDisplay() {
       cartBody.innerHTML = '';
       let total = 0;
@@ -561,8 +549,8 @@
               <td>${item}</td>
               <td>${unitPrice.toFixed(2)} €</td>
               <td>
-                <input type="number" min="1" value="${qty}" style="width:60px; text-align:center;"
-                  oninput="updateQuantity('${item}', this.value)" onclick="hideThanks()">
+                <input type="number" min="1" value="${qty}" style="width:60px; text-align:center;" onclick="hideThanks()"
+                  oninput="updateQuantity('${item}', this.value)" />
               </td>
               <td>${lineTotal.toFixed(2)} €</td>
               <td>
@@ -575,7 +563,7 @@
       }
       totalDisplay.textContent = `Total : ${total.toFixed(2)} €`;
     }
-  
+    
     function updateQuantity(productName, newQty) {
       if (!cart[productName]) return;
       const qty = parseInt(newQty);
@@ -583,17 +571,17 @@
       cart[productName].quantity = qty;
       updateCartDisplay();
     }
-  
+    
     function removeItem(productName) {
       if (cart[productName]) {
         delete cart[productName];
         updateCartDisplay();
       }
     }
-  
-    /***************************************************************
+    
+    /*******************************************
      * AJOUT DES PRODUITS AU PANIER
-    ***************************************************************/
+    *******************************************/
     document.querySelectorAll('.add-to-cart').forEach(button => {
       button.addEventListener('click', () => {
         hideThanks();
@@ -608,11 +596,10 @@
         showToast(`Le produit "${name}" a été ajouté à votre panier.`);
       });
     });
-  
-    /***************************************************************
-     * PRÉREMPLISSAGE DU FORMULAIRE
-     * On insère le récapitulatif du panier dans le champ caché "orderDetails"
-    ***************************************************************/
+    
+    /*******************************************
+     * FORMULAIRE DE COMMANDE – PRÉREMPLISSAGE
+    *******************************************/
     function genererRecapCommande() {
       let recap = "";
       for (const produit in cart) {
@@ -621,9 +608,9 @@
       }
       return recap || "Aucun produit commandé";
     }
-  
+    
     customOrderForm.addEventListener('submit', async function(e) {
-      e.preventDefault(); // Empêche la soumission classique
+      e.preventDefault();
       document.getElementById('orderDetails').value = genererRecapCommande();
       try {
         const formData = new FormData(customOrderForm);
@@ -644,21 +631,19 @@
         alert("Erreur réseau : " + err);
       }
     });
-  
-    /***************************************************************
-     * VALIDATION DU PANIER – Affiche le formulaire personnalisé
-    ***************************************************************/
+    
+    /*******************************************
+     * VALIDATION DU PANIER
+    *******************************************/
     checkoutBtn.addEventListener('click', () => {
       document.getElementById('formulaire-commande-custom').style.display = 'block';
       document.getElementById('formulaire-commande-custom').scrollIntoView({ behavior: 'smooth' });
     });
-  
-    /***************************************************************
-     * ANIMATION AU SCROLL – Appliquer le "fade in" et l'animation float
-     * On utilise IntersectionObserver pour ajouter la classe "visible"
-     * et on conserve ensuite l'effet "float" en permanence.
-    ***************************************************************/
-    const faders = document.querySelectorAll('.fade-in');
+    
+    /*******************************************
+     * ANIMATION FADE IN UNIQUE
+    *******************************************/
+    const fadeElements = document.querySelectorAll('.fade-in');
     const observerOptions = {
       threshold: 0.2,
       rootMargin: "0px 0px -50px 0px"
@@ -667,22 +652,19 @@
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
-          // On ajoute aussi la classe "float" pour l'animation continue
-          entry.target.classList.add('float');
-        } else {
-          // Si tu veux rejouer l'animation à chaque entrée, décommente la ligne suivante :
-          // entry.target.classList.remove('visible');
+          observer.unobserve(entry.target); 
+          // On arrête d'observer pour un fade-in unique (pas de bouge dans tous les sens).
         }
       });
     }, observerOptions);
     
-    faders.forEach(fader => {
-      observer.observe(fader);
+    fadeElements.forEach(el => {
+      observer.observe(el);
     });
-  
-    /***************************************************************
-     * HEADER DYNAMIQUE – Change le fond du header au scroll
-    ***************************************************************/
+    
+    /*******************************************
+     * HEADER DYNAMIQUE – Fond opaque au scroll
+    *******************************************/
     window.addEventListener('scroll', () => {
       const header = document.getElementById('header');
       if (window.scrollY > 50) {
