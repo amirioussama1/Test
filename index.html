@@ -2,26 +2,22 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
+  <!-- Pour un affichage responsive -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CHEZ AMIRI - Inspiré d'Apple</title>
   
   <!--
   =============================================================================
-  VERSION AJUSTÉE
-    - Pas de cumul de quantités au clic multiple sur "Ajouter". 
-      => Si le produit/option est déjà dans le panier, on ne fait rien 
-         (on invite l’utilisateur à modifier la quantité dans le panier).
-    - Le tableau du panier a table-layout: fixed; et overflow-x: auto 
-      pour éviter les débordements sur mobile et limiter les “mouvements”.
-    - Les quantités peuvent être très grandes, tout est calculé dynamiquement 
-      => total + total en lettres.
-    - Options radio (produits en 1/2 ou 4/4) désélectionnables en recliquant.
-    - Le prix n’apparaît qu’une fois une option cochée (sinon "Prix à découvrir").
+  VERSION FINALE – Stabilisation du tableau du panier
+    • 4 produits : Tomates DCT, Harissa, Sauce Pizza (avec options toggle) et Confiture (sans option).
+    • Le client saisit la quantité dans le panier (tableau) qui est recalculé lors du "onblur" ou "onkeyup" pour rester dynamique sans couper le clavier.
+    • Le tableau est contenu dans une div responsive et utilise "table-layout: fixed" avec des largeurs fixes pour les colonnes "Quantité" (80px) et "Action" (100px) afin d’éviter que le contenu ne bouge.
+    • Le total en chiffres et en lettres est mis à jour dynamiquement.
   =============================================================================
   -->
   
   <style>
-    /* ============================== 
+    /* ==============================
        BASE – Typographie & Couleurs
     ============================== */
     html {
@@ -29,22 +25,18 @@
     }
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
-                   "Open Sans", "Helvetica Neue", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
       color: #333;
       background: #f2f2f2;
       line-height: 1.6;
     }
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+    a { text-decoration: none; color: inherit; }
 
     /* ==============================
-       KEYFRAMES – Fade in (unique)
+       KEYFRAMES – Fade In Unique
     ============================== */
     @keyframes fadeInUp {
-      0%   { opacity: 0; transform: translateY(30px); }
+      0% { opacity: 0; transform: translateY(30px); }
       100% { opacity: 1; transform: translateY(0); }
     }
     .fade-in {
@@ -91,19 +83,17 @@
       font-size: 1em;
       letter-spacing: 0.5px;
       transition: color 0.3s;
-      white-space: nowrap; /* Forcer "À propos" sur une seule ligne */
+      white-space: nowrap;
     }
-    nav ul li a:hover {
-      color: #ccc;
-    }
+    nav ul li a:hover { color: #ccc; }
 
     /* ==============================
-       Décalage pour les sections (éviter que le header recouvre le titre)
+       Décalage pour les sections (pour ne pas que le header masque)
     ============================== */
     .hero, section {
-      scroll-margin-top: 80px; 
+      scroll-margin-top: 80px;
     }
-
+    
     /* ==============================
        HERO / ACCUEIL
     ============================== */
@@ -176,7 +166,7 @@
     
     /* ==============================
        PRODUITS – Grille 
-       (2 colonnes sur PC >=768px, 1 colonne sur mobile)
+       (2 colonnes sur PC, 1 colonne sur mobile)
     ============================== */
     .product-grid {
       display: grid;
@@ -235,13 +225,10 @@
       letter-spacing: 0.5px;
       margin-top: 10px;
     }
-    .button:hover {
-      background: #005bb5;
-    }
+    .button:hover { background: #005bb5; }
 
     /* ==============================
-       OPTIONS RADIO 
-       (Sans affichage de prix dans le label)
+       OPTIONS RADIO – Stylisation
     ============================== */
     .options {
       display: flex;
@@ -279,11 +266,11 @@
     }
 
     /* ==============================
-       PANIER 
+       PANIER – Table Responsive avec layout fixe
     ============================== */
     .table-responsive {
       width: 100%;
-      overflow-x: auto; /* Scroll horizontal si besoin */
+      overflow-x: auto;
     }
     #panier-table {
       table-layout: fixed;
@@ -291,6 +278,22 @@
       border-collapse: collapse;
       margin-bottom: 20px;
       font-size: 0.95em;
+    }
+    /* Stabiliser la colonne Quantité (3ème colonne) */
+    #panier-table th:nth-child(3),
+    #panier-table td:nth-child(3) {
+      width: 80px;
+      min-width: 80px;
+      max-width: 80px;
+      text-align: center;
+    }
+    /* Stabiliser la colonne Action (5ème colonne) */
+    #panier-table th:nth-child(5),
+    #panier-table td:nth-child(5) {
+      width: 100px;
+      min-width: 100px;
+      max-width: 100px;
+      text-align: center;
     }
     #panier-table th, #panier-table td {
       border: 1px solid #ddd;
@@ -305,7 +308,7 @@
       margin-top: 10px;
       font-weight: 600;
     }
-    /* Ligne pour le total en lettres */
+    /* Ligne Total en Lettres */
     #totalWords {
       text-align: right;
       font-size: 0.95em;
@@ -325,9 +328,9 @@
       color: #555;
       margin-top: 10px;
     }
-    
+
     /* ==============================
-       FORMULAIRE 
+       FORMULAIRE – Envoi AJAX
     ============================== */
     #formulaire-commande-custom {
       margin-top: 40px;
@@ -368,9 +371,7 @@
       margin-top: 15px;
       transition: background 0.3s;
     }
-    .form-container button:hover {
-      background: #005bb5;
-    }
+    .form-container button:hover { background: #005bb5; }
 
     /* ==============================
        MESSAGE DE REMERCIEMENT
@@ -399,7 +400,7 @@
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background: rgba(51, 51, 51, 0.9);
+      background: rgba(51,51,51,0.9);
       color: #fff;
       padding: 12px 20px;
       border-radius: 6px;
@@ -443,14 +444,14 @@
       </ul>
     </nav>
   </header>
-  
+
   <!-- HERO -->
   <div class="hero fade-in" id="accueil">
     <h1>CHEZ AMIRI !</h1>
     <p>Votre spécialiste en produits alimentaires en gros. Service rapide et fiable.</p>
     <a class="hero-btn" href="#produits">Découvrir nos produits</a>
   </div>
-  
+
   <!-- À PROPOS -->
   <section class="fade-in" id="about">
     <h2>À propos</h2>
@@ -473,7 +474,7 @@
       Situés à Guelma, nous assurons des délais de livraison courts et un service fiable.
     </p>
   </section>
-  
+
   <!-- PRODUITS -->
   <section class="fade-in" id="produits">
     <h2>Nos Produits</h2>
@@ -483,7 +484,7 @@
         <img src="https://via.placeholder.com/300x200.png?text=Tomates" alt="Tomates DCT" />
         <h3>Tomates DCT</h3>
         <p class="price price-unselected">Prix à découvrir</p>
-        <p>Choisissez entre 1/2 ou 4/4 selon vos besoins.</p>
+        <p>Choisissez entre 1/2 ou 4/4, puis renseignez la quantité dans le panier.</p>
         <div class="options">
           <input type="radio" id="tomates-dct-12" name="tomatesDCT" value="1/2" data-price="180" />
           <label for="tomates-dct-12" class="option-label">1/2</label>
@@ -493,7 +494,7 @@
         <p class="error-message"></p>
         <button class="button add-to-cart" data-name="Tomates DCT" data-price="">Ajouter</button>
       </div>
-      
+
       <!-- 2) Harissa -->
       <div class="product" data-product-name="Harissa">
         <img src="https://via.placeholder.com/300x200.png?text=Harissa" alt="Harissa" />
@@ -509,13 +510,13 @@
         <p class="error-message"></p>
         <button class="button add-to-cart" data-name="Harissa" data-price="">Ajouter</button>
       </div>
-      
+
       <!-- 3) Sauce Pizza -->
       <div class="product" data-product-name="Sauce Pizza">
         <img src="https://via.placeholder.com/300x200.png?text=Sauce+Pizza" alt="Sauce Pizza" />
         <h3>Sauce Pizza</h3>
         <p class="price price-unselected">Prix à découvrir</p>
-        <p>Délicieuse base pour vos pizzas.</p>
+        <p>Base savoureuse pour vos pizzas.</p>
         <div class="options">
           <input type="radio" id="pizza-12" name="pizzaOptions" value="1/2" data-price="240" />
           <label for="pizza-12" class="option-label">1/2</label>
@@ -537,11 +538,10 @@
       </div>
     </div>
   </section>
-  
+
   <!-- PANIER -->
   <section class="fade-in" id="panier-section">
     <h2>Votre Panier</h2>
-    <!-- Conteneur responsive pour éviter débordements -->
     <div class="table-responsive">
       <table id="panier-table">
         <thead>
@@ -560,23 +560,20 @@
         </tbody>
       </table>
     </div>
-    <!-- Total en chiffres -->
     <div id="total">Total : 0,00 DA</div>
-    <!-- Total en lettres -->
     <p id="totalWords"></p>
-    
     <button id="checkout-btn" class="button" style="display:none;">Valider la commande</button>
     <div id="rappel-form">
       N'oubliez pas de remplir le formulaire ci-dessous pour être contacté.
     </div>
   </section>
-  
+
   <!-- FORMULAIRE DE COMMANDE -->
   <section class="fade-in" id="formulaire-commande-custom">
     <h2>Passer Commande</h2>
     <div class="form-container">
-      <!-- Remplacez l'URL ci-dessous par votre identifiant Formspree réel -->
-      <form id="customOrderForm" method="POST" action="https://formspree.io/f/XXXXXXXXX">
+      <!-- Remplacez l'URL par votre identifiant Formspree réel -->
+      <form id="customOrderForm" method="POST" action="https://formspree.io/f/XXXXXXX">
         <label>
           Nom et Prénom:<br />
           <input type="text" name="name" required />
@@ -594,7 +591,7 @@
       </form>
     </div>
   </section>
-  
+
   <!-- MESSAGE DE REMERCIEMENT -->
   <section class="fade-in" id="merci">
     <h3>COMMANDE BIEN PASSÉE !</h3>
@@ -605,10 +602,11 @@
       💬 Vous pouvez aussi nous écrire sur WhatsApp au même numéro.
     </p>
   </section>
-  
+
   <!-- TOAST – Notification -->
   <div id="toast"></div>
-  
+
+  <!-- SCRIPT JS -->
   <script>
     /***************************************************************
      * VARIABLES & ÉLÉMENTS DU DOM
@@ -649,15 +647,13 @@
     fadeElements.forEach(el => observer.observe(el));
 
     /***************************************************************
-     * GESTION OPTIONS RADIO – Toggle
+     * GESTION DES OPTIONS RADIO – Toggle (désélection possible)
     ***************************************************************/
     document.querySelectorAll('.product').forEach(prod => {
       const radioButtons = prod.querySelectorAll('input[type="radio"]');
       if (radioButtons.length > 0) {
         radioButtons.forEach(rb => {
-          rb.addEventListener('pointerdown', function() {
-            this.wasChecked = this.checked;
-          });
+          rb.addEventListener('pointerdown', function() { this.wasChecked = this.checked; });
           rb.addEventListener('click', function(e) {
             if (this.wasChecked) {
               this.checked = false;
@@ -682,30 +678,41 @@
     });
 
     /***************************************************************
-     * AJOUT AU PANIER – 
-     * Si déjà présent => message "existe déjà, modifiez la quantité dans le panier"
+     * AJOUT AU PANIER – L'utilisateur saisit la quantité dans la fiche produit.
+     * Si le produit est déjà dans le panier, on affiche un message d'erreur.
     ***************************************************************/
     document.querySelectorAll('.add-to-cart').forEach(button => {
       button.addEventListener('click', () => {
         let productName = button.getAttribute('data-name');
         let price = parseFloat(button.getAttribute('data-price')) || 0;
         const productDiv = button.closest('.product');
-        const radioButtons = productDiv.querySelectorAll('input[type="radio"]');
         const errorMsg = productDiv.querySelector('.error-message');
         if (errorMsg) errorMsg.style.display = 'none';
 
-        // Gérer les produits à options
-        if (radioButtons.length > 0) {
+        // Vérification et récupération de la quantité saisie dans la fiche produit
+        const qtyInput = productDiv.querySelector('.qty-input');
+        let userQty = qtyInput ? parseInt(qtyInput.value) : 1;
+        if (!userQty || userQty < 1) {
+          if(errorMsg) {
+            errorMsg.textContent = "Veuillez saisir une quantité valide.";
+            errorMsg.style.display = 'block';
+          }
+          return;
+        }
+
+        // Gestion des produits à options
+        const radioButtons = productDiv.querySelectorAll('input[type="radio"]');
+        if(radioButtons.length > 0) {
           let chosenOption = null;
           let chosenPrice = null;
           radioButtons.forEach(rb => {
-            if (rb.checked) {
+            if(rb.checked) {
               chosenOption = rb.value;
               chosenPrice = parseFloat(rb.getAttribute('data-price'));
             }
           });
           if(!chosenOption) {
-            if (errorMsg) {
+            if(errorMsg) {
               errorMsg.textContent = "Veuillez sélectionner une option.";
               errorMsg.style.display = 'block';
             }
@@ -716,21 +723,20 @@
           }
         }
 
-        // Vérifier si le produit/option est déjà dans le panier
-        if (cart[productName]) {
-          showToast(`"${productName}" est déjà dans votre panier. 
-  Modifiez la quantité directement dans le panier.`);
+        // Vérifier si le produit existe déjà dans le panier
+        if(cart[productName]) {
+          showToast(`"${productName}" est déjà dans votre panier. Modifiez la quantité directement dans le panier.`);
           return;
         } else {
-          cart[productName] = { price: price, quantity: 1 };
+          cart[productName] = { price: price, quantity: userQty };
         }
         updateCartDisplay();
-        showToast(`Le produit "${productName}" a été ajouté à votre panier.`);
+        showToast(`Le produit "${productName}" (qte: ${userQty}) a été ajouté au panier.`);
       });
     });
 
     /***************************************************************
-     * PANIER – Mise à jour & calcul du total
+     * PANIER – Mise à jour & Calcul du Total
     ***************************************************************/
     function updateCartDisplay() {
       cartBody.innerHTML = '';
@@ -750,8 +756,8 @@
               <td>${item}</td>
               <td>${unitPrice.toFixed(2)} DA</td>
               <td>
-                <input type="number" min="1" value="${qty}" style="width:70px; text-align:center;" 
-                  oninput="updateQuantity('${item}', this.value)" onclick="hideThanks()" />
+                <input type="number" min="1" step="1" value="${qty}" style="width:70px; text-align:center;"
+                  onblur="updateQuantity('${item}', this.value)" onclick="hideThanks()" />
               </td>
               <td>${lineTotal.toFixed(2)} DA</td>
               <td>
@@ -763,7 +769,6 @@
         checkoutBtn.style.display = 'block';
       }
       totalDisplay.textContent = `Total : ${total.toFixed(2)} DA`;
-      // Mise à jour du total en lettres
       totalWordsElem.textContent = convertCurrencyToWords(total);
     }
     function updateQuantity(productName, newQty) {
@@ -800,8 +805,7 @@
     }
 
     /***************************************************************
-     * CONVERSION DU MONTANT EN LETTRES
-       (Code simplifié pour la démonstration)
+     * CONVERSION DU TOTAL EN LETTRES
     ***************************************************************/
     function convertNumberToWords(n) {
       if(n === 0) return "zéro";
@@ -841,7 +845,7 @@
           result += " " + convertNumberToWords(rest);
         }
       } else {
-        result = n; // pour les très grands nombres
+        result = n;
       }
       return result;
     }
@@ -850,24 +854,18 @@
       const integerPart = Math.floor(total);
       const decimalPart = Math.round((total - integerPart) * 100);
       let wordsInt = convertNumberToWords(integerPart);
-      if(wordsInt.length > 0) {
-        wordsInt = wordsInt.charAt(0).toUpperCase() + wordsInt.slice(1);
-      } else {
-        wordsInt = "Zéro";
-      }
+      wordsInt = wordsInt.charAt(0).toUpperCase() + wordsInt.slice(1);
       let result = wordsInt + " dinar" + (integerPart > 1 ? "s" : "");
       if(decimalPart > 0) {
         let wordsDec = convertNumberToWords(decimalPart);
-        if(wordsDec.length > 0) {
-          wordsDec = wordsDec.charAt(0).toUpperCase() + wordsDec.slice(1);
-        }
+        wordsDec = wordsDec.charAt(0).toUpperCase() + wordsDec.slice(1);
         result += " et " + wordsDec + " centime" + (decimalPart > 1 ? "s" : "");
       }
       return result;
     }
 
     /***************************************************************
-     * FORMULAIRE – Préremplissage & Envoi
+     * FORMULAIRE – Préremplissage & Envoi AJAX
     ***************************************************************/
     customOrderForm.addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -901,7 +899,7 @@
     }
 
     /***************************************************************
-     * VALIDER LE PANIER
+     * VALIDER LE PANIER – Afficher le formulaire de commande
     ***************************************************************/
     checkoutBtn.addEventListener('click', () => {
       document.getElementById('formulaire-commande-custom').style.display = 'block';
