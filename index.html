@@ -2,24 +2,29 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <!-- Balise viewport pour l'affichage responsive -->
+  <!-- Affichage responsive sur smartphone -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CHEZ AMIRI - Inspiré d'Apple</title>
-
+  
   <!-- 
   =============================================================================
-  CODE FINAL – 4 produits, 2 options radio pour 3 d'entre eux (tomates, harissa, sauce pizza),
-  confiture sans option. Bordure bleue si une option est sélectionnée, message d’erreur si
-  on tente d’ajouter sans option, design Apple, responsive, fade-in discret, pas d’anim continue.
+  VERSION FINALE
+  - 4 produits : Tomates DCT, Harissa, Sauce Pizza (avec 2 options), Confiture (sans option).
+  - Prix en DA.
+  - Bordure bleue & bouton radio bleu (comme “Ajouter”) quand une option est cochée.
+  - Si on n’a pas sélectionné d’option => message d’erreur rouge.
+  - 2 colonnes sur PC, 1 colonne sur mobile.
+  - "À propos" en un seul mot dans la nav, pas scindé.
+  - Fade-in unique, sticky header, tout est responsive & élégant.
   =============================================================================
   -->
-
+  
   <style>
     /* ==============================
        BASE – Typographie & Couleurs
     ============================== */
     html {
-      scroll-behavior: smooth; /* Navigation fluide sur les ancres */
+      scroll-behavior: smooth; /* Navigation fluide */
     }
     body {
       margin: 0;
@@ -32,7 +37,7 @@
     a { text-decoration: none; color: inherit; }
 
     /* ==============================
-       KEYFRAMES Fade In
+       KEYFRAMES Fade In (unique)
     ============================== */
     @keyframes fadeInUp {
       0% { opacity: 0; transform: translateY(30px); }
@@ -86,10 +91,10 @@
     nav ul li a:hover { color: #ccc; }
 
     /* ==============================
-       DÉCALAGE POUR SECTIONS (éviter que le header recouvre le titre)
+       DÉCALAGE POUR LES SECTIONS : éviter que le header recouvre le titre
     ============================== */
     .hero, section {
-      scroll-margin-top: 80px; 
+      scroll-margin-top: 80px;
     }
 
     /* ==============================
@@ -165,12 +170,17 @@
     }
 
     /* ==============================
-       PRODUITS – Grille de produits
+       PRODUITS – Grille (2 colonnes sur PC, 1 sur mobile)
     ============================== */
     .product-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 30px;
+    }
+    @media (min-width: 768px) {
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
     .product {
       background: #fafafa;
@@ -179,18 +189,16 @@
       padding: 20px;
       text-align: center;
       transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-      /* On met un petit margin-bottom pour le message d'erreur éventuel */
       margin-bottom: 10px;
     }
     .product:hover {
       transform: translateY(-5px);
       box-shadow: 0 6px 18px rgba(0,0,0,0.1);
     }
-    /* Bordure bleue quand une option est sélectionnée */
+    /* Bordure bleue si l’option est cochée */
     .product.selected {
       border-color: #0071e3;
     }
-
     .product img {
       width: 100%;
       border-radius: 12px;
@@ -243,30 +251,28 @@
     .option-label:hover {
       background: #f0f0f0;
     }
+    /* On cache le radio natif */
     input[type="radio"] {
       display: none;
     }
-    /* Quand la radio est cochée => label avec fond bleu + texte blanc */
+    /* Quand c’est coché => label avec fond bleu et texte blanc */
     input[type="radio"]:checked + .option-label {
       background: #0071e3;
       color: #fff;
       border-color: #0071e3;
     }
 
-    /* Message d'erreur en rouge si aucune option n'est sélectionnée */
+    /* Message d’erreur en rouge si aucune option */
     .error-message {
       color: red;
       font-size: 0.85em;
-      display: none; /* on l'affichera en JS si besoin */
+      display: none;
       margin-top: 5px;
     }
 
     /* ==============================
-       PANIER – Récapitulatif
+       PANIER
     ============================== */
-    #panier-section {
-      margin-top: 40px;
-    }
     #panier-table {
       width: 100%;
       border-collapse: collapse;
@@ -299,7 +305,7 @@
     }
 
     /* ==============================
-       FORMULAIRE PERSONNALISÉ – AJAX
+       FORMULAIRE
     ============================== */
     #formulaire-commande-custom {
       margin-top: 40px;
@@ -383,7 +389,7 @@
     }
 
     /* ==============================
-       MEDIA QUERIES – Adaptation mobile
+       MEDIA QUERIES – Mobile
     ============================== */
     @media (max-width: 600px) {
       header { padding: 10px 20px; }
@@ -412,7 +418,6 @@
   </style>
 </head>
 <body>
-  
   <!-- HEADER -->
   <header id="header">
     <div class="logo">CHEZ AMIRI</div>
@@ -435,7 +440,7 @@
   
   <!-- À PROPOS -->
   <section class="fade-in" id="about">
-    <h2>À propos de nous</h2>
+    <h2>À propos</h2>
     <p>
       Depuis plusieurs années, notre entreprise familiale est spécialisée dans la distribution en gros 
       de produits d’alimentation générale, avec un engagement fort envers la qualité, la disponibilité et le service.
@@ -446,7 +451,7 @@
     </p>
     <ul>
       <li>Conserves de tomates</li>
-      <li>Sauces tomates variées</li>
+      <li>Harissa, Sauce Pizza</li>
       <li>Produits en boîtes</li>
       <li>Boissons variées</li>
       <li>Et bien d'autres articles de consommation courante</li>
@@ -464,73 +469,60 @@
     <div class="product-grid">
       <!-- 1) Tomates DCT -->
       <div class="product" data-product-name="Tomates DCT">
-        <img src="https://via.placeholder.com/300x200.png?text=Tomates" alt="Tomates" />
+        <img src="https://via.placeholder.com/300x200.png?text=Tomates" alt="Tomates DCT" />
         <h3>Tomates DCT</h3>
-        <p class="price">Prix unitaire : 1,80 €</p>
+        <p class="price">Prix unitaire : 180 DA</p>
         <p>Deux options : 1/2 ou 4/4, parfaites pour toutes vos recettes.</p>
-        
-        <!-- Les options radio -->
         <div class="options">
-          <!-- Option 1/2 -->
-          <input type="radio" id="tomate-12" name="optionTomate" value="1/2" />
-          <label for="tomate-12" class="option-label">1/2</label>
-          <!-- Option 4/4 -->
-          <input type="radio" id="tomate-44" name="optionTomate" value="4/4" />
-          <label for="tomate-44" class="option-label">4/4</label>
+          <input type="radio" id="tomates-dct-12" name="tomatesDCT" value="1/2" />
+          <label for="tomates-dct-12" class="option-label">1/2</label>
+          <input type="radio" id="tomates-dct-44" name="tomatesDCT" value="4/4" />
+          <label for="tomates-dct-44" class="option-label">4/4</label>
         </div>
         <p class="error-message"></p>
-        
-        <button class="button add-to-cart" data-name="Tomates DCT" data-price="1.80">Ajouter</button>
+        <button class="button add-to-cart" data-name="Tomates DCT" data-price="180">Ajouter</button>
       </div>
       
       <!-- 2) Harissa -->
       <div class="product" data-product-name="Harissa">
         <img src="https://via.placeholder.com/300x200.png?text=Harissa" alt="Harissa" />
         <h3>Harissa</h3>
-        <p class="price">Prix unitaire : 2,00 €</p>
+        <p class="price">Prix unitaire : 200 DA</p>
         <p>Le piquant authentique du Maghreb, en 1/2 ou 4/4 au choix.</p>
-        
-        <!-- Options radio -->
         <div class="options">
-          <input type="radio" id="harissa-12" name="optionHarissa" value="1/2" />
+          <input type="radio" id="harissa-12" name="harissaOptions" value="1/2" />
           <label for="harissa-12" class="option-label">1/2</label>
-          <input type="radio" id="harissa-44" name="optionHarissa" value="4/4" />
+          <input type="radio" id="harissa-44" name="harissaOptions" value="4/4" />
           <label for="harissa-44" class="option-label">4/4</label>
         </div>
         <p class="error-message"></p>
-        
-        <button class="button add-to-cart" data-name="Harissa" data-price="2.00">Ajouter</button>
+        <button class="button add-to-cart" data-name="Harissa" data-price="200">Ajouter</button>
       </div>
-
+      
       <!-- 3) Sauce Pizza -->
       <div class="product" data-product-name="Sauce Pizza">
         <img src="https://via.placeholder.com/300x200.png?text=Sauce+Pizza" alt="Sauce Pizza" />
         <h3>Sauce Pizza</h3>
-        <p class="price">Prix unitaire : 2,40 €</p>
+        <p class="price">Prix unitaire : 240 DA</p>
         <p>Délicieuse base pour vos pizzas, disponible en 1/2 et 4/4.</p>
-        
-        <!-- Options radio -->
         <div class="options">
-          <input type="radio" id="pizza-12" name="optionPizza" value="1/2" />
+          <input type="radio" id="pizza-12" name="pizzaOptions" value="1/2" />
           <label for="pizza-12" class="option-label">1/2</label>
-          <input type="radio" id="pizza-44" name="optionPizza" value="4/4" />
+          <input type="radio" id="pizza-44" name="pizzaOptions" value="4/4" />
           <label for="pizza-44" class="option-label">4/4</label>
         </div>
         <p class="error-message"></p>
-        
-        <button class="button add-to-cart" data-name="Sauce Pizza" data-price="2.40">Ajouter</button>
+        <button class="button add-to-cart" data-name="Sauce Pizza" data-price="240">Ajouter</button>
       </div>
 
       <!-- 4) Confiture (sans option) -->
       <div class="product" data-product-name="Confiture">
         <img src="https://via.placeholder.com/300x200.png?text=Confiture" alt="Confiture" />
         <h3>Confiture</h3>
-        <p class="price">Prix unitaire : 3,50 €</p>
+        <p class="price">Prix unitaire : 350 DA</p>
         <p>Une explosion de douceur artisanale, sans option particulière.</p>
-        
         <p class="error-message"></p>
-        
-        <button class="button add-to-cart" data-name="Confiture" data-price="3.50">Ajouter</button>
+        <button class="button add-to-cart" data-name="Confiture" data-price="350">Ajouter</button>
       </div>
     </div>
   </section>
@@ -542,9 +534,9 @@
       <thead>
         <tr>
           <th>Produit</th>
-          <th>Prix unitaire</th>
+          <th>Prix unitaire (DA)</th>
           <th>Quantité</th>
-          <th>Total</th>
+          <th>Total (DA)</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -554,19 +546,19 @@
         </tr>
       </tbody>
     </table>
-    <div id="total">Total : 0,00 €</div>
+    <div id="total">Total : 0,00 DA</div>
     <button id="checkout-btn" class="button" style="display:none;">Valider la commande</button>
     <div id="rappel-form">
       N'oubliez pas de remplir le formulaire ci-dessous pour être contacté.
     </div>
   </section>
   
-  <!-- FORMULAIRE COMMANDE -->
+  <!-- FORMULAIRE DE COMMANDE -->
   <section class="fade-in" id="formulaire-commande-custom">
     <h2>Passer Commande</h2>
     <div class="form-container">
-      <!-- Remplacez l'URL ci-dessous par votre identifiant Formspree -->
-      <form id="customOrderForm" method="POST" action="https://formspree.io/f/XXXXXXXX">
+      <!-- Remplace l'URL ci-dessous par ton identifiant Formspree -->
+      <form id="customOrderForm" method="POST" action="https://formspree.io/f/XXXXXXXXX">
         <label>
           Nom et Prénom:<br />
           <input type="text" name="name" required />
@@ -596,10 +588,10 @@
     </p>
   </section>
   
-  <!-- TOAST -->
+  <!-- TOAST de Notification -->
   <div id="toast"></div>
   
-  <!-- SCRIPT JS -->
+  <!-- SCRIPT -->
   <script>
     /***************************************************************
      * VARIABLES & ÉLÉMENTS DU DOM
@@ -611,143 +603,95 @@
     const toast = document.getElementById('toast');
     const customOrderForm = document.getElementById('customOrderForm');
 
-    /* 
-      On va gérer les produits qui ont des options (radio).
-      À chaque clic sur une option, on sélectionne/désélectionne, 
-      et on change la bordure du .product en conséquence. 
-    */
+    /***************************************************************
+     * Apparence du Header en scroll (collant & opaque)
+    ***************************************************************/
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('header');
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
 
-    // Pour tous les .product qui ont des inputs radio
-    document.querySelectorAll('.product').forEach((prod) => {
-      const productName = prod.getAttribute('data-product-name');
+    /***************************************************************
+     * Fade-in unique via IntersectionObserver
+    ***************************************************************/
+    const fadeElements = document.querySelectorAll('.fade-in');
+    const observerOptions = {
+      threshold: 0.2,
+      rootMargin: "0px 0px -50px 0px"
+    };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target); 
+        }
+      });
+    }, observerOptions);
+
+    fadeElements.forEach(el => {
+      observer.observe(el);
+    });
+
+    /***************************************************************
+     * Sélection d'options & bordure bleue
+    ***************************************************************/
+    document.querySelectorAll('.product').forEach(prod => {
+      const productName = prod.dataset.productName;
       const radioButtons = prod.querySelectorAll('input[type="radio"]');
+      
+      // S'il y a des radios => on veut la "selected" class
       if (radioButtons.length > 0) {
-        // On a des options
+        // Quand on change de radio => la carte devient bleue
         radioButtons.forEach(rb => {
           rb.addEventListener('change', () => {
-            // Si on vient de cocher un radio
-            if (rb.checked) {
-              // Appliquer la classe "selected" sur .product
-              prod.classList.add('selected');
-              // Désélectionner l'autre radio si c'est la même case
-              radioButtons.forEach(other => {
-                if (other !== rb) {
-                  other.checked = false;
-                }
-              });
-            }
-          });
-        });
-        // Si on reclique sur le même radio => on veut désélectionner
-        radioButtons.forEach(rb => {
-          rb.addEventListener('click', (e) => {
-            if (rb.checked) {
-              // Re-cliquer => on désélectionne
-              rb.checked = false;
-              prod.classList.remove('selected');
-              e.preventDefault();
-            }
+            // On applique la classe .selected
+            prod.classList.add('selected');
+            // Désélectionner l'autre radio s'il existait
+            radioButtons.forEach(other => {
+              if (other !== rb) other.checked = false;
+            });
           });
         });
       }
     });
 
-    /* 
-      showToast / hideThanks / updateCartDisplay 
-      etc. identique aux versions précédentes
-    */
-    function hideThanks() {
-      const thanksSection = document.getElementById('merci');
-      if (thanksSection.style.display === 'block') {
-        thanksSection.style.display = 'none';
-      }
-    }
-    function showToast(message) {
-      toast.textContent = message;
-      toast.style.display = 'block';
-      setTimeout(() => { toast.style.opacity = '1'; }, 10);
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        setTimeout(() => { toast.style.display = 'none'; }, 500);
-      }, 2500);
-    }
-    function updateCartDisplay() {
-      cartBody.innerHTML = '';
-      let total = 0;
-      const items = Object.keys(cart);
-      if (items.length === 0) {
-        cartBody.innerHTML = `<tr id="empty-cart-msg"><td colspan="5">Votre panier est vide.</td></tr>`;
-        checkoutBtn.style.display = 'none';
-      } else {
-        items.forEach(item => {
-          const unitPrice = cart[item].price;
-          const qty = cart[item].quantity;
-          const lineTotal = unitPrice * qty;
-          total += lineTotal;
-          cartBody.innerHTML += `
-            <tr data-name="${item}">
-              <td>${item}</td>
-              <td>${unitPrice.toFixed(2)} €</td>
-              <td>
-                <input type="number" min="1" value="${qty}" style="width:60px; text-align:center;" 
-                  onclick="hideThanks()" oninput="updateQuantity('${item}', this.value)" />
-              </td>
-              <td>${lineTotal.toFixed(2)} €</td>
-              <td>
-                <button class="button" onclick="removeItem('${item}'); hideThanks();">
-                  Supprimer
-                </button>
-              </td>
-            </tr>
-          `;
-        });
-        checkoutBtn.style.display = 'block';
-      }
-      totalDisplay.textContent = `Total : ${total.toFixed(2)} €`;
-    }
-    function updateQuantity(productName, newQty) {
-      if (!cart[productName]) return;
-      const qty = parseInt(newQty);
-      if (qty < 1 || isNaN(qty)) return;
-      cart[productName].quantity = qty;
-      updateCartDisplay();
-    }
-    function removeItem(productName) {
-      if (cart[productName]) {
-        delete cart[productName];
-        updateCartDisplay();
-      }
-    }
-
     /***************************************************************
-     * AJOUT DES PRODUITS AU PANIER
+     * AJOUT AU PANIER
     ***************************************************************/
     document.querySelectorAll('.add-to-cart').forEach(button => {
       button.addEventListener('click', () => {
         hideThanks();
-        const productName = button.getAttribute('data-name');
+        let productName = button.getAttribute('data-name');
         const price = parseFloat(button.getAttribute('data-price'));
         
-        // Vérifier s’il y a des radios
+        // Vérifier si le produit a des radios
         const productDiv = button.closest('.product');
         const radioButtons = productDiv.querySelectorAll('input[type="radio"]');
+        const errorMsg = productDiv.querySelector('.error-message');
+        
+        // Réinitialiser le message d'erreur
+        if (errorMsg) errorMsg.style.display = 'none';
+        
         if (radioButtons.length > 0) {
-          // Il faut qu'une option soit cochée
+          // On cherche l'option cochée
           let chosenOption = null;
           radioButtons.forEach(rb => {
             if (rb.checked) chosenOption = rb.value;
           });
-          // Si rien n’est coché => message d’erreur
           if (!chosenOption) {
-            const errorMsg = productDiv.querySelector('.error-message');
-            errorMsg.textContent = "Veuillez sélectionner une option avant d'ajouter.";
-            errorMsg.style.display = 'block';
-            return;
+            // Pas d'option => message d'erreur
+            if (errorMsg) {
+              errorMsg.textContent = "Veuillez sélectionner une option avant d'ajouter.";
+              errorMsg.style.display = 'block';
+            }
+            return; 
           } else {
-            // On concatène l’option au nom du produit
+            // On concatène l’option
             productName += ` (${chosenOption})`;
-            // On enlève le message d’erreur
-            productDiv.querySelector('.error-message').style.display = 'none';
           }
         }
 
@@ -763,13 +707,81 @@
     });
 
     /***************************************************************
-     * FORMULAIRE – PRÉREMPLISSAGE
+     * Panier – Fonctions
+    ***************************************************************/
+    function updateCartDisplay() {
+      cartBody.innerHTML = '';
+      let total = 0;
+      const items = Object.keys(cart);
+      if (items.length === 0) {
+        cartBody.innerHTML = `<tr id="empty-cart-msg"><td colspan="5">Votre panier est vide.</td></tr>`;
+        checkoutBtn.style.display = 'none';
+      } else {
+        items.forEach(item => {
+          const unitPrice = cart[item].price;
+          const qty = cart[item].quantity;
+          const lineTotal = unitPrice * qty;
+          total += lineTotal;
+          cartBody.innerHTML += `
+            <tr>
+              <td>${item}</td>
+              <td>${unitPrice.toFixed(2)} DA</td>
+              <td>
+                <input type="number" min="1" value="${qty}" style="width:60px; text-align:center;"
+                  oninput="updateQuantity('${item}', this.value)" onclick="hideThanks()" />
+              </td>
+              <td>${lineTotal.toFixed(2)} DA</td>
+              <td>
+                <button class="button" onclick="removeItem('${item}'); hideThanks();">Supprimer</button>
+              </td>
+            </tr>
+          `;
+        });
+        checkoutBtn.style.display = 'block';
+      }
+      totalDisplay.textContent = `Total : ${total.toFixed(2)} DA`;
+    }
+    function updateQuantity(productName, newQty) {
+      if (!cart[productName]) return;
+      const qty = parseInt(newQty);
+      if (qty < 1 || isNaN(qty)) return;
+      cart[productName].quantity = qty;
+      updateCartDisplay();
+    }
+    function removeItem(productName) {
+      if (cart[productName]) {
+        delete cart[productName];
+        updateCartDisplay();
+      }
+    }
+    
+    /***************************************************************
+     * Toast + Hide Thanks
+    ***************************************************************/
+    function showToast(message) {
+      toast.textContent = message;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.opacity = '1'; }, 10);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => { toast.style.display = 'none'; }, 500);
+      }, 2500);
+    }
+    function hideThanks() {
+      const thanksSection = document.getElementById('merci');
+      if (thanksSection.style.display === 'block') {
+        thanksSection.style.display = 'none';
+      }
+    }
+
+    /***************************************************************
+     * FORMULAIRE – PRÉREMPLISSAGE & AJAX
     ***************************************************************/
     function genererRecapCommande() {
       let recap = "";
       for (const produit in cart) {
         const details = cart[produit];
-        recap += `${produit} (${details.quantity} x ${details.price.toFixed(2)}€)\n`;
+        recap += `${produit} (${details.quantity} x ${details.price.toFixed(2)} DA)\n`;
       }
       return recap || "Aucun produit commandé";
     }
@@ -797,43 +809,11 @@
     });
 
     /***************************************************************
-     * VALIDER LE PANIER
+     * Validation du Panier => Montrer le Formulaire
     ***************************************************************/
     checkoutBtn.addEventListener('click', () => {
       document.getElementById('formulaire-commande-custom').style.display = 'block';
       document.getElementById('formulaire-commande-custom').scrollIntoView({ behavior: 'smooth' });
-    });
-
-    /***************************************************************
-     * ANIMATION FADE IN UNIQUE
-    ***************************************************************/
-    const fadeElements = document.querySelectorAll('.fade-in');
-    const observerOptions = {
-      threshold: 0.2,
-      rootMargin: "0px 0px -50px 0px"
-    };
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target); 
-        }
-      });
-    }, observerOptions);
-    fadeElements.forEach(el => {
-      observer.observe(el);
-    });
-
-    /***************************************************************
-     * HEADER – Fond opaque au scroll
-    ***************************************************************/
-    window.addEventListener('scroll', () => {
-      const header = document.getElementById('header');
-      if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-      } else {
-        header.classList.remove('scrolled');
-      }
     });
   </script>
 </body>
