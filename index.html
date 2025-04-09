@@ -2,21 +2,20 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <!-- Balise viewport indispensable pour le responsive -->
+  <!-- Balise viewport pour une mise en page responsive -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CHEZ AMIRI - Inspiré d'Apple</title>
   
   <!--
   =============================================================================
-  VERSION FINALE MIS À JOUR
+  VERSION RÉVISÉE
   - 4 produits dans l'ordre : Tomates DCT, Harissa, Sauce Pizza, Confiture.
-  - Pour Tomates, Harissa et Sauce Pizza, chaque produit a 2 options (radio) avec des
-    prix spécifiques selon l’option (en DA).
-  - Les boutons radio passent avec fond bleu et texte blanc une fois sélectionnés.
-  - Le contour (bordure) de la carte produit devient bleu dès qu'une option est cochée.
-  - Le lien "À propos" dans la nav est en une seule ligne grâce à white-space: nowrap.
-  - Affichage en 2 colonnes sur PC (≥768px) et 1 colonne sur smartphone.
-  - Effet fade-in discret (unique) inspiré de l’Apple.
+  - Pour les 3 premiers, des options radio (1/2 et 4/4) sans prix affiché dans le label,
+    le prix s'affiche uniquement après sélection.
+  - Possibilité de décocher (toggle) une option si l'utilisateur clique sur le même radio.
+  - Bordure bleue sur la carte produit dès qu'une option est sélectionnée.
+  - Affichage des produits en 2 colonnes sur PC (≥768px) et 1 colonne sur mobile.
+  - Texte "À propos" désormais en une seule ligne (via white-space).
   =============================================================================
   -->
   
@@ -29,29 +28,20 @@
     }
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, 
                    "Open Sans", "Helvetica Neue", sans-serif;
       color: #333;
       background: #f2f2f2;
       line-height: 1.6;
     }
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-    
+    a { text-decoration: none; color: inherit; }
+
     /* ==============================
        KEYFRAMES – Fade In Unique
     ============================== */
     @keyframes fadeInUp {
-      0% {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
     .fade-in {
       opacity: 0;
@@ -92,7 +82,7 @@
       margin: 0;
       padding: 0;
     }
-    /* Ajout de white-space: nowrap pour que "À propos" reste sur une seule ligne */
+    /* Force "À propos" sur une seule ligne */
     nav ul li a {
       color: #fff;
       font-size: 1em;
@@ -101,9 +91,9 @@
       white-space: nowrap;
     }
     nav ul li a:hover { color: #ccc; }
-    
+
     /* ==============================
-       Décalage pour les sections (pour éviter que le header masque le titre)
+       Décalage pour les sections pour éviter que le header masque le titre
     ============================== */
     .hero, section {
       scroll-margin-top: 80px;
@@ -144,9 +134,7 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-    .hero .hero-btn:hover {
-      background: #005bb5;
-    }
+    .hero .hero-btn:hover { background: #005bb5; }
     
     /* ==============================
        SECTIONS GÉNÉRALES
@@ -157,7 +145,7 @@
       max-width: 1000px;
       background: #fff;
       border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
       padding: 60px 20px;
     }
     section h2 {
@@ -182,8 +170,7 @@
     }
     
     /* ==============================
-       PRODUITS – Grille
-       2 colonnes sur PC, 1 colonne sur mobile
+       PRODUITS – Grille (2 colonnes sur PC, 1 sur mobile)
     ============================== */
     .product-grid {
       display: grid;
@@ -206,7 +193,7 @@
     }
     .product:hover {
       transform: translateY(-5px);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
     }
     /* Bordure bleue quand une option est sélectionnée */
     .product.selected {
@@ -222,10 +209,15 @@
       font-size: 1.3em;
       letter-spacing: 0.5px;
     }
+    /* Avant sélection, afficher "Prix à découvrir" */
     .product .price {
       font-weight: 600;
       color: #0071e3;
       margin-bottom: 10px;
+    }
+    .product.price-unselected {
+      font-style: italic;
+      color: #555;
     }
     .button {
       background: #0071e3;
@@ -314,7 +306,7 @@
     }
 
     /* ==============================
-       FORMULAIRE – Envoi (via AJAX)
+       FORMULAIRE – Envoi AJAX
     ============================== */
     #formulaire-commande-custom {
       margin-top: 40px;
@@ -329,7 +321,7 @@
       margin: 0 auto;
       background: #fff;
       border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
       padding: 20px;
     }
     .form-container label {
@@ -396,7 +388,7 @@
     }
 
     /* ==============================
-       MEDIA QUERIES – Adaptation Mobile
+       MEDIA QUERIES – Mobile
     ============================== */
     @media (max-width: 600px) {
       header { padding: 10px 20px; }
@@ -450,7 +442,7 @@
       <li>Harissa, Sauce Pizza</li>
       <li>Produits en boîtes</li>
       <li>Boissons variées</li>
-      <li>Et bien d'autres articles de consommation courante</li>
+      <li>Et bien d'autres articles</li>
     </ul>
     <p>
       Situés à Guelma, nous assurons des délais de livraison courts et un service fiable.
@@ -465,13 +457,14 @@
       <div class="product" data-product-name="Tomates DCT">
         <img src="https://via.placeholder.com/300x200.png?text=Tomates" alt="Tomates DCT" />
         <h3>Tomates DCT</h3>
-        <p class="price">Prix selon option</p>
+        <!-- Avant sélection d'option -->
+        <p class="price price-unselected">Prix à découvrir</p>
         <p>Choisissez entre 1/2 ou 4/4 pour adapter à vos recettes.</p>
         <div class="options">
           <input type="radio" id="tomates-dct-12" name="tomatesDCT" value="1/2" data-price="180" />
-          <label for="tomates-dct-12" class="option-label">1/2 - 180 DA</label>
+          <label for="tomates-dct-12" class="option-label">1/2</label>
           <input type="radio" id="tomates-dct-44" name="tomatesDCT" value="4/4" data-price="350" />
-          <label for="tomates-dct-44" class="option-label">4/4 - 350 DA</label>
+          <label for="tomates-dct-44" class="option-label">4/4</label>
         </div>
         <p class="error-message"></p>
         <button class="button add-to-cart" data-name="Tomates DCT" data-price="">Ajouter</button>
@@ -481,13 +474,13 @@
       <div class="product" data-product-name="Harissa">
         <img src="https://via.placeholder.com/300x200.png?text=Harissa" alt="Harissa" />
         <h3>Harissa</h3>
-        <p class="price">Prix selon option</p>
-        <p>Le piquant authentique du Maghreb, choisissez l'option souhaitée.</p>
+        <p class="price price-unselected">Prix à découvrir</p>
+        <p>Le piquant authentique du Maghreb, choisissez votre option.</p>
         <div class="options">
           <input type="radio" id="harissa-12" name="harissaOptions" value="1/2" data-price="200" />
-          <label for="harissa-12" class="option-label">1/2 - 200 DA</label>
+          <label for="harissa-12" class="option-label">1/2</label>
           <input type="radio" id="harissa-44" name="harissaOptions" value="4/4" data-price="380" />
-          <label for="harissa-44" class="option-label">4/4 - 380 DA</label>
+          <label for="harissa-44" class="option-label">4/4</label>
         </div>
         <p class="error-message"></p>
         <button class="button add-to-cart" data-name="Harissa" data-price="">Ajouter</button>
@@ -497,18 +490,18 @@
       <div class="product" data-product-name="Sauce Pizza">
         <img src="https://via.placeholder.com/300x200.png?text=Sauce+Pizza" alt="Sauce Pizza" />
         <h3>Sauce Pizza</h3>
-        <p class="price">Prix selon option</p>
+        <p class="price price-unselected">Prix à découvrir</p>
         <p>Délicieuse base pour vos pizzas, choisissez votre option.</p>
         <div class="options">
           <input type="radio" id="pizza-12" name="pizzaOptions" value="1/2" data-price="240" />
-          <label for="pizza-12" class="option-label">1/2 - 240 DA</label>
+          <label for="pizza-12" class="option-label">1/2</label>
           <input type="radio" id="pizza-44" name="pizzaOptions" value="4/4" data-price="500" />
-          <label for="pizza-44" class="option-label">4/4 - 500 DA</label>
+          <label for="pizza-44" class="option-label">4/4</label>
         </div>
         <p class="error-message"></p>
         <button class="button add-to-cart" data-name="Sauce Pizza" data-price="">Ajouter</button>
       </div>
-      
+
       <!-- 4) Confiture (sans option) -->
       <div class="product" data-product-name="Confiture">
         <img src="https://via.placeholder.com/300x200.png?text=Confiture" alt="Confiture" />
@@ -598,7 +591,7 @@
     const customOrderForm = document.getElementById('customOrderForm');
 
     /***************************************************************
-     * HEADER – Fond Opaque au Scroll
+     * HEADER – Fond opaque au scroll
     ***************************************************************/
     window.addEventListener('scroll', () => {
       const header = document.getElementById('header');
@@ -628,27 +621,37 @@
     fadeElements.forEach(el => observer.observe(el));
 
     /***************************************************************
-     * GESTION DES OPTIONS RADIO – Pour produits avec options
+     * GESTION DES OPTIONS RADIO – Autoriser le toggle
+     * Pour chaque produit comportant des options, on permet de décocher en recliquant
     ***************************************************************/
     document.querySelectorAll('.product').forEach(prod => {
       const radioButtons = prod.querySelectorAll('input[type="radio"]');
       if (radioButtons.length > 0) {
-        // Dès qu'une option change, on applique la classe selected à la carte
         radioButtons.forEach(rb => {
-          rb.addEventListener('change', () => {
-            prod.classList.add('selected');
+          rb.addEventListener('mousedown', function() {
+            this.wasChecked = this.checked;
           });
-          // Permet de désélectionner en re-cliquant
-          rb.addEventListener('click', (e) => {
-            if (rb.checked) {
-              // Vérifier si l'utilisateur veut désélectionner
-              // Pour un comportement standard, le radio ne se désélectionne pas,
-              // mais si vous souhaitez le permettre, vous devrez implémenter une logique custom.
-              // Ici, nous laissons le comportement normal (radio classique).
-              // Vous pouvez décommenter si vous souhaitez permettre la désélection :
-              // rb.checked = false;
-              // prod.classList.remove('selected');
-              // e.preventDefault();
+          rb.addEventListener('click', function(e) {
+            if (this.wasChecked) {
+              this.checked = false; // Permet de désélectionner
+              // Retirer la classe "selected" si aucune option n'est cochée
+              let anyChecked = false;
+              radioButtons.forEach(r => { if (r.checked) anyChecked = true; });
+              if (!anyChecked) {
+                prod.classList.remove('selected');
+                // Réinitialiser le texte du prix
+                const priceElem = prod.querySelector('.price');
+                priceElem.textContent = "Prix à découvrir";
+                priceElem.classList.add('price-unselected');
+              }
+            } else {
+              // Lorsqu'une option est sélectionnée, on ajoute la classe "selected"
+              prod.classList.add('selected');
+              // Mettre à jour le texte du prix du produit, avec le prix de l'option sélectionnée
+              const chosenPrice = this.getAttribute('data-price');
+              const priceElem = prod.querySelector('.price');
+              priceElem.textContent = "Prix : " + chosenPrice + " DA";
+              priceElem.classList.remove('price-unselected');
             }
           });
         });
@@ -656,7 +659,7 @@
     });
 
     /***************************************************************
-     * AJOUT AU PANIER – Gestion de l'ajout et récupération d'options
+     * AJOUT AU PANIER – Lors du clic sur le bouton "Ajouter"
     ***************************************************************/
     document.querySelectorAll('.add-to-cart').forEach(button => {
       button.addEventListener('click', () => {
@@ -666,6 +669,7 @@
         const radioButtons = productDiv.querySelectorAll('input[type="radio"]');
         const errorMsg = productDiv.querySelector('.error-message');
         if (errorMsg) errorMsg.style.display = 'none';
+        // Si le produit a des options, vérifier qu'une est sélectionnée
         if (radioButtons.length > 0) {
           let chosenOption = null;
           let chosenPrice = null;
@@ -686,6 +690,7 @@
             price = chosenPrice;
           }
         }
+        // Ajouter le produit au panier
         if (cart[productName]) {
           cart[productName].quantity += 1;
         } else {
@@ -697,7 +702,7 @@
     });
 
     /***************************************************************
-     * MISE À JOUR DU PANIER – Affichage & total
+     * PANIER – Mise à jour affichage et calcul du total
     ***************************************************************/
     function updateCartDisplay() {
       cartBody.innerHTML = '';
@@ -765,7 +770,7 @@
     }
 
     /***************************************************************
-     * FORMULAIRE – Préremplissage & Envoi AJAX
+     * FORMULAIRE – Préremplissage du champ caché et envoi AJAX
     ***************************************************************/
     function genererRecapCommande() {
       let recap = "";
@@ -799,7 +804,7 @@
     });
 
     /***************************************************************
-     * VALIDATION DU PANIER – Affiche le formulaire de commande
+     * VALIDER LE PANIER – Afficher le formulaire de commande
     ***************************************************************/
     checkoutBtn.addEventListener('click', () => {
       document.getElementById('formulaire-commande-custom').style.display = 'block';
