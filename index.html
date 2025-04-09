@@ -2,19 +2,13 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <!-- Balise viewport pour l'affichage sur mobile -->
+  <!-- Balise viewport pour un affichage responsive -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chez Amiri - Inspiré d'Apple</title>
   
   <!-- 
   =============================================================================
-  FICHIER UNIQUE HTML + CSS + JS
-  =============================================================================
-  Ce code a été mis à jour pour offrir :
-  - Un design responsive (PC & mobiles)
-  - Des effets de transition (fade in) lors du scroll
-  - Une navigation fluide (scroll-behavior)
-  - Un header qui passe de transparent à solide au scroll
+  CE CODE A ÉTÉ MIS À JOUR POUR ÊTRE RESPONSIVE ET POUR JOUER LES ANIMATIONS CONTINUELLES.
   =============================================================================
   -->
   
@@ -23,7 +17,7 @@
        STYLE DE BASE & VARIABLES
     -------------------------------------- */
     html {
-      scroll-behavior: smooth; /* Pour des transitions fluides au clic sur les ancres */
+      scroll-behavior: smooth;
     }
     body {
       margin: 0;
@@ -36,7 +30,6 @@
     
     /* --------------------------------------
        HEADER - Navigation
-       On applique une transition de fond pour passer de transparent à solide
     -------------------------------------- */
     header {
       position: sticky;
@@ -47,9 +40,8 @@
       justify-content: space-between;
       align-items: center;
       transition: background-color 0.5s ease;
-      background-color: rgba(0, 0, 0, 0.3); /* transparent au départ */
+      background-color: rgba(0, 0, 0, 0.3); /* Transparent initialement */
     }
-    /* Quand le header a la classe "scrolled", on affiche un fond noir complet */
     header.scrolled {
       background-color: rgba(0, 0, 0, 1);
     }
@@ -76,7 +68,7 @@
     }
     
     /* --------------------------------------
-       HERO / ACCUEIL - Section avec dégradé et fade in
+       HERO / ACCUEIL - Section d'accueil avec dégradé
     -------------------------------------- */
     .hero {
       background: linear-gradient(135deg, #283E51, #4B79A1);
@@ -84,14 +76,16 @@
       text-align: center;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       min-height: 70vh;
       padding: 30px 20px;
+      /* Paramètres d'animation initiale */
       opacity: 0;
       transform: translateY(30px);
       transition: opacity 1s ease, transform 1s ease;
     }
+    /* Les éléments afficheront l'animation fade in/out chaque fois qu'ils entrent/ sortent du viewport */
     .hero.visible {
       opacity: 1;
       transform: translateY(0);
@@ -122,7 +116,7 @@
     
     /* --------------------------------------
        SECTIONS GENERALES (À propos, Produits, etc.)
-       On applique aussi un effet "fade in" pour chaque section.
+       On applique le même effet d'animation.
     -------------------------------------- */
     section {
       margin: 40px auto;
@@ -157,7 +151,7 @@
     #about ul { list-style: disc inside; margin: 20px auto; padding: 0; }
     
     /* --------------------------------------
-       PRODUITS - Grille
+       PRODUITS - Grille de produits
     -------------------------------------- */
     .product-grid {
       display: grid;
@@ -206,7 +200,7 @@
     .button:hover { background: #005bb5; }
     
     /* --------------------------------------
-       PANIER - Récapitulatif et total
+       PANIER - Récapitulatif et Total
     -------------------------------------- */
     #panier-section {
       margin-top: 40px;
@@ -243,11 +237,11 @@
     }
     
     /* --------------------------------------
-       FORMULAIRE PERSONNALISÉ - Pour envoyer la commande via AJAX
+       FORMULAIRE PERSONNALISÉ - Pour envoyer les commandes
     -------------------------------------- */
     #formulaire-commande-custom {
       margin-top: 40px;
-      display: none; /* S'affiche sur demande */
+      display: none;
     }
     #formulaire-commande-custom h2 {
       text-align: center;
@@ -325,7 +319,7 @@
     }
     
     /* --------------------------------------
-       RESPONSIVITÉ
+       RESPONSIVITÉ - Adaptation pour mobiles
     -------------------------------------- */
     @media (max-width: 600px) {
       .hero h1 { font-size: 2em; }
@@ -352,7 +346,7 @@
   </header>
   
   <!-- =====================================================
-       HERO / ACCUEIL - Section d'accueil avec dégradé
+       HERO / ACCUEIL - Section d'accueil
   ===================================================== -->
   <div class="hero fade-in" id="accueil">
     <h1>Bienvenue CHEZ AMIRI !</h1>
@@ -379,8 +373,7 @@
       <li>Et bien d'autres articles de consommation courante</li>
     </ul>
     <p>
-      Situés à Guelma, nous assurons des délais de livraison courts et un service fiable.
-      Ce site a été conçu pour faciliter l’accès à notre catalogue, permettre une commande rapide et offrir un service humain, réactif et professionnel.
+      Situés à Guelma, nous assurons des délais de livraison courts et un service fiable. Ce site a été conçu pour faciliter l’accès à notre catalogue, permettre une commande rapide et offrir un service humain, réactif et professionnel.
     </p>
   </section>
   
@@ -454,7 +447,7 @@
   </section>
   
   <!-- =====================================================
-       FORMULAIRE PERSONNALISÉ - Pour envoyer la commande via AJAX
+       FORMULAIRE PERSONNALISÉ - Envoi de commande via AJAX
   ===================================================== -->
   <section class="fade-in" id="formulaire-commande-custom">
     <h2>Passer Commande</h2>
@@ -481,7 +474,7 @@
   </section>
   
   <!-- =====================================================
-       MESSAGE DE REMERCIEMENT - Après envoi
+       MESSAGE DE REMERCIEMENT - Affiché après envoi
   ===================================================== -->
   <section class="fade-in" id="merci">
     <h3>COMMANDE BIEN PASSÉE !</h3>
@@ -499,13 +492,13 @@
   <div id="toast"></div>
   
   <!-- =====================================================
-       SCRIPT JS - Gestion du panier, envoi AJAX et animations
+       SCRIPT JS - Gestion du panier, soumission AJAX, animations et header dynamique
   ===================================================== -->
   <script>
     /***************************************************************
      * VARIABLES & ÉLÉMENTS DU DOM
     ***************************************************************/
-    const cart = {}; // Exemple: { "Produit": { price: 2.50, quantity: 1 }, ... }
+    const cart = {}; // Par ex. { "Produit": { price: 2.50, quantity: 1 }, ... }
     const cartBody = document.getElementById('cart-body');
     const totalDisplay = document.getElementById('total');
     const checkoutBtn = document.getElementById('checkout-btn');
@@ -600,7 +593,7 @@
   
     /***************************************************************
      * PRÉREMPLISSAGE DU FORMULAIRE PERSONNALISÉ
-     * Génère le récapitulatif du panier et l'insère dans le champ caché
+     * Génère le récapitulatif du panier pour le champ caché "orderDetails"
     ***************************************************************/
     function genererRecapCommande() {
       let recap = "";
@@ -612,10 +605,8 @@
     }
   
     customOrderForm.addEventListener('submit', async function(e) {
-      e.preventDefault();  // Empêche la soumission classique
-      // Met à jour le champ caché avec le récapitulatif du panier
+      e.preventDefault(); // Empêche l'envoi classique
       document.getElementById('orderDetails').value = genererRecapCommande();
-  
       try {
         const formData = new FormData(customOrderForm);
         const response = await fetch(customOrderForm.action, {
@@ -626,7 +617,6 @@
         if (response.ok) {
           document.getElementById('formulaire-commande-custom').style.display = 'none';
           document.getElementById('merci').style.display = 'block';
-          // Vider le panier
           for (let key in cart) { delete cart[key]; }
           updateCartDisplay();
         } else {
@@ -646,7 +636,9 @@
     });
   
     /***************************************************************
-     * ANIMATION AU SCROLL - Effet "fade in" pour les sections
+     * ANIMATION AU SCROLL : Fade in/out continus pour chaque section
+     * Chaque fois qu'une section entre dans le viewport, on ajoute la classe 'visible'.
+     * Lorsqu'elle en sort, on la retire, pour rejouer l'animation.
     ***************************************************************/
     const faders = document.querySelectorAll('.fade-in');
     const appearOptions = {
@@ -654,13 +646,12 @@
       rootMargin: "0px 0px -50px 0px"
     };
   
-    const appearOnScroll = new IntersectionObserver((entries, appearOnScroll) => {
+    const appearOnScroll = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (!entry.isIntersecting) {
-          return;
-        } else {
+        if (entry.isIntersecting) {
           entry.target.classList.add('visible');
-          appearOnScroll.unobserve(entry.target);
+        } else {
+          entry.target.classList.remove('visible');
         }
       });
     }, appearOptions);
@@ -670,8 +661,7 @@
     });
   
     /***************************************************************
-     * CHANGEMENT DU HEADER AU SCROLL
-     * Le header passe de transparent à noir solide après un certain scroll
+     * HEADER DYNAMIQUE : Change de style lors du scroll
     ***************************************************************/
     window.addEventListener('scroll', () => {
       const header = document.getElementById('header');
