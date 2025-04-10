@@ -3,19 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CHEZ AMIRI - Inspiré d'Apple</title>
-  
-  <!--
-  =============================================================================
-  CODE FINAL – Version "Stacked" pour mobile (Approche 2)
-    • Les fiches produits restent en grille, avec images affichées en intégralité
-      grâce à object-fit: contain.
-    • Le panier est affiché sous forme de tableau sur PC ; sur mobile, il se transforme
-      en affichage empilé ("stacked") en masquant l'en‑tête et en affichant des labels via data‑label.
-    • Les totaux (Sous-total HT, TVA, Total TTC) sont calculés et le Total TTC est converti en lettres.
-  =============================================================================
-  -->
-  
+  <title>CHEZ AMIRI - Stacked Panier</title>
+
   <style>
     /* ==============================
        BASE – Typographie & Couleurs
@@ -25,24 +14,9 @@
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
                    "Open Sans", "Helvetica Neue", sans-serif;
-      color: #333;
-      background: #f2f2f2;
-      line-height: 1.6;
+      color: #333; background: #f2f2f2; line-height: 1.6;
     }
     a { text-decoration: none; color: inherit; }
-
-    /* ==============================
-       KEYFRAMES – Fade In Unique
-    ============================== */
-    @keyframes fadeInUp {
-      0% { opacity: 0; transform: translateY(30px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-    .fade-in {
-      opacity: 0; transform: translateY(30px);
-      transition: opacity 1s ease, transform 1s ease;
-    }
-    .fade-in.visible { animation: fadeInUp 1s forwards ease; }
 
     /* ==============================
        HEADER – Navigation Collante
@@ -50,8 +24,7 @@
     header {
       position: sticky; top: 0; z-index: 100;
       padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;
-      transition: background-color 0.5s ease;
-      background-color: rgba(0,0,0,0.3);
+      background-color: rgba(0,0,0,0.3); transition: background-color 0.5s ease;
     }
     header.scrolled { background-color: rgba(0,0,0,1); }
     header .logo {
@@ -67,28 +40,6 @@
     nav ul li a:hover { color: #ccc; }
 
     /* ==============================
-       Décalage des sections
-    ============================== */
-    .hero, section { scroll-margin-top: 80px; }
-
-    /* ==============================
-       HERO / ACCUEIL
-    ============================== */
-    .hero {
-      background: linear-gradient(135deg, #283E51, #4B79A1); color: #fff;
-      text-align: center; display: flex; flex-direction: column; align-items: center;
-      justify-content: center; min-height: 70vh; padding: 30px 20px;
-    }
-    .hero h1 { font-size: 3em; margin-bottom: 20px; text-transform: uppercase; }
-    .hero p { font-size: 1.1em; margin-bottom: 30px; max-width: 600px; }
-    .hero .hero-btn {
-      background: #0071e3; border: none; color: #fff;
-      padding: 15px 40px; border-radius: 25px;
-      font-size: 1em; letter-spacing: 1px; cursor: pointer; transition: background 0.3s;
-    }
-    .hero .hero-btn:hover { background: #005bb5; }
-
-    /* ==============================
        SECTIONS GÉNÉRALES
     ============================== */
     section {
@@ -100,13 +51,6 @@
       text-align: center; font-weight: 300; font-size: 2.2em;
       border-bottom: 1px solid #eaeaea; margin-bottom: 30px; padding-bottom: 10px;
     }
-    #about p, #about ul {
-      max-width: 800px; margin: 0 auto; text-align: center;
-      font-size: 1em; color: #666;
-    }
-    #about ul {
-      list-style: disc inside; margin: 20px auto; padding: 0;
-    }
 
     /* ==============================
        PRODUITS – Grille
@@ -116,14 +60,10 @@
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 30px;
     }
-    @media (min-width: 768px) {
-      .product-grid { grid-template-columns: repeat(2, 1fr); }
-    }
     .product {
       background: #fafafa; border: 1px solid #eaeaea; border-radius: 12px;
       padding: 20px; text-align: center; transition: transform 0.3s, box-shadow 0.3s;
-      margin-bottom: 10px;
-      min-height: 450px; /* Hauteur minimale pour uniformiser les fiches */
+      margin-bottom: 10px; min-height: 450px;
       display: flex; flex-direction: column; justify-content: space-between; align-items: center;
     }
     .product:hover {
@@ -132,19 +72,20 @@
     }
     .product.selected { border-color: #0071e3; }
 
-    /* Conteneur pour l'image avec object-fit: contain */
+    /* Conteneur image */
     .img-container {
       width: 100%; height: 220px;
       display: flex; align-items: center; justify-content: center;
-      overflow: hidden; border-radius: 12px; background: #fff;
-      margin-bottom: 15px;
+      border-radius: 12px; background: #fff; margin-bottom: 15px; overflow: hidden;
     }
     .img-container img {
       max-width: 100%; max-height: 100%;
       object-fit: contain;
     }
 
-    .product h3 { margin: 15px 0 10px; font-size: 1.3em; letter-spacing: 0.5px; }
+    .product h3 {
+      margin: 15px 0 10px; font-size: 1.3em; letter-spacing: 0.5px;
+    }
     .price-unselected { font-style: italic; color: #555; }
     .price { font-weight: 600; color: #0071e3; margin-bottom: 10px; }
     .button {
@@ -155,154 +96,93 @@
     .button:hover { background: #005bb5; }
 
     /* ==============================
-       OPTIONS RADIO – Toggle
+       PANIER – Table responsive
     ============================== */
-    .options {
-      display: flex; justify-content: center; gap: 20px; margin: 10px 0;
+    .table-responsive {
+      width: 100%; overflow-x: auto;
     }
-    .option-label {
-      display: flex; align-items: center; gap: 6px; font-size: 0.95em;
-      cursor: pointer; padding: 6px 12px; border: 1px solid #ccc; border-radius: 20px;
-      transition: background 0.3s, border-color 0.3s;
-    }
-    .option-label:hover { background: #f0f0f0; }
-    input[type="radio"] { display: none; }
-    input[type="radio"]:checked + .option-label {
-      background: #0071e3; color: #fff; border-color: #0071e3;
-    }
-
-    /* ==============================
-       MESSAGE D'ERREUR
-    ============================== */
-    .error-message {
-      color: red; font-size: 0.85em; display: none; margin-top: 5px;
-    }
-
-    /* ==============================
-       PANIER – Table Responsive et Layout Fixe
-    ============================== */
-    .table-responsive { width: 100%; overflow-x: auto; }
     #panier-table {
-      table-layout: fixed; width: 100%; border-collapse: collapse;
-      margin-bottom: 20px; font-size: 0.95em;
+      table-layout: fixed; width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 0.95em;
     }
-    /* Ajout de data-label dans updateCartDisplay() pour le mode stacked */
     #panier-table th, #panier-table td {
       border: 1px solid #ddd; padding: 12px; text-align: center; word-wrap: break-word; vertical-align: middle;
     }
     #panier-table th { background: #f9f9f9; }
-    /* Largeurs fixes : Qt/Unité, P.U, Quantité, Action */
-    #panier-table th:nth-child(2), #panier-table td:nth-child(2) { width: 70px; }
-    #panier-table th:nth-child(3), #panier-table td:nth-child(3) { width: 80px; }
-    #panier-table th:nth-child(4), #panier-table td:nth-child(4) { width: 80px; }
-    #panier-table th:nth-child(6), #panier-table td:nth-child(6) { width: 40px; }
 
-    #total { text-align: right; font-size: 1.2em; margin-top: 10px; font-weight: 600; }
-    #tvaLine, #ttcLine { text-align: right; margin-top: 5px; font-weight: 500; color: #333; }
-    #totalWords { text-align: right; font-size: 0.95em; margin-top: 5px; font-style: italic; color: #555; }
+    /* Minimiser la largeur de certaines colonnes sur grand écran */
+    #panier-table th:nth-child(2), #panier-table td:nth-child(2) {
+      width: 70px; min-width: 70px; max-width: 70px;
+    }
+    #panier-table th:nth-child(3), #panier-table td:nth-child(3) {
+      width: 80px; min-width: 80px; max-width: 80px;
+    }
+    #panier-table th:nth-child(4), #panier-table td:nth-child(4) {
+      width: 80px; min-width: 80px; max-width: 80px;
+    }
+    #panier-table th:nth-child(6), #panier-table td:nth-child(6) {
+      width: 40px; min-width: 40px; max-width: 40px;
+    }
+
+    /* Totaux */
+    #total {
+      text-align: right; font-size: 1.2em; margin-top: 10px; font-weight: 600;
+    }
+    #tvaLine, #ttcLine {
+      text-align: right; margin-top: 5px; font-weight: 500; color: #333;
+    }
+    #totalWords {
+      text-align: right; font-size: 0.95em; margin-top: 5px; font-style: italic; color: #555;
+    }
     #checkout-btn { margin-top: 20px; display: block; margin-left: auto; margin-right: auto; }
     #rappel-form { text-align: center; font-size: 0.9em; color: #555; margin-top: 10px; }
 
     /* ==============================
-       FORMULAIRE – Envoi AJAX
-    ============================== */
-    #formulaire-commande-custom { margin-top: 40px; display: none; }
-    #formulaire-commande-custom h2 { text-align: center; margin-bottom: 20px; }
-    .form-container {
-      max-width: 400px; margin: 0 auto; background: #fff; border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 20px;
-    }
-    .form-container label {
-      display: block; margin-bottom: 15px; font-size: 1em; color: #444;
-    }
-    .form-container input,
-    .form-container button {
-      width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px;
-      font-size: 1em; margin-top: 5px;
-    }
-    .form-container button {
-      background: #0071e3; color: #fff; border: none; cursor: pointer;
-      margin-top: 15px; transition: background 0.3s;
-    }
-    .form-container button:hover { background: #005bb5; }
-
-    /* ==============================
-       MESSAGE DE REMERCIEMENT
-    ============================== */
-    #merci {
-      display: none; text-align: center; background: #e8f5e9;
-      border: 1px solid #c8e6c9; padding: 30px; border-radius: 12px;
-      font-size: 1.1em; max-width: 600px; margin: 40px auto;
-    }
-    #merci h3 { margin-top: 0; font-size: 1.6em; color: #2e7d32; }
-
-    /* ==============================
-       TOAST – Notification
-    ============================== */
-    #toast {
-      position: fixed; bottom: 20px; right: 20px;
-      background: rgba(51,51,51,0.9); color: #fff;
-      padding: 12px 20px; border-radius: 6px; z-index: 9999;
-      display: none; opacity: 0; transition: opacity 0.5s ease;
-      font-size: 0.95em;
-    }
-
-    /* ==============================
-       MODE STACKED – Responsive pour mobile
+       TABLE STACKED – Sur mobile
     ============================== */
     @media (max-width: 600px) {
-      /* Masquer l'en-tête du tableau */
+      /* On masque l'en-tête */
       #panier-table thead { display: none; }
-      /* Transformer chaque ligne en bloc */
+      /* Chaque <tr> devient un bloc */
       #panier-table, #panier-table tbody, #panier-table tr, #panier-table td {
         display: block; width: 100%;
       }
       #panier-table tr {
-        margin-bottom: 1rem;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        padding: 10px;
-        background: #fff;
+        margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 6px;
+        padding: 10px; background: #fff;
       }
       #panier-table td {
-        border: none;
-        position: relative;
-        padding-left: 50%;
+        border: none; position: relative; 
+        /* On agrandit le left padding pour laisser la place au label */
+        padding-left: 7em;        
         text-align: left;
+        min-height: 2.2em;        /* Laisse un peu de hauteur */
       }
+      /* On insère le label devant la valeur */
       #panier-table td:before {
         content: attr(data-label) ": ";
-        position: absolute;
-        left: 10px;
+        position: absolute; left: 10px; top: 50%;
+        transform: translateY(-50%);
         font-weight: bold;
-      }
-      /* Réduire les marges et taille de police */
-      #panier-table td {
-        padding: 8px;
-        font-size: 0.85em;
+        white-space: nowrap;   /* Pour éviter le retour à la ligne sur le label */
       }
     }
 
     /* ==============================
-       MEDIA QUERIES – Autres adaptations sur mobile
+       MEDIA QUERIES – Mobile
     ============================== */
     @media (max-width: 600px) {
       header { padding: 10px 20px; }
       header .logo { font-size: 1.5em; }
       nav ul { gap: 10px; }
       nav ul li a { font-size: 0.9em; }
-      .hero { padding: 20px 10px; }
-      .hero h1 { font-size: 2em; }
-      .hero p { font-size: 0.95em; }
+      
       section { padding: 30px 15px; margin: 20px auto; }
-      .form-container { padding: 15px; }
       .button { padding: 8px 15px; font-size: 0.9em; }
     }
   </style>
 </head>
 
 <body>
-  <!-- HEADER -->
   <header id="header">
     <div class="logo">CHEZ AMIRI</div>
     <nav>
@@ -315,22 +195,17 @@
     </nav>
   </header>
 
-  <!-- HERO -->
-  <div class="hero fade-in" id="accueil">
+  <section class="hero fade-in" id="accueil">
     <h1>CHEZ AMIRI !</h1>
     <p>Votre spécialiste en produits alimentaires en gros. Service rapide et fiable.</p>
     <a class="hero-btn" href="#produits">Découvrir nos produits</a>
-  </div>
+  </section>
 
-  <!-- À PROPOS -->
   <section class="fade-in" id="about">
     <h2>À propos</h2>
     <p>
-      Depuis plusieurs années, nous sommes spécialisés dans la distribution en gros de produits d’alimentation générale,
-      avec un fort engagement pour la qualité, la disponibilité et le service.
-    </p>
-    <p>
-      Nous proposons une large gamme de produits destinés aux épiceries, supermarchés, restaurateurs et autres professionnels.
+      Depuis plusieurs années, nous sommes spécialisés dans la distribution en gros
+      de produits d’alimentation générale, avec un fort engagement pour la qualité et le service.
     </p>
     <ul>
       <li>Conserves de tomates</li>
@@ -338,16 +213,14 @@
       <li>Boissons variées</li>
       <li>Et bien d'autres articles</li>
     </ul>
-    <p>
-      Situés à Guelma, nous assurons des délais de livraison courts et un service fiable.
-    </p>
+    <p>Situés à Guelma, nous assurons des délais de livraison courts et un service fiable.</p>
   </section>
 
   <!-- PRODUITS -->
   <section class="fade-in" id="produits">
     <h2>Nos Produits</h2>
     <div class="product-grid">
-      <!-- TOMATES DCT -->
+      <!-- EXEMPLE DE 1 PRODUIT -->
       <div class="product" data-product-name="Tomates DCT">
         <div class="img-container">
           <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9415.jpeg" alt="Tomates DCT" />
@@ -364,56 +237,7 @@
         <p class="error-message"></p>
         <button class="button add-to-cart" data-name="Tomates DCT" data-price="">Ajouter</button>
       </div>
-
-      <!-- HARISSA -->
-      <div class="product" data-product-name="Harissa">
-        <div class="img-container">
-          <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9414.jpeg" alt="Harissa" />
-        </div>
-        <h3>Harissa</h3>
-        <p class="price price-unselected">Prix à découvrir</p>
-        <p>Le piquant authentique du Maghreb</p>
-        <div class="options">
-          <input type="radio" id="harissa-12" name="harissaOpt" value="1/2" data-price="77.14" />
-          <label for="harissa-12" class="option-label">1/2</label>
-          <input type="radio" id="harissa-44" name="harissaOpt" value="4/4" data-price="145.71" />
-          <label for="harissa-44" class="option-label">4/4</label>
-          <input type="radio" id="harissa-4oz" name="harissaOpt" value="4OZ" data-price="35.13" />
-          <label for="harissa-4oz" class="option-label">4 OZ</label>
-        </div>
-        <p class="error-message"></p>
-        <button class="button add-to-cart" data-name="Harissa" data-price="">Ajouter</button>
-      </div>
-
-      <!-- SAUCE PIZZA -->
-      <div class="product" data-product-name="Sauce Pizza">
-        <div class="img-container">
-          <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287851-img-9418.jpeg" alt="Sauce Pizza" />
-        </div>
-        <h3>Sauce Pizza</h3>
-        <p class="price price-unselected">Prix à découvrir</p>
-        <p>Base savoureuse pour pizzas</p>
-        <div class="options">
-          <input type="radio" id="pizza-15" name="pizzaOpt" value="1/5" data-price="497.14" />
-          <label for="pizza-15" class="option-label">1/5</label>
-          <input type="radio" id="pizza-13" name="pizzaOpt" value="1/3" data-price="334.28" />
-          <label for="pizza-13" class="option-label">1/3</label>
-        </div>
-        <p class="error-message"></p>
-        <button class="button add-to-cart" data-name="Sauce Pizza" data-price="">Ajouter</button>
-      </div>
-
-      <!-- CONFITURE -->
-      <div class="product" data-product-name="Confiture">
-        <div class="img-container">
-          <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9417.jpeg" alt="Confiture" />
-        </div>
-        <h3>Confiture</h3>
-        <p class="price">350.00 DA</p>
-        <p>Douceur artisanale</p>
-        <p class="error-message"></p>
-        <button class="button add-to-cart" data-name="Confiture" data-price="350.00">Ajouter</button>
-      </div>
+      <!-- Ajoutez vos autres produits de la même manière... -->
     </div>
   </section>
 
@@ -450,8 +274,8 @@
     </div>
   </section>
 
-  <!-- FORMULAIRE DE COMMANDE -->
-  <section class="fade-in" id="formulaire-commande-custom">
+  <!-- FORMULAIRE -->
+  <section class="fade-in" id="formulaire-commande-custom" style="display:none;">
     <h2>Passer Commande</h2>
     <div class="form-container">
       <form id="customOrderForm" method="POST" action="https://formspree.io/f/mpwpkwby">
@@ -474,13 +298,13 @@
   </section>
 
   <!-- MESSAGE DE REMERCIEMENT -->
-  <section class="fade-in" id="merci">
+  <section class="fade-in" id="merci" style="display:none;">
     <h3>COMMANDE BIEN PASSÉE !</h3>
     <p>
       Nous allons vous contacter au plus vite pour finaliser le paiement et organiser la livraison.<br />
-      📞 Vous pouvez nous joindre au +213 5 50 50 30 73 ou +213 7 74 21 14 80<br />
+      📞 Vous pouvez nous joindre au +213 5 50 50 30 73<br />
       📍 Livraison possible à Guelma et dans les environs<br />
-      💬 Vous pouvez aussi nous écrire sur WhatsApp aux mêmes numéros.
+      💬 Vous pouvez aussi nous écrire sur WhatsApp au même numéro.
     </p>
   </section>
 
@@ -488,46 +312,33 @@
   <div id="toast"></div>
 
   <script>
-    /***************************************************************
-     * Dictionnaire des Pack Sizes (Qt/Unité)
-    ***************************************************************/
+    /* PACK SIZES */
     const PACK_SIZES = {
       "Tomates DCT (1/2)": 24,
       "Tomates DCT (4/4)": 12,
-      "Harissa (1/2)": 48,
-      "Harissa (4/4)": 24,
-      "Harissa (4OZ)": 12,
-      "Sauce Pizza (1/5)": 5,
-      "Sauce Pizza (1/3)": 3,
       "Confiture": 1
     };
+    /* etc. Ajoutez vos produits... */
 
-    /***************************************************************
-     * Variables Globales & Éléments du DOM
-    ***************************************************************/
     const cart = {};
     const cartBody = document.getElementById('cart-body');
-    const subTotalDisplay = document.getElementById('total');    // Sous-total HT
-    const tvaLine = document.getElementById('tvaLine');          // TVA (19%)
-    const ttcLine = document.getElementById('ttcLine');          // Total TTC
+    const subTotalDisplay = document.getElementById('total');
+    const tvaLine = document.getElementById('tvaLine');
+    const ttcLine = document.getElementById('ttcLine');
     const totalWordsElem = document.getElementById('totalWords');
     const checkoutBtn = document.getElementById('checkout-btn');
     const toast = document.getElementById('toast');
     const customOrderForm = document.getElementById('customOrderForm');
     const orderDetailsField = document.getElementById('orderDetails');
 
-    /***************************************************************
-     * HEADER – Fond opaque au scroll
-    ***************************************************************/
+    /* HEADER SCROLL */
     window.addEventListener('scroll', () => {
       const header = document.getElementById('header');
-      if (window.scrollY > 50) { header.classList.add('scrolled'); }
-      else { header.classList.remove('scrolled'); }
+      if (window.scrollY > 50) header.classList.add('scrolled');
+      else header.classList.remove('scrolled');
     });
 
-    /***************************************************************
-     * FADE-IN UNIQUE – IntersectionObserver
-    ***************************************************************/
+    /* FADE-IN INTERSECTION OBSERVER */
     const fadeElements = document.querySelectorAll('.fade-in');
     const observerOptions = { threshold: 0.2, rootMargin: "0px 0px -50px 0px" };
     const observer = new IntersectionObserver((entries) => {
@@ -540,9 +351,7 @@
     }, observerOptions);
     fadeElements.forEach(el => observer.observe(el));
 
-    /***************************************************************
-     * GESTION DES OPTIONS RADIO – Toggle (désélection possible)
-    ***************************************************************/
+    /* TOGGLE OPTIONS */
     document.querySelectorAll('.product').forEach(prod => {
       const radioButtons = prod.querySelectorAll('input[type="radio"]');
       if (radioButtons.length > 0) {
@@ -553,7 +362,7 @@
               this.checked = false;
               let anyChecked = false;
               radioButtons.forEach(r => { if(r.checked) anyChecked = true; });
-              if (!anyChecked) {
+              if(!anyChecked) {
                 prod.classList.remove('selected');
                 const priceElem = prod.querySelector('.price');
                 priceElem.textContent = "Prix à découvrir";
@@ -571,9 +380,7 @@
       }
     });
 
-    /***************************************************************
-     * AJOUT AU PANIER
-    ***************************************************************/
+    /* ADD TO CART */
     document.querySelectorAll('.add-to-cart').forEach(button => {
       button.addEventListener('click', () => {
         let productName = button.getAttribute('data-name');
@@ -585,15 +392,15 @@
         const radioButtons = productDiv.querySelectorAll('input[type="radio"]');
         let chosenOption = null;
         let chosenPrice = null;
-        if (radioButtons.length > 0) {
+        if(radioButtons.length > 0) {
           radioButtons.forEach(rb => {
-            if (rb.checked) {
+            if(rb.checked) {
               chosenOption = rb.value;
               chosenPrice = parseFloat(rb.getAttribute('data-price')) || 0;
             }
           });
-          if (!chosenOption) {
-            if (errorMsg) {
+          if(!chosenOption) {
+            if(errorMsg) {
               errorMsg.textContent = "Veuillez sélectionner une option.";
               errorMsg.style.display = 'block';
             }
@@ -605,7 +412,7 @@
           price = parseFloat(button.getAttribute('data-price')) || 0;
         }
 
-        if (cart[productName]) {
+        if(cart[productName]) {
           showToast(`"${productName}" est déjà dans votre panier. Modifiez la quantité dans le panier.`);
           return;
         } else {
@@ -616,16 +423,12 @@
       });
     });
 
-    /***************************************************************
-     * PANIER – Mise à jour & Calcul du total
-       Calcul par ligne : Total HT ligne = (Prix unitaire) * (Pack size) * (Quantité)
-       Puis : Sous-total HT, TVA (19%), Total TTC
-    ***************************************************************/
+    /* UPDATE CART DISPLAY */
     function updateCartDisplay() {
       cartBody.innerHTML = '';
       let subTotalHT = 0;
       const items = Object.keys(cart);
-      if (items.length === 0) {
+      if(items.length === 0) {
         cartBody.innerHTML = `<tr id="empty-cart-msg"><td colspan="6">Votre panier est vide.</td></tr>`;
         checkoutBtn.style.display = 'none';
       } else {
@@ -645,7 +448,7 @@
                   onblur="updateQuantity('${item}', this.value)" onclick="hideThanks()" />
               </td>
               <td data-label="Total HT">${lineHT.toFixed(2)}</td>
-              <td data-label="X">
+              <td data-label="Action">
                 <button class="button" style="padding:4px 8px; font-size:0.9em;"
                   onclick="removeItem('${item}'); hideThanks();">X</button>
               </td>
@@ -663,23 +466,20 @@
     }
 
     function updateQuantity(productName, newQty) {
-      if (!cart[productName]) return;
+      if(!cart[productName]) return;
       const qty = parseInt(newQty);
-      if (qty < 1 || isNaN(qty)) return;
+      if(qty < 1 || isNaN(qty)) return;
       cart[productName].quantity = qty;
       updateCartDisplay();
     }
-
     function removeItem(productName) {
-      if (cart[productName]) {
+      if(cart[productName]) {
         delete cart[productName];
         updateCartDisplay();
       }
     }
 
-    /***************************************************************
-     * TOAST – Notification
-    ***************************************************************/
+    /* TOAST Notification */
     function showToast(message) {
       toast.textContent = message;
       toast.style.display = 'block';
@@ -691,23 +491,24 @@
     }
     function hideThanks() {
       const thanksSection = document.getElementById('merci');
-      if (thanksSection && thanksSection.style.display === 'block') {
+      if(thanksSection && thanksSection.style.display === 'block') {
         thanksSection.style.display = 'none';
       }
     }
 
-    /***************************************************************
-     * CONVERSION DU TOTAL EN LETTRES – Version robuste en français
-    ***************************************************************/
+    /* CONVERSION EN LETTRES */
     function convertIntToFrench(num) {
-      if (num === 0) return "zéro";
+      if(num === 0) return "zéro";
       const ones = [
-        "", "un", "deux", "trois", "quatre", "cinq",
+        "", "un", "deux", "trois", "quatre", "cinq", 
         "six", "sept", "huit", "neuf", "dix", "onze", "douze",
         "treize", "quatorze", "quinze", "seize", "dix-sept",
         "dix-huit", "dix-neuf"
       ];
-      const tens = ["", "", "vingt", "trente", "quarante", "cinquante", "soixante", "soixante", "quatre-vingt", "quatre-vingt"];
+      const tens = [
+        "", "", "vingt", "trente", "quarante", 
+        "cinquante", "soixante", "soixante", "quatre-vingt", "quatre-vingt"
+      ];
 
       function under100(n) {
         if(n < 20) return ones[n];
@@ -717,8 +518,7 @@
         if(t === 7 || t === 9) { t--; u += 10; }
         res = tens[t];
         if(u === 0) return res;
-        if(u === 1 && (t === 1 || t === 7 || t === 9))
-          return res + " et " + ones[u];
+        if(u === 1 && (t === 1 || t === 7 || t === 9)) return res + " et " + ones[u];
         else return res + "-" + ones[u];
       }
 
@@ -749,6 +549,7 @@
       const integerPart = Math.floor(amount);
       const decimalPart = Math.round((amount - integerPart) * 100);
       let intWords = convertIntToFrench(integerPart);
+      if(!intWords) intWords = "zéro";
       let result = intWords + (integerPart > 1 ? " dinars" : " dinar");
       if(decimalPart > 0) {
         let decWords = convertIntToFrench(decimalPart);
@@ -757,44 +558,38 @@
       return result;
     }
 
-    /***************************************************************
-     * FORMULAIRE – Préremplissage & Envoi AJAX
-    ***************************************************************/
+    /* FORMULAIRE – Envoi AJAX */
     customOrderForm.addEventListener('submit', async function(e) {
       e.preventDefault();
       orderDetailsField.value = genererRecapCommande();
       try {
         const formData = new FormData(customOrderForm);
         const response = await fetch(customOrderForm.action, {
-          method: 'POST',
-          body: formData,
-          headers: { 'Accept': 'application/json' }
+          method: 'POST', body: formData, headers: { 'Accept': 'application/json' }
         });
-        if (response.ok) {
+        if(response.ok) {
           document.getElementById('formulaire-commande-custom').style.display = 'none';
           document.getElementById('merci').style.display = 'block';
-          for (let key in cart) { delete cart[key]; }
+          for(let key in cart) { delete cart[key]; }
           updateCartDisplay();
         } else {
-          alert("Une erreur s'est produite lors de l'envoi. Veuillez réessayer.");
+          alert("Une erreur s'est produite lors de l'envoi.");
         }
-      } catch (err) {
+      } catch(err) {
         alert("Erreur réseau : " + err);
       }
     });
 
     function genererRecapCommande() {
       let recap = "";
-      for (const produit in cart) {
+      for(const produit in cart) {
         const details = cart[produit];
         recap += `${produit} (x${details.quantity}) => ${details.price.toFixed(2)} DA/un\n`;
       }
       return recap || "Aucun produit commandé";
     }
 
-    /***************************************************************
-     * VALIDER LE PANIER – Afficher le formulaire
-    ***************************************************************/
+    /* AFFICHER FORMULAIRE COMMANDE */
     checkoutBtn.addEventListener('click', () => {
       document.getElementById('formulaire-commande-custom').style.display = 'block';
       document.getElementById('formulaire-commande-custom').scrollIntoView({ behavior: 'smooth' });
