@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CHEZ AMIRI</title>
+  <title>CHEZ HAROUN</title>
   
-  <!--
-  =============================================================================
-  CODE FINAL
-    • Les fiches produits s'affichent en grille avec leurs images dans un conteneur fixant la hauteur (object-fit: contain) pour afficher l’image entière.
-    • Le panier est affiché sous forme de tableau en mode desktop, et se transforme en affichage "stacked" sur mobile (moins de 600px) pour éviter la superposition des textes.
-    • Les totaux (Sous-total HT, TVA 19% et Total TTC) sont calculés et le Total TTC est converti en lettres.
-    • Le bouton de suppression est raccourci en "X" pour gagner de la place.
-  =============================================================================
-  -->
+  <!-- =============================================================================
+       CODE FINAL – Site pub / présentation
+       • Grille de produits avec options et bouton "Découvrir"
+       • Aucun panier ni commande en ligne (les prix ne sont pas affichés, juste "Prix à découvrir")
+       • Lors du clic sur "Découvrir", une modale s'ouvre au centre avec l'image, le titre et la description détaillée
+       • Dans la modale, deux boutons : "Fermer" et "Nous Appeler" (lien tel:)
+       • "CHEZ AMIRI" devient "CHEZ HAROUN"
+  ============================================================================= -->
   
   <style>
-    /* ==============================
+    /* ===============================
        BASE – Typographie & Couleurs
-    ============================== */
+    =============================== */
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
@@ -30,25 +29,9 @@
     }
     a { text-decoration: none; color: inherit; }
 
-    /* ==============================
-       KEYFRAMES – Fade In Unique
-    ============================== */
-    @keyframes fadeInUp {
-      0% { opacity: 0; transform: translateY(30px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-    .fade-in {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 1s ease, transform 1s ease;
-    }
-    .fade-in.visible {
-      animation: fadeInUp 1s forwards ease;
-    }
-
-    /* ==============================
-       HEADER – Navigation Collante
-    ============================== */
+    /* ===============================
+       HEADER
+    =============================== */
     header {
       position: sticky;
       top: 0;
@@ -72,14 +55,9 @@
     }
     nav ul li a:hover { color: #ccc; }
 
-    /* ==============================
-       Décalage des sections
-    ============================== */
-    .hero, section { scroll-margin-top: 80px; }
-
-    /* ==============================
+    /* ===============================
        HERO / ACCUEIL
-    ============================== */
+    =============================== */
     .hero {
       background: linear-gradient(135deg, #283E51, #4B79A1);
       color: #fff;
@@ -106,9 +84,9 @@
     }
     .hero .hero-btn:hover { background: #005bb5; }
 
-    /* ==============================
+    /* ===============================
        SECTIONS GÉNÉRALES
-    ============================== */
+    =============================== */
     section {
       margin: 40px auto;
       width: 90%;
@@ -126,18 +104,10 @@
       margin-bottom: 30px;
       padding-bottom: 10px;
     }
-    #about p, #about ul {
-      max-width: 800px;
-      margin: 0 auto;
-      text-align: center;
-      font-size: 1em;
-      color: #666;
-    }
-    #about ul { list-style: disc inside; margin: 20px auto; padding: 0; }
 
-    /* ==============================
+    /* ===============================
        PRODUITS – Grille
-    ============================== */
+    =============================== */
     .product-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -152,21 +122,31 @@
       border-radius: 12px;
       padding: 20px;
       text-align: center;
-      transition: transform 0.3s, box-shadow 0.3s;
       margin-bottom: 10px;
-      min-height: 450px; /* Hauteur minimale pour uniformiser */
+      min-height: 450px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
     }
-    .product:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    .product:hover { transform: translateY(-5px); box-shadow: 0 6px 18px rgba(0,0,0,0.1); }
+    .product h3 { margin: 15px 0 10px; font-size: 1.3em; letter-spacing: 0.5px; }
+    /* Le message pour le prix est fixe et affiché en bleu */
+    .price-unselected {
+      font-style: italic;
+      color: #0071e3;
     }
-    .product.selected { border-color: #0071e3; }
+    /* Bouton "Découvrir" */
+    .button { 
+      background: #0071e3; border: none; color: #fff;
+      padding: 10px 25px; cursor: pointer; border-radius: 20px;
+      font-size: 1em; transition: background 0.3s; letter-spacing: 0.5px; margin-top: 10px;
+    }
+    .button:hover { background: #005bb5; }
 
-    /* Conteneur pour l'image */
+    /* ===============================
+       CONTENEUR IMAGE PRODUIT
+    =============================== */
     .img-container {
       width: 100%;
       height: 220px;
@@ -181,210 +161,83 @@
     .img-container img {
       max-width: 100%;
       max-height: 100%;
-      object-fit: contain;  /* Affiche l'image entière sans rogner */
+      object-fit: contain;
     }
 
-    .product h3 { margin: 15px 0 10px; font-size: 1.3em; letter-spacing: 0.5px; }
-    .price-unselected { font-style: italic; color: #555; }
-    .price { font-weight: 600; color: #0071e3; margin-bottom: 10px; }
-    .button {
-      background: #0071e3;
-      border: none;
-      color: #fff;
-      padding: 10px 25px;
-      cursor: pointer;
-      border-radius: 20px;
-      font-size: 1em;
-      transition: background 0.3s;
-      letter-spacing: 0.5px;
-      margin-top: 10px;
-    }
-    .button:hover { background: #005bb5; }
-
-    /* ==============================
-       OPTIONS RADIO – Toggle
+    /* ===============================
+       MODE STACKED – Pour le tableau (ne sera plus utilisé ici)
+       Nous avons supprimé le panier donc cette partie a été retirée.
     ============================== */
-    .options {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin: 10px 0;
-    }
-    .option-label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.95em;
-      cursor: pointer;
-      padding: 6px 12px;
-      border: 1px solid #ccc;
-      border-radius: 20px;
-      transition: background 0.3s, border-color 0.3s;
-    }
-    .option-label:hover { background: #f0f0f0; }
-    input[type="radio"] { display: none; }
-    input[type="radio"]:checked + .option-label {
-      background: #0071e3;
-      color: #fff;
-      border-color: #0071e3;
-    }
-
-    /* ==============================
-       MESSAGE D'ERREUR
+    
+    /* ===============================
+       MODALE – Fenêtre de description produit
     ============================== */
-    .error-message {
-      color: red;
-      font-size: 0.85em;
-      display: none;
-      margin-top: 5px;
-    }
-
-    /* ==============================
-       PANIER – Tableau Responsive & Layout Fixe
-    ============================== */
-    .table-responsive { width: 100%; overflow-x: auto; }
-    #panier-table {
-      table-layout: fixed;
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
-      font-size: 0.95em;
-    }
-    #panier-table th, #panier-table td {
-      border: 1px solid #ddd;
-      padding: 12px;
-      text-align: center;
-      word-wrap: break-word;
-      vertical-align: middle;
-    }
-    #panier-table th { background: #f9f9f9; }
-    /* Colonnes fixes */
-    #panier-table th:nth-child(2),
-    #panier-table td:nth-child(2) { width: 70px; }
-    #panier-table th:nth-child(3),
-    #panier-table td:nth-child(3) { width: 80px; }
-    #panier-table th:nth-child(4),
-    #panier-table td:nth-child(4) { width: 80px; }
-    #panier-table th:nth-child(6),
-    #panier-table td:nth-child(6) { width: 40px; }
-
-    #total { text-align: right; font-size: 1.2em; margin-top: 10px; font-weight: 600; }
-    #tvaLine, #ttcLine { text-align: right; margin-top: 5px; font-weight: 500; color: #333; }
-    #totalWords { text-align: right; font-size: 0.95em; margin-top: 5px; font-style: italic; color: #555; }
-    #checkout-btn { margin-top: 20px; display: block; margin-left: auto; margin-right: auto; }
-    #rappel-form { text-align: center; font-size: 0.9em; color: #555; margin-top: 10px; }
-
-    /* ==============================
-       MODE STACKED – Responsive pour Mobile
-       Transformation du tableau en vue empilée
-    ============================== */
-    @media (max-width: 600px) {
-      /* Masquer l'en-tête du tableau */
-      #panier-table thead { display: none; }
-      /* Transformer chaque ligne en bloc */
-      #panier-table, #panier-table tbody, #panier-table tr, #panier-table td {
-        display: block;
-        width: 100%;
-      }
-      #panier-table tr {
-        margin-bottom: 1rem;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        padding: 10px;
-        background: #fff;
-      }
-      #panier-table td {
-        border: none;
-        position: relative;
-        padding-left: 7em;  /* espace pour le label */
-        text-align: left;
-        min-height: 2.2em;
-      }
-      #panier-table td:before {
-        content: attr(data-label) ": ";
-        position: absolute;
-        left: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-weight: bold;
-        white-space: nowrap;
-      }
-    }
-
-    /* ==============================
-       FORMULAIRE – Envoi AJAX
-    ============================== */
-    #formulaire-commande-custom { margin-top: 40px; display: none; }
-    #formulaire-commande-custom h2 { text-align: center; margin-bottom: 20px; }
-    .form-container {
-      max-width: 400px;
-      margin: 0 auto;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      padding: 20px;
-    }
-    .form-container label {
-      display: block;
-      margin-bottom: 15px;
-      font-size: 1em;
-      color: #444;
-    }
-    .form-container input,
-    .form-container button {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 1em;
-      margin-top: 5px;
-    }
-    .form-container button {
-      background: #0071e3;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      margin-top: 15px;
-      transition: background 0.3s;
-    }
-    .form-container button:hover { background: #005bb5; }
-
-    /* ==============================
-       MESSAGE DE REMERCIEMENT
-    ============================== */
-    #merci {
-      display: none;
-      text-align: center;
-      background: #e8f5e9;
-      border: 1px solid #c8e6c9;
-      padding: 30px;
-      border-radius: 12px;
-      font-size: 1.1em;
-      max-width: 600px;
-      margin: 40px auto;
-    }
-    #merci h3 { margin-top: 0; font-size: 1.6em; color: #2e7d32; }
-
-    /* ==============================
-       TOAST – Notification
-    ============================== */
-    #toast {
+    #productModal {
+      display: none; /* caché par défaut */
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(51,51,51,0.9);
-      color: #fff;
-      padding: 12px 20px;
-      border-radius: 6px;
-      z-index: 9999;
-      display: none;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-      font-size: 0.95em;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
     }
+    #modalContent {
+      background: #fff;
+      border: 2px solid #0071e3; /* bordure bleue */
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      text-align: center;
+      position: relative;
+    }
+    #modalContent img {
+      width: 100%;
+      height: 220px;
+      object-fit: contain;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+    #modalContent h3 {
+      margin: 10px 0;
+      font-size: 1.5em;
+      text-transform: uppercase;
+    }
+    #modalContent p {
+      font-size: 1em;
+      margin: 10px 0 20px;
+      line-height: 1.4em;
+    }
+    #modalButtons {
+      display: flex;
+      justify-content: space-around;
+      gap: 10px;
+    }
+    #modalButtons a, #modalButtons button {
+      flex: 1;
+      padding: 10px;
+      font-size: 1em;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+    }
+    #modalButtons a {
+      background: #0071e3;
+      color: #fff;
+    }
+    #modalButtons a:hover { background: #005bb5; }
+    #modalButtons button {
+      background: #ccc;
+      color: #333;
+    }
+    #modalButtons button:hover { background: #bbb; }
 
-    /* ==============================
-       MEDIA QUERIES – Autres adaptations sur mobile
+    /* ===============================
+       MEDIA QUERIES – Mobile
     ============================== */
     @media (max-width: 600px) {
       header { padding: 10px 20px; }
@@ -395,7 +248,6 @@
       .hero h1 { font-size: 2em; }
       .hero p { font-size: 0.95em; }
       section { padding: 30px 15px; margin: 20px auto; }
-      .form-container { padding: 15px; }
       .button { padding: 8px 15px; font-size: 0.9em; }
     }
   </style>
@@ -403,21 +255,20 @@
 <body>
   <!-- HEADER -->
   <header id="header">
-    <div class="logo">CHEZ AMIRI</div>
+    <div class="logo">CHEZ HAROUN</div>
     <nav>
       <ul>
         <li><a href="#accueil">Accueil</a></li>
         <li><a href="#about">À propos</a></li>
         <li><a href="#produits">Produits</a></li>
-        <li><a href="#panier-section">Panier</a></li>
       </ul>
     </nav>
   </header>
 
   <!-- HERO -->
   <section class="hero fade-in" id="accueil">
-    <h1>CHEZ AMIRI !</h1>
-    <p>Votre spécialiste en produits alimentaires en gros. Service rapide et fiable.</p>
+    <h1>CHEZ HAROUN !</h1>
+    <p>Votre spécialiste pour découvrir des produits de qualité. Contactez-nous pour connaître nos prix.</p>
     <a class="hero-btn" href="#produits">Découvrir nos produits</a>
   </section>
 
@@ -447,16 +298,15 @@
           <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9415.jpeg" alt="Tomates DCT" />
         </div>
         <h3>Tomates DCT</h3>
-        <p class="price price-unselected">Prix à découvrir</p>
-        <p>Haute qualité, idéales pour vos recettes.</p>
+        <p class="price-unselected">Prix à découvrir</p>
         <div class="options">
           <input type="radio" id="tomates-12" name="tomatesDCT" value="1/2" data-price="106.28" />
           <label for="tomates-12" class="option-label">1/2</label>
           <input type="radio" id="tomates-44" name="tomatesDCT" value="4/4" data-price="196.14" />
           <label for="tomates-44" class="option-label">4/4</label>
         </div>
-        <p class="error-message"></p>
-        <button class="button add-to-cart" data-name="Tomates DCT" data-price="">Ajouter</button>
+        <!-- Bouton renommé "Découvrir" -->
+        <button class="button discover-btn" data-product="Tomates DCT">Découvrir</button>
       </div>
 
       <!-- HARISSA -->
@@ -465,8 +315,7 @@
           <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9414.jpeg" alt="Harissa" />
         </div>
         <h3>Harissa</h3>
-        <p class="price price-unselected">Prix à découvrir</p>
-        <p>Le piquant authentique du Maghreb</p>
+        <p class="price-unselected">Prix à découvrir</p>
         <div class="options">
           <input type="radio" id="harissa-12" name="harissaOpt" value="1/2" data-price="77.14" />
           <label for="harissa-12" class="option-label">1/2</label>
@@ -475,8 +324,7 @@
           <input type="radio" id="harissa-4oz" name="harissaOpt" value="4OZ" data-price="35.13" />
           <label for="harissa-4oz" class="option-label">4 OZ</label>
         </div>
-        <p class="error-message"></p>
-        <button class="button add-to-cart" data-name="Harissa" data-price="">Ajouter</button>
+        <button class="button discover-btn" data-product="Harissa">Découvrir</button>
       </div>
 
       <!-- SAUCE PIZZA -->
@@ -485,16 +333,14 @@
           <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287851-img-9418.jpeg" alt="Sauce Pizza" />
         </div>
         <h3>Sauce Pizza</h3>
-        <p class="price price-unselected">Prix à découvrir</p>
-        <p>Base savoureuse pour pizzas</p>
+        <p class="price-unselected">Prix à découvrir</p>
         <div class="options">
           <input type="radio" id="pizza-15" name="pizzaOpt" value="1/5" data-price="497.14" />
           <label for="pizza-15" class="option-label">1/5</label>
           <input type="radio" id="pizza-13" name="pizzaOpt" value="1/3" data-price="334.28" />
           <label for="pizza-13" class="option-label">1/3</label>
         </div>
-        <p class="error-message"></p>
-        <button class="button add-to-cart" data-name="Sauce Pizza" data-price="">Ajouter</button>
+        <button class="button discover-btn" data-product="Sauce Pizza">Découvrir</button>
       </div>
 
       <!-- CONFITURE -->
@@ -503,407 +349,115 @@
           <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9417.jpeg" alt="Confiture" />
         </div>
         <h3>Confiture</h3>
-        <p class="price">350.00 DA</p>
-        <p>Douceur artisanale</p>
-        <p class="error-message"></p>
-        <button class="button add-to-cart" data-name="Confiture" data-price="350.00">Ajouter</button>
+        <p class="price-unselected">Prix à découvrir</p>
+        <button class="button discover-btn" data-product="Confiture">Découvrir</button>
       </div>
     </div>
   </section>
 
-  <!-- PANIER -->
-  <section class="fade-in" id="panier-section">
-    <h2>Votre Panier</h2>
-    <div class="table-responsive">
-      <table id="panier-table">
-        <thead>
-          <tr>
-            <th>Produit</th>
-            <th>Qt/U</th>
-            <th>P.U</th>
-            <th>Qté</th>
-            <th>Total HT</th>
-            <th>X</th>
-          </tr>
-        </thead>
-        <tbody id="cart-body">
-          <tr id="empty-cart-msg">
-            <td colspan="6">Votre panier est vide.</td>
-          </tr>
-        </tbody>
-      </table>
+  <!-- MODALE – Fenêtre de description produit -->
+  <div id="productModal">
+    <div id="modalContent">
+      <span id="closeModal" style="position:absolute;top:10px;right:15px;cursor:pointer;font-size:1.5em;">&times;</span>
+      <img id="modalImage" src="" alt="" />
+      <h3 id="modalTitle"></h3>
+      <p id="modalDescription"></p>
+      <div id="modalButtons">
+        <button id="modalCloseBtn">Fermer</button>
+        <a id="modalCallBtn" href="">Nous Appeler</a>
+      </div>
     </div>
-    <div id="total">Sous-total HT : 0,00 DA</div>
-    <div id="tvaLine">TVA (19%) : 0,00 DA</div>
-    <div id="ttcLine">Total TTC : 0,00 DA</div>
-    <p id="totalWords"></p>
-    <button id="checkout-btn" class="button" style="display:none;">Valider la commande</button>
-    <div id="rappel-form">
-      N'oubliez pas de remplir le formulaire ci-dessous pour être contacté.
-    </div>
-  </section>
-
-  <!-- FORMULAIRE -->
-  <section class="fade-in" id="formulaire-commande-custom" style="display:none;">
-    <h2>Passer Commande</h2>
-    <div class="form-container">
-      <form id="customOrderForm" method="POST" action="https://formspree.io/f/mpwpkwby">
-        <label>
-          Nom et Prénom:<br />
-          <input type="text" name="name" required />
-        </label>
-        <label>
-          Numéro de téléphone:<br />
-          <input type="tel" name="phone" required />
-        </label>
-        <label>
-          Date de livraison souhaitée:<br />
-          <input type="date" name="deliveryDate" />
-        </label>
-        <input type="hidden" name="orderDetails" id="orderDetails" value="" />
-        <button type="submit" class="button">Envoyer la commande</button>
-      </form>
-    </div>
-  </section>
-
-  <!-- MESSAGE DE REMERCIEMENT -->
-  <section class="fade-in" id="merci" style="display:none;">
-    <h3>COMMANDE BIEN PASSÉE !</h3>
-    <p>
-      Nous allons vous contacter au plus vite pour finaliser le paiement et organiser la livraison.<br />
-      📞 Vous pouvez nous joindre au +213 5 50 50 30 73<br />
-      📍 Livraison possible à Guelma et dans les environs<br />
-      💬 Vous pouvez aussi nous écrire sur WhatsApp au même numéro.
-    </p>
-  </section>
-
-  <!-- TOAST – Notification -->
-  <div id="toast"></div>
+  </div>
 
   <script>
-    /***************************************************************
-     * Dictionnaire des Pack Sizes (Qt/Unité)
-    ***************************************************************/
-    const PACK_SIZES = {
-      "Tomates DCT (1/2)": 24,
-      "Tomates DCT (4/4)": 12,
-      "Harissa (1/2)": 48,
-      "Harissa (4/4)": 24,
-      "Harissa (4OZ)": 12,
-      "Sauce Pizza (1/5)": 5,
-      "Sauce Pizza (1/3)": 3,
-      "Confiture": 1
+    /**************************************************
+     * Objet descriptions produits
+     * Utiliser les textes fournis pour chaque produit
+    **************************************************/
+    const productDescriptions = {
+      "Tomates DCT": `Le double concentré de tomate est un produit phare de l’usine Izdihar en Algérie. Il est disponible dans différentes tailles, notamment : 
+• 400 g
+• 800 g
+
+Ce produit est très populaire pour sa qualité et son utilisation dans diverses préparations culinaires.`,
+      "Harissa": `La harissa de la marque Izdihar est un produit populaire en Algérie, fabriqué à base de piment rouge fort. Elle est disponible dans plusieurs formats, notamment :
+• 135 g
+• 380 g
+
+Ce produit est apprécié pour sa qualité et son goût relevé, idéale pour accompagner divers plats traditionnels et modernes.`,
+      "Sauce Pizza": `La sauce pizza d’Amor Benamor CAB est un produit de la gamme de condiments et sauces de la Conserverie Amor Benamor. Elle est disponible en bocal de 420 g. 
+Cette sauce est préparée à partir de tomates et d’épices, offrant une saveur riche et authentique. 
+Elle est appréciée pour sa facilité d’utilisation et sa qualité gustative, ce qui en fait un choix populaire parmi les consommateurs algériens et internationaux.`,
+      "Confiture": `Les confitures produites par la Conserverie Amor Benamor (CAB) sont particulièrement réputées, notamment la confiture d’abricot. 
+Ce produit emblématique, présent sur le marché algérien depuis des décennies, est apprécié pour son goût équilibré et sa texture en gelée.
+Formats disponibles :
+• 425 g
+• 900 g`
     };
 
-    /***************************************************************
-     * Variables Globales & Éléments du DOM
-    ***************************************************************/
-    const cart = {};
-    const cartBody = document.getElementById('cart-body');
-    const subTotalDisplay = document.getElementById('total');
-    const tvaLine = document.getElementById('tvaLine');
-    const ttcLine = document.getElementById('ttcLine');
-    const totalWordsElem = document.getElementById('totalWords');
-    const checkoutBtn = document.getElementById('checkout-btn');
-    const toast = document.getElementById('toast');
-    const customOrderForm = document.getElementById('customOrderForm');
-    const orderDetailsField = document.getElementById('orderDetails');
+    // Numéro de téléphone à utiliser dans "Nous Appeler"
+    const phoneNumber = "+213774211480";
 
-    /***************************************************************
-     * HEADER – Fond opaque au scroll
-    ***************************************************************/
-    window.addEventListener('scroll', () => {
-      const header = document.getElementById('header');
-      if (window.scrollY > 50) header.classList.add('scrolled');
-      else header.classList.remove('scrolled');
+    /**************************************************
+     * GESTION DE LA MODALE
+     **************************************************/
+    const modal = document.getElementById("productModal");
+    const modalImage = document.getElementById("modalImage");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalDescription = document.getElementById("modalDescription");
+    const modalCallBtn = document.getElementById("modalCallBtn");
+    const closeModalElem = document.getElementById("closeModal");
+    const modalCloseBtn = document.getElementById("modalCloseBtn");
+
+    // Fonction pour ouvrir la modale avec les détails du produit
+    function openModal(productCard) {
+      // Récupérer les informations du produit
+      const prodTitle = productCard.querySelector("h3").textContent;
+      const prodImgSrc = productCard.querySelector(".img-container img").src;
+      // On utilise le nom sans options pour récupérer la description
+      const baseName = prodTitle.split(" (")[0];
+      const desc = productDescriptions[baseName] || "Description à venir.";
+
+      // Remplir la modale
+      modalImage.src = prodImgSrc;
+      modalTitle.textContent = prodTitle;
+      modalDescription.textContent = desc;
+      // Configurer le bouton "Nous Appeler"
+      modalCallBtn.href = `tel:${phoneNumber}`;
+      modalCallBtn.textContent = "Nous Appeler";
+      // Afficher la modale
+      modal.style.display = "flex";
+    }
+
+    // Fermer la modale
+    function closeModal() {
+      modal.style.display = "none";
+    }
+
+    // Écouteurs sur les éléments de fermeture
+    closeModalElem.addEventListener("click", closeModal);
+    modalCloseBtn.addEventListener("click", closeModal);
+    // Fermer la modale si l'utilisateur clique en dehors du contenu
+    window.addEventListener("click", function(e) {
+      if (e.target === modal) { closeModal(); }
     });
 
-    /***************************************************************
-     * FADE-IN – IntersectionObserver
-    ***************************************************************/
-    const fadeElements = document.querySelectorAll('.fade-in');
-    const observerOptions = { threshold: 0.2, rootMargin: "0px 0px -50px 0px" };
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, observerOptions);
-    fadeElements.forEach(el => observer.observe(el));
-
-    /***************************************************************
-     * GESTION DES OPTIONS RADIO – Toggle
-    ***************************************************************/
-    document.querySelectorAll('.product').forEach(prod => {
-      const radioButtons = prod.querySelectorAll('input[type="radio"]');
-      if (radioButtons.length > 0) {
-        radioButtons.forEach(rb => {
-          rb.addEventListener('pointerdown', function() { this.wasChecked = this.checked; });
-          rb.addEventListener('click', function() {
-            if (this.wasChecked) {
-              this.checked = false;
-              let anyChecked = false;
-              radioButtons.forEach(r => { if (r.checked) anyChecked = true; });
-              if (!anyChecked) {
-                prod.classList.remove('selected');
-                const priceElem = prod.querySelector('.price');
-                priceElem.textContent = "Prix à découvrir";
-                priceElem.classList.add('price-unselected');
-              }
-            } else {
-              prod.classList.add('selected');
-              const chosenPrice = parseFloat(this.getAttribute('data-price')) || 0;
-              const priceElem = prod.querySelector('.price');
-              priceElem.textContent = "Prix : " + chosenPrice.toFixed(2) + " DA";
-              priceElem.classList.remove('price-unselected');
-            }
-          });
-        });
-      }
-    });
-
-    /***************************************************************
-     * AJOUT AU PANIER
-    ***************************************************************/
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-      button.addEventListener('click', () => {
-        let productName = button.getAttribute('data-name');
-        let price = 0;
-        const productDiv = button.closest('.product');
-        const errorMsg = productDiv.querySelector('.error-message');
-        if (errorMsg) errorMsg.style.display = 'none';
-
-        const radioButtons = productDiv.querySelectorAll('input[type="radio"]');
-        let chosenOption = null;
-        let chosenPrice = null;
-        if (radioButtons.length > 0) {
-          radioButtons.forEach(rb => {
-            if (rb.checked) {
-              chosenOption = rb.value;
-              chosenPrice = parseFloat(rb.getAttribute('data-price')) || 0;
-            }
-          });
-          if (!chosenOption) {
-            if (errorMsg) {
-              errorMsg.textContent = "Veuillez sélectionner une option.";
-              errorMsg.style.display = 'block';
-            }
-            return;
-          }
-          productName += ` (${chosenOption})`;
-          price = chosenPrice;
-        } else {
-          price = parseFloat(button.getAttribute('data-price')) || 0;
-        }
-
-        if (cart[productName]) {
-          showToast(`"${productName}" est déjà dans votre panier. Modifiez la quantité dans le panier.`);
-          return;
-        } else {
-          cart[productName] = { price: price, quantity: 1 };
-        }
-        updateCartDisplay();
-        showToast(`Le produit "${productName}" a été ajouté au panier.`);
+    /**************************************************
+     * ÉCOUTEUR SUR LES BOUTONS "DÉCOUVRIR"
+     **************************************************/
+    const discoverButtons = document.querySelectorAll(".discover-btn");
+    discoverButtons.forEach(btn => {
+      btn.addEventListener("click", function() {
+        // On cherche la fiche produit parent de ce bouton
+        const productCard = this.closest(".product");
+        openModal(productCard);
       });
     });
 
-    /***************************************************************
-     * PANIER – Mise à jour & Calcul du total
-       (Total HT ligne = Prix unitaire x Pack size x Quantité)
-    ***************************************************************/
-    function updateCartDisplay() {
-      cartBody.innerHTML = '';
-      let subTotalHT = 0;
-      const items = Object.keys(cart);
-      if (items.length === 0) {
-        cartBody.innerHTML = `<tr id="empty-cart-msg"><td colspan="6">Votre panier est vide.</td></tr>`;
-        checkoutBtn.style.display = 'none';
-      } else {
-        items.forEach(item => {
-          const unitPrice = parseFloat(cart[item].price) || 0;
-          const qty = parseFloat(cart[item].quantity) || 0;
-          const packSize = PACK_SIZES[item] ? PACK_SIZES[item] : 1;
-          const lineHT = unitPrice * packSize * qty;
-          subTotalHT += lineHT;
-          cartBody.innerHTML += `
-            <tr>
-              <td data-label="Produit">${item}</td>
-              <td data-label="Qt/U">${packSize}</td>
-              <td data-label="P.U">${unitPrice.toFixed(2)}</td>
-              <td data-label="Qté">
-                <input type="number" min="1" step="1" value="${qty}" style="width:70px; text-align:center;"
-                  onblur="updateQuantity('${item}', this.value)" onclick="hideThanks()" />
-              </td>
-              <td data-label="Total HT">${lineHT.toFixed(2)}</td>
-              <td data-label="Action">
-                <button class="button" style="padding:4px 8px; font-size:0.9em;"
-                  onclick="removeItem('${item}'); hideThanks();">X</button>
-              </td>
-            </tr>
-          `;
-        });
-        checkoutBtn.style.display = 'block';
-      }
-      const tva = subTotalHT * 0.19;
-      const totalTTC = subTotalHT + tva;
-      subTotalDisplay.textContent = `Sous-total HT : ${subTotalHT.toFixed(2)} DA`;
-      tvaLine.textContent = `TVA (19%) : ${tva.toFixed(2)} DA`;
-      ttcLine.textContent = `Total TTC : ${totalTTC.toFixed(2)} DA`;
-      totalWordsElem.textContent = convertToFrenchWords(totalTTC);
-    }
-
-    function updateQuantity(productName, newQty) {
-      if (!cart[productName]) return;
-      const qty = parseInt(newQty);
-      if (qty < 1 || isNaN(qty)) return;
-      cart[productName].quantity = qty;
-      updateCartDisplay();
-    }
-
-    function removeItem(productName) {
-      if (cart[productName]) {
-        delete cart[productName];
-        updateCartDisplay();
-      }
-    }
-
-    /***************************************************************
-     * TOAST – Notification
-    ***************************************************************/
-    function showToast(message) {
-      toast.textContent = message;
-      toast.style.display = 'block';
-      setTimeout(() => { toast.style.opacity = '1'; }, 10);
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        setTimeout(() => { toast.style.display = 'none'; }, 500);
-      }, 2500);
-    }
-    function hideThanks() {
-      const thanksSection = document.getElementById('merci');
-      if (thanksSection && thanksSection.style.display === 'block') {
-        thanksSection.style.display = 'none';
-      }
-    }
-
-    /***************************************************************
-     * CONVERSION DU TOTAL EN LETTRES – Version robuste en français
-    ***************************************************************/
-    function convertIntToFrench(num) {
-      if (num === 0) return "zéro";
-      const ones = [
-        "", "un", "deux", "trois", "quatre", "cinq", 
-        "six", "sept", "huit", "neuf", "dix", "onze", "douze",
-        "treize", "quatorze", "quinze", "seize", "dix-sept",
-        "dix-huit", "dix-neuf"
-      ];
-      const tens = [
-        "", "", "vingt", "trente", "quarante", "cinquante", "soixante", "soixante",
-        "quatre-vingt", "quatre-vingt"
-      ];
-
-      function under100(n) {
-        if(n < 20) return ones[n];
-        let t = Math.floor(n / 10);
-        let u = n % 10;
-        let res = "";
-        if(t === 7 || t === 9) { t--; u += 10; }
-        res = tens[t];
-        if(u === 0) return res;
-        if(u === 1 && (t === 1 || t === 7 || t === 9))
-          return res + " et " + ones[u];
-        else return res + "-" + ones[u];
-      }
-
-      function under1000(n) {
-        if(n < 100) return under100(n);
-        let h = Math.floor(n / 100);
-        let r = n % 100;
-        let res = (h === 1 ? "cent" : ones[h] + " cent");
-        if(r === 0 && h > 1) res += "s";
-        else if(r > 0) res += " " + under100(r);
-        return res;
-      }
-
-      if(num < 1000) return under1000(num);
-      else if(num < 1000000) {
-        let thousands = Math.floor(num / 1000);
-        let remainder = num % 1000;
-        let res = (thousands === 1 ? "mille" : under1000(thousands) + " mille");
-        if(remainder > 0) res += " " + under1000(remainder);
-        return res;
-      } else {
-        return num.toString();
-      }
-    }
-
-    function convertToFrenchWords(amount) {
-      amount = parseFloat(amount.toFixed(2));
-      const integerPart = Math.floor(amount);
-      const decimalPart = Math.round((amount - integerPart) * 100);
-      let intWords = convertIntToFrench(integerPart);
-      if(!intWords) intWords = "zéro";
-      let result = intWords + (integerPart > 1 ? " dinars" : " dinar");
-      if(decimalPart > 0) {
-        let decWords = convertIntToFrench(decimalPart);
-        result += " et " + decWords + (decimalPart > 1 ? " centimes" : " centime");
-      }
-      return result;
-    }
-
-    /***************************************************************
-     * FORMULAIRE – Préremplissage & Envoi AJAX
-    ***************************************************************/
-    customOrderForm.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      orderDetailsField.value = genererRecapCommande();
-      try {
-        const formData = new FormData(customOrderForm);
-        const response = await fetch(customOrderForm.action, {
-          method: 'POST',
-          body: formData,
-          headers: { 'Accept': 'application/json' }
-        });
-        if(response.ok) {
-          document.getElementById('formulaire-commande-custom').style.display = 'none';
-          document.getElementById('merci').style.display = 'block';
-          for(let key in cart) { delete cart[key]; }
-          updateCartDisplay();
-        } else {
-          alert("Une erreur s'est produite lors de l'envoi. Veuillez réessayer.");
-        }
-      } catch(err) {
-        alert("Erreur réseau : " + err);
-      }
-    });
-
-    function genererRecapCommande() {
-      let recap = "";
-      for(const produit in cart) {
-        const details = cart[produit];
-        recap += `${produit} (x${details.quantity}) => ${details.price.toFixed(2)} DA/un\n`;
-      }
-      return recap || "Aucun produit commandé";
-    }
-
-    /***************************************************************
-     * VALIDER LE PANIER – Afficher le formulaire
-    ***************************************************************/
-    checkoutBtn.addEventListener('click', () => {
-      document.getElementById('formulaire-commande-custom').style.display = 'block';
-      document.getElementById('formulaire-commande-custom').scrollIntoView({ behavior: 'smooth' });
-    });
+    /**************************************************
+     * SUPPRESSION de toute logique de panier et commande (inutilisée)
+     **************************************************/
+    // (Toutes les fonctions de panier, cart et formulaire ont été retirées puisque le site est publicitaire.)
   </script>
-  
-  <!-- MODE STACKED : Transformation du tableau pour mobile -->
-  <script>
-    // Si l'écran est très petit, on transforme la table en affichage empilé.
-    // Cette transformation est gérée via CSS dans la media query.
-    // Assurez-vous que chaque td a un attribut data-label lors de l'updateCartDisplay().
-    // Ici, cela est déjà injecté dans updateCartDisplay() grâce aux data-label.
-  </script>
-  
 </body>
 </html>
