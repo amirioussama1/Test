@@ -1,9 +1,9 @@
-Mon site : que je devrai modifier légèrement je te dirait comment après :  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CHEZ AMIRI</title>
+  <title>CHEZ HAROUN</title>
   
   <!--
   =============================================================================
@@ -409,7 +409,6 @@ Mon site : que je devrai modifier légèrement je te dirait comment après :  <!
         <li><a href="#accueil">Accueil</a></li>
         <li><a href="#about">À propos</a></li>
         <li><a href="#produits">Produits</a></li>
-        <li><a href="#panier-section">Panier</a></li>
       </ul>
     </nav>
   </header>
@@ -450,13 +449,13 @@ Mon site : que je devrai modifier légèrement je te dirait comment après :  <!
         <p class="price price-unselected">Prix à découvrir</p>
         <p>Haute qualité, idéales pour vos recettes.</p>
         <div class="options">
-          <input type="radio" id="tomates-12" name="tomatesDCT" value="1/2" data-price="106.28" />
+          <input type="radio" id="tomates-12" name="tomatesDCT" value="1/2" />
           <label for="tomates-12" class="option-label">1/2</label>
-          <input type="radio" id="tomates-44" name="tomatesDCT" value="4/4" data-price="196.14" />
+          <input type="radio" id="tomates-44" name="tomatesDCT" value="4/4" />
           <label for="tomates-44" class="option-label">4/4</label>
         </div>
         <p class="error-message"></p>
-        <button class="button add-to-cart" data-name="Tomates DCT" data-price="">Ajouter</button>
+        <button class="button add-to-cart" data-name="Tomates DCT" >Découvrir</button>
       </div>
 
       <!-- HARISSA -->
@@ -468,15 +467,15 @@ Mon site : que je devrai modifier légèrement je te dirait comment après :  <!
         <p class="price price-unselected">Prix à découvrir</p>
         <p>Le piquant authentique du Maghreb</p>
         <div class="options">
-          <input type="radio" id="harissa-12" name="harissaOpt" value="1/2" data-price="77.14" />
+          <input type="radio" id="harissa-12" name="harissaOpt" value="1/2" />
           <label for="harissa-12" class="option-label">1/2</label>
-          <input type="radio" id="harissa-44" name="harissaOpt" value="4/4" data-price="145.71" />
+          <input type="radio" id="harissa-44" name="harissaOpt" value="4/4"/>
           <label for="harissa-44" class="option-label">4/4</label>
-          <input type="radio" id="harissa-4oz" name="harissaOpt" value="4OZ" data-price="35.13" />
+          <input type="radio" id="harissa-4oz" name="harissaOpt" value="4OZ"/>
           <label for="harissa-4oz" class="option-label">4 OZ</label>
         </div>
         <p class="error-message"></p>
-        <button class="button add-to-cart" data-name="Harissa" data-price="">Ajouter</button>
+        <button class="button add-to-cart" data-name="Harissa">Découvrir</button>
       </div>
 
       <!-- SAUCE PIZZA -->
@@ -488,13 +487,13 @@ Mon site : que je devrai modifier légèrement je te dirait comment après :  <!
         <p class="price price-unselected">Prix à découvrir</p>
         <p>Base savoureuse pour pizzas</p>
         <div class="options">
-          <input type="radio" id="pizza-15" name="pizzaOpt" value="1/5" data-price="497.14" />
+          <input type="radio" id="pizza-15" name="pizzaOpt" value="1/5"/>
           <label for="pizza-15" class="option-label">1/5</label>
-          <input type="radio" id="pizza-13" name="pizzaOpt" value="1/3" data-price="334.28" />
+          <input type="radio" id="pizza-13" name="pizzaOpt" value="1/3"/>
           <label for="pizza-13" class="option-label">1/3</label>
         </div>
         <p class="error-message"></p>
-        <button class="button add-to-cart" data-name="Sauce Pizza" data-price="">Ajouter</button>
+        <button class="button add-to-cart" data-name="Sauce Pizza">Découvrir</button>
       </div>
 
       <!-- CONFITURE -->
@@ -503,43 +502,10 @@ Mon site : que je devrai modifier légèrement je te dirait comment après :  <!
           <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9417.jpeg" alt="Confiture" />
         </div>
         <h3>Confiture</h3>
-        <p class="price">350.00 DA</p>
         <p>Douceur artisanale</p>
         <p class="error-message"></p>
-        <button class="button add-to-cart" data-name="Confiture" data-price="350.00">Ajouter</button>
+        <button class="button add-to-cart" data-name="Confiture">Découvrir</button>
       </div>
-    </div>
-  </section>
-
-  <!-- PANIER -->
-  <section class="fade-in" id="panier-section">
-    <h2>Votre Panier</h2>
-    <div class="table-responsive">
-      <table id="panier-table">
-        <thead>
-          <tr>
-            <th>Produit</th>
-            <th>Qt/U</th>
-            <th>P.U</th>
-            <th>Qté</th>
-            <th>Total HT</th>
-            <th>X</th>
-          </tr>
-        </thead>
-        <tbody id="cart-body">
-          <tr id="empty-cart-msg">
-            <td colspan="6">Votre panier est vide.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div id="total">Sous-total HT : 0,00 DA</div>
-    <div id="tvaLine">TVA (19%) : 0,00 DA</div>
-    <div id="ttcLine">Total TTC : 0,00 DA</div>
-    <p id="totalWords"></p>
-    <button id="checkout-btn" class="button" style="display:none;">Valider la commande</button>
-    <div id="rappel-form">
-      N'oubliez pas de remplir le formulaire ci-dessous pour être contacté.
     </div>
   </section>
 
