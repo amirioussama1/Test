@@ -1,578 +1,296 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CHEZ HAROUN</title>
-    
-    <!-- =============================================================================
-         CODE FINAL – Site publicitaire style Apple
-         - Pas de panier ni de commande en ligne.
-         - Chaque produit affiche "Prix à découvrir" et un bouton "Découvrir".
-         - Les options radio ont un fond blanc avec bordure bleue et deviennent bleu avec texte blanc quand sélectionnées.
-         - Le bouton "Découvrir" ouvre une modale fade‑in au centre, sans déplacer le contenu principal (scroll bloqué).
-         - La modale présente l’image, le titre et une description riche (avec retours à la ligne et mise en forme).
-         - Un seul bouton "Nous Appeler : +213 5 50 50 30 73 / +213 7 74 21 14 80" y est affiché.
-         - Le header et les liens "Accueil" renvoient directement en haut.
-    ============================================================================= -->
-    
-    <style>
-      /* ===============================
-         BASE – Typographie & Couleurs
-      =============================== */
-      html { scroll-behavior: smooth; }
-      body {
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
-                     "Open Sans", "Helvetica Neue", sans-serif;
-        color: #333;
-        background: #f2f2f2;
-        line-height: 1.6;
-      }
-      a { text-decoration: none; color: inherit; }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CHEZ HAROUN</title>
+  
+  <style>
+    /* BASE - Maintenu de la version originale */
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+                   "Open Sans", "Helvetica Neue", sans-serif;
+      color: #333;
+      background: #f2f2f2;
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
 
-      /* Pour que les ancres ne masquent pas le titre */
-      .hero, section { scroll-margin-top: 110px; }
+    /* ANIMATIONS - Ajout fade-in pour modals */
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes modalFadeIn {
+      0% { opacity: 0; transform: scale(0.96); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 1s ease, transform 1s ease; }
+    .fade-in.visible { animation: fadeInUp 1s forwards ease; }
 
-      /* ===============================
-         HEADER
-      =============================== */
-      header {
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        padding: 15px 40px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: rgba(0,0,0,0.2);
-        backdrop-filter: blur(8px);
-        transition: background-color 0.5s ease;
-      }
-      header.scrolled { background-color: rgba(0,0,0,0.7); }
-      header .logo {
-        font-size: 1.8em;
-        font-weight: 500;
-        letter-spacing: 1px;
-        color: #fff;
-      }
-      header .logo a { color: #fff; }
-      nav ul {
-        list-style: none;
-        display: flex;
-        gap: 30px;
-        margin: 0;
-        padding: 0;
-      }
-      nav ul li a {
-        color: #fff;
-        font-size: 1em;
-        letter-spacing: 0.5px;
-        transition: color 0.3s;
-        white-space: nowrap;
-      }
-      nav ul li a:hover { color: #ddd; }
+    /* HEADER - Modifié pour Haroun */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(0,0,0,0.3);
+      transition: background-color 0.5s ease;
+    }
+    header.scrolled { background-color: rgba(0,0,0,1); }
+    header .logo { 
+      font-size: 1.8em; 
+      font-weight: 600; 
+      letter-spacing: -0.5px; 
+      color: #fff;
+      font-family: 'SF Pro Display', -apple-system, sans-serif;
+    }
 
-      /* ===============================
-         HERO
-      =============================== */
-      .hero {
-        background: linear-gradient(135deg, #283E51, #4B79A1);
-        color: #fff;
-        text-align: center;
-        padding: 30px 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 70vh;
-      }
-      .hero h1 {
-        font-size: 3em;
-        margin-bottom: 10px;
-        text-transform: uppercase;
-        font-weight: 600;
-      }
-      .hero p {
-        font-size: 1.1em;
-        margin-bottom: 20px;
-        max-width: 600px;
-        font-weight: 300;
-      }
-      .hero-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        justify-content: center;
-        margin-bottom: 20px;
-      }
-      .hero-btn {
-        background: #0071e3;
-        border: none;
-        color: #fff;
-        padding: 12px 25px;
-        border-radius: 25px;
-        font-size: 1em;
-        letter-spacing: 0.5px;
-        cursor: pointer;
-        transition: background 0.3s;
-      }
-      .hero-btn:hover { background: #005bb5; }
+    /* PRODUITS - Adapté pour discovery */
+    .product:hover { transform: translateY(-5px); }
+    .price-unselected {
+      color: #0071e3;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      margin: 10px 0;
+    }
 
-      /* ===============================
-         SECTIONS
-      =============================== */
-      section {
-        margin: 20px auto 40px auto;
-        width: 90%;
-        max-width: 1000px;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        padding: 40px 20px;
-      }
-      section h2 {
-        text-align: center;
-        font-weight: 400;
-        font-size: 2.2em;
-        border-bottom: 1px solid #eaeaea;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        letter-spacing: 0.5px;
-      }
+    /* MODAL STYLE - Nouveau */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .product-modal {
+      background: #fff;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 600px;
+      padding: 40px;
+      position: relative;
+      opacity: 0;
+      transform: scale(0.95);
+      animation: modalFadeIn 0.4s 0.1s forwards;
+      box-shadow: 0 24px 48px rgba(0,0,0,0.15);
+    }
+    .modal-close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      background: none;
+      border: none;
+      font-size: 1.8em;
+      color: #666;
+      cursor: pointer;
+      transition: color 0.2s;
+      padding: 8px;
+    }
+    .modal-close:hover { color: #000; }
+    .modal-content img {
+      width: 100%;
+      height: 240px;
+      object-fit: contain;
+      margin-bottom: 25px;
+      border-radius: 12px;
+    }
+    .modal-content h2 {
+      font-size: 1.8em;
+      font-weight: 600;
+      margin: 0 0 15px;
+      color: #1d1d1f;
+    }
+    .modal-content p {
+      line-height: 1.6;
+      color: #86868b;
+      font-size: 1.05em;
+    }
+    .modal-actions {
+      margin-top: 30px;
+      display: flex;
+      gap: 15px;
+      justify-content: flex-end;
+    }
+    .modal-call {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #0071e3;
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 28px;
+      font-weight: 500;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+    }
+    .modal-call:hover {
+      background: #0077ed;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px rgba(0,113,227,0.15);
+    }
+    .modal-call svg {
+      width: 20px;
+      height: 20px;
+    }
 
-      /* ===============================
-         PRODUITS – Grille
-      =============================== */
-      .product-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 30px;
-      }
-      @media (min-width: 768px) {
-        .product-grid { grid-template-columns: repeat(2, 1fr); }
-      }
-      .product {
-        background: #fafafa;
-        border: 1px solid #eaeaea;
-        border-radius: 12px;
-        padding: 20px;
-        text-align: center;
-        margin-bottom: 10px;
-        min-height: 450px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        transition: transform 0.3s, box-shadow 0.3s;
-      }
-      .product:hover { transform: translateY(-3px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-      .product h3 {
-        margin: 15px 0 10px;
-        font-size: 1.3em;
-        letter-spacing: 0.5px;
-      }
-      .price-unselected {
-        color: #0071e3;
-        font-weight: 500;
-      }
-      /* Bouton "Découvrir" */
-      .discover-btn {
-        background: #0071e3;
-        color: #fff;
-        border: none;
-        padding: 10px 25px;
-        border-radius: 25px;
-        font-size: 1em;
-        transition: background 0.3s;
-        letter-spacing: 0.5px;
-        cursor: pointer;
-      }
-      .discover-btn:hover { background: #005bb5; }
-
-      /* ===============================
-         CONTENEUR IMAGE PRODUIT
-      =============================== */
-      .img-container {
-        width: 100%;
-        height: 220px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-        border-radius: 12px;
-        background: #fff;
-        margin-bottom: 15px;
-      }
-      .img-container img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-      }
-
-      /* ===============================
-         OPTIONS RADIO – Affichage comme à l'origine
-         Fond blanc, bordure bleue ; sélection : fond bleu, texte blanc.
-      =============================== */
-      .options {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin: 10px 0;
-      }
-      .options input[type="radio"] { display: none; }
-      .option-label {
-        display: inline-block;
-        padding: 6px 12px;
-        background: #fff;
-        border: 2px solid #0071e3;
-        border-radius: 20px;
-        color: #0071e3;
-        cursor: pointer;
-        font-size: 0.9em;
-        transition: background 0.3s, color 0.3s;
-      }
-      input[type="radio"]:checked + .option-label {
-        background: #0071e3;
-        color: #fff;
-      }
-
-      /* ===============================
-         MODALE – Fenêtre de description produit
-         Fade-in inclus via animation et transition.
-      =============================== */
-      #productModal {
-        display: none;
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: rgba(0,0,0,0.3);
-        backdrop-filter: blur(4px);
-        z-index: 2000;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transition: opacity 0.5s ease;
-      }
-      #productModal.show { display: flex; opacity: 1; }
-      #modalContent {
-        background: #fff;
-        border: 1px solid #ddd;
-        border-radius: 16px;
-        max-width: 500px;
-        width: 90%;
-        padding: 20px;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-        text-align: left;
-        position: relative;
-        animation: modalFadeIn 0.5s ease;
-      }
-      @keyframes modalFadeIn {
-        from { opacity: 0; transform: translateY(-20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      #modalClose {
-        position: absolute;
-        top: 15px;
-        right: 20px;
-        font-size: 1.5em;
-        cursor: pointer;
-        color: #333;
-      }
-      #modalTitle {
-        text-align: center;
-        font-size: 1.6em;
-        font-weight: 600;
-        margin-bottom: 15px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-      #modalImage {
-        width: 100%;
-        height: 220px;
-        object-fit: contain;
-        border-radius: 12px;
-        display: block;
-        margin: 0 auto 15px;
-      }
-      #modalDescription {
-        line-height: 1.5em;
-        white-space: pre-line;
-        margin-bottom: 20px;
-      }
-      #modalButtons {
-        display: flex;
-        justify-content: space-evenly;
-        gap: 10px;
-      }
-      /* Bouton modale : Un seul bouton d'appel affichant les deux numéros */
-      #modalButtons a {
-        flex: 1;
-        padding: 10px;
-        font-size: 1em;
-        border: none;
-        border-radius: 25px;
-        background: #0071e3;
-        color: #fff;
-        text-align: center;
-        text-decoration: none;
-        cursor: pointer;
-        transition: background 0.3s;
-      }
-      #modalButtons a:hover { background: #005bb5; }
-      /* Bouton Fermer en gris */
-      #modalButtons button {
-        flex: 1;
-        padding: 10px;
-        font-size: 1em;
-        border: none;
-        border-radius: 25px;
-        background: #ccc;
-        color: #333;
-        text-align: center;
-        cursor: pointer;
-        transition: background 0.3s;
-      }
-      #modalButtons button:hover { background: #bbb; }
-
-      /* ===============================
-         Navigation – Les liens "Accueil" reviennent directement en haut
-      =============================== */
-      .nav-link-home { cursor: pointer; }
-
-      /* ===============================
-         FADE-IN – Pour les éléments (sections, modale, etc.)
-      =============================== */
-      .fade-in {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: opacity 0.5s ease, transform 0.5s ease;
-      }
-      .fade-in.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      /* ===============================
-         MEDIA QUERIES – Mobile
-      =============================== */
-      @media (max-width: 600px) {
-        header { padding: 10px 20px; }
-        header .logo { font-size: 1.4em; }
-        nav ul { gap: 10px; }
-        nav ul li a { font-size: 0.9em; }
-        .hero h1 { font-size: 2em; }
-        .hero p { font-size: 0.95em; }
-        section { padding: 30px 15px; margin: 20px auto; }
-        .hero-btn { padding: 10px 20px; font-size: 0.9em; }
-        #modalContent { font-size: 0.95em; }
-        #modalDescription { margin-bottom: 15px; }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- HEADER -->
-    <header id="header">
-      <div class="logo"><a href="#" class="nav-link-home" id="homeLink">CHEZ HAROUN</a></div>
-      <nav>
-        <ul>
-          <li><a href="#" class="nav-link-home" id="navHome">Accueil</a></li>
-          <li><a href="#about">À propos</a></li>
-          <li><a href="#produits">Produits</a></li>
-        </ul>
-      </nav>
-    </header>
-
-    <!-- HERO -->
-    <section class="hero fade-in" id="accueil">
-      <h1>CHEZ HAROUN !</h1>
-      <p>Votre spécialiste pour découvrir des produits de qualité.<br>Contactez-nous pour connaître nos prix.</p>
-      <div class="hero-buttons">
-        <a class="hero-btn call-btn" href="tel:+213550503073" title="Appeler +213 5 50 50 30 73 et +213 7 74 21 14 80">
-          Appelez-nous : +213 5 50 50 30 73 / +213 7 74 21 14 80
-        </a>
-      </div>
-      <a class="hero-btn" href="#produits">Découvrir nos produits</a>
-    </section>
-
-    <!-- À PROPOS -->
-    <section class="fade-in" id="about">
-      <h2>À propos</h2>
-      <p>
-        Depuis plusieurs années, nous sommes spécialisés dans la distribution en gros de produits d’alimentation générale,
-        avec un fort engagement pour la qualité et le service.
-      </p>
+    /* RESPONSIVE - Ajustements */
+    @media (max-width: 600px) {
+      .product-modal { padding: 30px; }
+      .modal-content img { height: 180px; }
+      .modal-call { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <header id="header">
+    <div class="logo">CHEZ HAROUN</div>
+    <nav>
       <ul>
-        <li>Conserves de tomates</li>
-        <li>Harissa, Sauce Pizza</li>
-        <li>Boissons variées</li>
-        <li>Et bien d'autres articles</li>
+        <li><a href="#accueil">Accueil</a></li>
+        <li><a href="#about">À propos</a></li>
+        <li><a href="#produits">Produits</a></li>
       </ul>
-      <p>Situés à Guelma, nous assurons des délais de livraison courts et un service fiable.</p>
-    </section>
+    </nav>
+  </header>
 
-    <!-- PRODUITS -->
-    <section class="fade-in" id="produits">
-      <h2>Nos Produits</h2>
-      <div class="product-grid">
-        <!-- TOMATES DCT -->
-        <div class="product" data-product="TomatesDCT">
-          <div class="img-container">
-            <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9415.jpeg" alt="Tomates DCT" />
-          </div>
-          <h3>Tomates DCT</h3>
-          <p class="price-unselected">Prix à découvrir</p>
-          <div class="options">
-            <input type="radio" id="tomates-12" name="tomatesDCT">
-            <label for="tomates-12" class="option-label">1/2</label>
-            <input type="radio" id="tomates-44" name="tomatesDCT">
-            <label for="tomates-44" class="option-label">4/4</label>
-          </div>
-          <button class="button discover-btn" data-prod="TomatesDCT">Découvrir</button>
-        </div>
+  <section class="hero fade-in" id="accueil">
+    <h1>CHEZ HAROUN !</h1>
+    <p>Votre référence en produits alimentaires premium. Contactez-nous pour plus d'informations.</p>
+  </section>
 
-        <!-- HARISSA -->
-        <div class="product" data-product="Harissa">
-          <div class="img-container">
-            <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9414.jpeg" alt="Harissa" />
-          </div>
-          <h3>Harissa</h3>
-          <p class="price-unselected">Prix à découvrir</p>
-          <div class="options">
-            <input type="radio" id="harissa-12" name="harissaOpt">
-            <label for="harissa-12" class="option-label">1/2</label>
-            <input type="radio" id="harissa-44" name="harissaOpt">
-            <label for="harissa-44" class="option-label">4/4</label>
-            <input type="radio" id="harissa-4oz" name="harissaOpt">
-            <label for="harissa-4oz" class="option-label">4OZ</label>
-          </div>
-          <button class="button discover-btn" data-prod="Harissa">Découvrir</button>
-        </div>
+  <section class="fade-in" id="about">
+    <h2>À propos</h2>
+    <p>
+      Depuis plusieurs années, nous sommes spécialisés dans la distribution de produits d'alimentation générale,
+      avec un engagement sans faille pour la qualité et le service d'exception.
+    </p>
+  </section>
 
-        <!-- SAUCE PIZZA -->
-        <div class="product" data-product="SaucePizza">
-          <div class="img-container">
-            <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287851-img-9418.jpeg" alt="Sauce Pizza" />
-          </div>
-          <h3>Sauce Pizza</h3>
-          <p class="price-unselected">Prix à découvrir</p>
-          <div class="options">
-            <input type="radio" id="pizza-15" name="pizzaOpt">
-            <label for="pizza-15" class="option-label">1/5</label>
-            <input type="radio" id="pizza-13" name="pizzaOpt">
-            <label for="pizza-13" class="option-label">1/3</label>
-          </div>
-          <button class="button discover-btn" data-prod="SaucePizza">Découvrir</button>
+  <section class="fade-in" id="produits">
+    <h2>Nos Produits</h2>
+    <div class="product-grid">
+      <!-- Tomates DCT -->
+      <div class="product" data-product-name="Tomates DCT" data-description="Le double concentré de tomate est un produit phare de l’usine Izdihar en Algérie. Disponible en formats 400g et 800g, il est apprécié pour sa qualité exceptionnelle et sa polyvalence culinaire.">
+        <div class="img-container">
+          <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9415.jpeg" alt="Tomates DCT" />
         </div>
-
-        <!-- CONFITURE -->
-        <div class="product" data-product="Confiture">
-          <div class="img-container">
-            <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9417.jpeg" alt="Confiture" />
-          </div>
-          <h3>Confiture</h3>
-          <p class="price-unselected">Prix à découvrir</p>
-          <button class="button discover-btn" data-prod="Confiture">Découvrir</button>
-        </div>
+        <h3>Tomates DCT</h3>
+        <p class="price-unselected">Prêt à découvrir</p>
+        <button class="button discover-btn">Découvrir</button>
       </div>
-    </section>
 
-    <!-- MODALE – Fenêtre de description produit -->
-    <div id="productModal">
-      <div id="modalContent">
-        <span id="modalClose">&times;</span>
-        <img id="modalImage" src="" alt="produit" />
-        <h3 id="modalTitle"></h3>
-        <p id="modalDescription"></p>
-        <div id="modalButtons">
-          <button id="modalCloseBtn">Fermer</button>
-          <a id="modalCallBtn" href="">Nous Appeler : +213 5 50 50 30 73 / +213 7 74 21 14 80</a>
+      <!-- Harissa -->
+      <div class="product" data-product-name="Harissa" data-description="La harissa Izdihar, fabriquée à base de piment rouge sélectionné, se décline en formats 135g et 380g. Son équilibre parfait entre force et arôme en fait un incontournable des cuisines exigeantes.">
+        <div class="img-container">
+          <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9414.jpeg" alt="Harissa" />
         </div>
+        <h3>Harissa</h3>
+        <p class="price-unselected">Prêt à découvrir</p>
+        <button class="button discover-btn">Découvrir</button>
+      </div>
+
+      <!-- Sauce Pizza -->
+      <div class="product" data-product-name="Sauce Pizza" data-description="La sauce pizza Amor Benamor CAB, en format 420g, allie douceur de la tomate et richesse des épices. Un must pour les passionnés de cuisine authentique.">
+        <div class="img-container">
+          <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287851-img-9418.jpeg" alt="Sauce Pizza" />
+        </div>
+        <h3>Sauce Pizza</h3>
+        <p class="price-unselected">Prêt à découvrir</p>
+        <button class="button discover-btn">Découvrir</button>
+      </div>
+
+      <!-- Confiture -->
+      <div class="product" data-product-name="Confiture" data-description="La confiture d'abricot CAB, disponible en 425g et 900g, allie texture veloutée et équilibre sucré. Un classique revisité avec excellence depuis des décennies.">
+        <div class="img-container">
+          <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9417.jpeg" alt="Confiture" />
+        </div>
+        <h3>Confiture</h3>
+        <p class="price-unselected">Prêt à découvrir</p>
+        <button class="button discover-btn">Découvrir</button>
       </div>
     </div>
+  </section>
 
-    <script>
-      // Ajout du fade-in sur le DOM
-      document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+  <!-- Modal Structure -->
+  <div class="modal-overlay" id="productModal">
+    <div class="product-modal">
+      <button class="modal-close">×</button>
+      <div class="modal-content"></div>
+      <div class="modal-actions">
+        <a href="tel:+213550503073" class="modal-call">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+          </svg>
+          Appeler maintenant
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Gestion des modals
+    document.querySelectorAll('.discover-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const product = btn.closest('.product');
+        const modalContent = document.querySelector('.modal-content');
+        
+        modalContent.innerHTML = `
+          <img src="${product.querySelector('img').src}" alt="${product.dataset.productName}">
+          <h2>${product.dataset.productName}</h2>
+          <p>${product.dataset.description}</p>
+        `;
+
+        document.getElementById('productModal').classList.add('active');
       });
+    });
 
-      // Navigation "Accueil" qui ramène directement en haut
-      document.querySelectorAll(".nav-link-home").forEach(link => {
-        link.addEventListener("click", (e) => {
-          e.preventDefault();
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        });
-      });
+    // Fermeture modal
+    document.querySelector('.modal-close').addEventListener('click', () => {
+      document.getElementById('productModal').classList.remove('active');
+    });
 
-      /**************************************************
-       * Descriptions produits (HTML enrichi)
-      **************************************************/
-      const descriptions = {
-        "TomatesDCT": `<strong>Le double concentré de tomate</strong> est un produit phare de l’usine <span style="color:#0071e3;">Izdihar</span> en Algérie.<br>
-• 400 g<br>
-• 800 g<br><br>
-Très populaire pour sa qualité et son usage dans diverses préparations culinaires.`,
-        "Harissa": `<strong>La harissa</strong> de <span style="color:#0071e3;">Izdihar</span> est fabriquée à partir de piment rouge fort.<br>
-Formats disponibles :<br>
-• 135 g<br>
-• 380 g<br><br>
-Idéale pour accompagner vos plats avec un goût relevé.`,
-        "SaucePizza": `<strong>La Sauce Pizza</strong> d’Amor Benamor CAB est préparée à partir de tomates et d’épices.<br>
-Disponible en bocal de 420 g.<br><br>
-Offrant une saveur riche et authentique, elle est très prisée localement et à l’international.`,
-        "Confiture": `<strong>Les confitures</strong> de Conserverie Amor Benamor (CAB) sont réputées, notamment la confiture d’abricot.<br>
-Formats disponibles :<br>
-• 425 g<br>
-• 900 g<br><br>
-Connu pour son goût équilibré et sa texture en gelée.`
-      };
-
-      /**************************************************
-       * Modale – Gestion de l'ouverture et de la fermeture
-      **************************************************/
-      const productModal = document.getElementById("productModal");
-      const modalContent = document.getElementById("modalContent");
-      const modalClose = document.getElementById("modalClose");
-      const modalCloseBtn = document.getElementById("modalCloseBtn");
-      const modalCallBtn = document.getElementById("modalCallBtn");
-      const modalImage = document.getElementById("modalImage");
-      const modalTitle = document.getElementById("modalTitle");
-      const modalDescription = document.getElementById("modalDescription");
-
-      function openModal(prodKey, imgSrc, title) {
-        modalImage.src = imgSrc;
-        modalTitle.textContent = title;
-        modalDescription.innerHTML = descriptions[prodKey] || "Description à venir.";
-        // Le bouton d'appel affiche les deux numéros directement (pas de demande d'autorisation supplémentaire)
-        modalCallBtn.href = "tel:" + phone1; // Le lien est présent, mais on affiche les deux numéros
-        productModal.classList.add("show");
-        document.body.style.overflow = "hidden";
+    // Fermeture en cliquant hors du modal
+    document.getElementById('productModal').addEventListener('click', (e) => {
+      if(e.target === document.getElementById('productModal')) {
+        document.getElementById('productModal').classList.remove('active');
       }
+    });
 
-      function closeModal() {
-        productModal.classList.remove("show");
-        document.body.style.overflow = "";
-      }
-      modalClose.onclick = closeModal;
-      modalCloseBtn.onclick = closeModal;
-      window.onclick = (e) => { if (e.target === productModal) closeModal(); };
-
-      // Gestion du clic sur "Découvrir"
-      const discoverButtons = document.querySelectorAll(".discover-btn");
-      discoverButtons.forEach(btn => {
-        btn.addEventListener("click", function() {
-          const productCard = this.closest(".product");
-          const prodKey = this.getAttribute("data-prod");
-          const imgSrc = productCard.querySelector(".img-container img").src;
-          const title = productCard.querySelector("h3").textContent;
-          openModal(prodKey, imgSrc, title);
-        });
+    // Intersection Observer pour animations
+    const fadeElements = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
       });
+    }, { threshold: 0.15 });
 
-      // Numéro unique pour le lien d'appel (pour l'exemple, nous n'utilisons qu'un lien, le texte affiche les deux numéros)
-      const phone1 = "+213550503073";
-      const phone2 = "+213774211480";
-    </script>
-  </body>
+    fadeElements.forEach(el => observer.observe(el));
+
+    // Header scroll effect
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('header');
+      header.classList.toggle('scrolled', window.scrollY > 50);
+    });
+  </script>
+</body>
 </html>
