@@ -4,95 +4,87 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CHEZ HAROUN</title>
-  
-  <!--
-  =============================================================================
-  CODE FINAL
-    • Les fiches produits s'affichent en grille avec leurs images dans un conteneur fixant la hauteur (object-fit: contain) pour afficher l’image entière.
-    • Le panier est affiché sous forme de tableau en mode desktop, et se transforme en affichage "stacked" sur mobile (moins de 600px) pour éviter la superposition des textes.
-    • Les totaux (Sous-total HT, TVA 19% et Total TTC) sont calculés et le Total TTC est converti en lettres.
-    • Le bouton de suppression est raccourci en "X" pour gagner de la place.
-  =============================================================================
-  -->
-  
   <style>
-    /* ==============================
+    /* ===============================
        BASE – Typographie & Couleurs
-    ============================== */
-    html { scroll-behavior: smooth; }
+    =============================== */
+    html {
+      scroll-behavior: smooth;
+    }
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
-                   "Open Sans", "Helvetica Neue", sans-serif;
-      color: #333;
-      background: #f2f2f2;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      background: #f5f5f7;
+      color: #1d1d1f;
       line-height: 1.6;
     }
-    a { text-decoration: none; color: inherit; }
-
-    /* ==============================
-       KEYFRAMES – Fade In Unique
-    ============================== */
-    @keyframes fadeInUp {
-      0% { opacity: 0; transform: translateY(30px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-    .fade-in {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 1s ease, transform 1s ease;
-    }
-    .fade-in.visible {
-      animation: fadeInUp 1s forwards ease;
+    a {
+      text-decoration: none;
+      color: inherit;
     }
 
-    /* ==============================
-       HEADER – Navigation Collante
-    ============================== */
+    /* ===============================
+       HEADER
+    =============================== */
     header {
+      background: rgba(255,255,255,0.95);
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 1000;
       padding: 20px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: rgba(0,0,0,0.3);
-      transition: background-color 0.5s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
-    header.scrolled { background-color: rgba(0,0,0,1); }
-    header .logo { font-size: 1.8em; font-weight: bold; letter-spacing: 1px; color: #fff; }
-    nav ul { list-style: none; display: flex; gap: 30px; margin: 0; padding: 0; }
+    header .logo {
+      font-size: 1.8em;
+      font-weight: bold;
+      color: #000;
+      cursor: pointer;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+      margin: 0;
+      padding: 0;
+    }
     nav ul li a {
-      color: #fff;
       font-size: 1em;
-      letter-spacing: 0.5px;
-      transition: color 0.3s;
-      white-space: nowrap;
+      color: #000;
+      padding: 6px 10px;
+      border-radius: 8px;
+      transition: background 0.3s;
     }
-    nav ul li a:hover { color: #ccc; }
+    nav ul li a:hover {
+      background: #e5e5ea;
+    }
+    /* Pour que le clic sur le logo ou "Accueil" renvoie exactement en haut */
+    .nav-link-home { cursor: pointer; }
 
-    /* ==============================
-       Décalage des sections
-    ============================== */
-    .hero, section { scroll-margin-top: 80px; }
-
-    /* ==============================
-       HERO / ACCUEIL
-    ============================== */
+    /* ===============================
+       HERO
+    =============================== */
     .hero {
       background: linear-gradient(135deg, #283E51, #4B79A1);
       color: #fff;
       text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 70vh;
-      padding: 30px 20px;
+      padding: 80px 20px;
     }
-    .hero h1 { font-size: 3em; margin-bottom: 20px; text-transform: uppercase; }
-    .hero p { font-size: 1.1em; margin-bottom: 30px; max-width: 600px; }
+    .hero h1 {
+      font-size: 2.8em;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .hero p {
+      font-size: 1.1em;
+      margin-bottom: 30px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
     .hero .hero-btn {
       background: #0071e3;
       border: none;
@@ -103,214 +95,252 @@
       letter-spacing: 1px;
       cursor: pointer;
       transition: background 0.3s;
+      margin: 10px;
     }
-    .hero .hero-btn:hover { background: #005bb5; }
+    .hero .hero-btn:hover {
+      background: #005bb5;
+    }
 
-    /* ==============================
-       SECTIONS GÉNÉRALES
-    ============================== */
-    section {
-      margin: 40px auto;
-      width: 90%;
-      max-width: 1000px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    /* ===============================
+       SECTIONS – Marges pour éviter que le header cache le titre
+    =============================== */
+    .section {
       padding: 60px 20px;
+      max-width: 1100px;
+      margin: 0 auto 40px auto;
+      scroll-margin-top: 100px;
     }
-    section h2 {
+    .section h2 {
       text-align: center;
-      font-weight: 300;
       font-size: 2.2em;
-      border-bottom: 1px solid #eaeaea;
       margin-bottom: 30px;
       padding-bottom: 10px;
+      border-bottom: 1px solid #eaeaea;
     }
-    #about p, #about ul {
+    .section p, .section ul {
       max-width: 800px;
-      margin: 0 auto;
-      text-align: center;
+      margin: auto;
       font-size: 1em;
       color: #666;
     }
-    #about ul { list-style: disc inside; margin: 20px auto; padding: 0; }
+    .section ul {
+      list-style: disc inside;
+      margin: 20px auto;
+      padding: 0;
+    }
 
-    /* ==============================
+    /* ===============================
        PRODUITS – Grille
-    ============================== */
+    =============================== */
     .product-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 30px;
+      padding: 0 20px;
     }
-    @media (min-width: 768px) {
-      .product-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    .product {
-      background: #fafafa;
-      border: 1px solid #eaeaea;
+    .product-card {
+      background: #fff;
       border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
       padding: 20px;
       text-align: center;
-      transition: transform 0.3s, box-shadow 0.3s;
-      margin-bottom: 10px;
-      min-height: 450px; /* Hauteur minimale pour uniformiser */
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
+      transition: transform 0.3s;
     }
-    .product:hover {
+    .product-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
     }
-    .product.selected { border-color: #0071e3; }
-
-    /* Conteneur pour l'image */
-    .img-container {
+    .product-card img {
       width: 100%;
       height: 220px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      border-radius: 12px;
-      background: #fff;
+      object-fit: contain;
+      border-radius: 8px;
       margin-bottom: 15px;
     }
-    .img-container img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;  /* Affiche l'image entière sans rogner */
+    .product-card h3 {
+      font-size: 1.3em;
+      margin-bottom: 10px;
     }
-
-    .product h3 { margin: 15px 0 10px; font-size: 1.3em; letter-spacing: 0.5px; }
-    .price-unselected { font-style: italic; color: #555; }
-    .price { font-weight: 600; color: #0071e3; margin-bottom: 10px; }
-    .button {
+    .price-unselected {
+      color: #0071e3;
+      font-style: italic;
+      margin-bottom: 10px;
+    }
+    .options {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .options input[type="radio"] {
+      display: none;
+    }
+    .option-label {
+      padding: 6px 12px;
+      background: #fff;
+      border: 2px solid #0071e3;
+      border-radius: 20px;
+      color: #0071e3;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+      font-size: 0.9em;
+    }
+    .options input[type="radio"]:checked + .option-label {
+      background: #0071e3;
+      color: #fff;
+    }
+    .discover-btn {
       background: #0071e3;
       border: none;
       color: #fff;
       padding: 10px 25px;
+      border-radius: 25px;
+      margin-top: 15px;
       cursor: pointer;
-      border-radius: 20px;
-      font-size: 1em;
       transition: background 0.3s;
+      font-size: 1em;
       letter-spacing: 0.5px;
-      margin-top: 10px;
     }
-    .button:hover { background: #005bb5; }
-
-    /* ==============================
-       OPTIONS RADIO – Toggle
-    ============================== */
-    .options {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin: 10px 0;
-    }
-    .option-label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.95em;
-      cursor: pointer;
-      padding: 6px 12px;
-      border: 1px solid #ccc;
-      border-radius: 20px;
-      transition: background 0.3s, border-color 0.3s;
-    }
-    .option-label:hover { background: #f0f0f0; }
-    input[type="radio"] { display: none; }
-    input[type="radio"]:checked + .option-label {
-      background: #0071e3;
-      color: #fff;
-      border-color: #0071e3;
+    .discover-btn:hover {
+      background: #005bb5;
     }
 
-    /* ==============================
-       MESSAGE D'ERREUR
-    ============================== */
-    .error-message {
-      color: red;
-      font-size: 0.85em;
-      display: none;
-      margin-top: 5px;
-    }
-
-
-    
-    /* ==============================
-       MESSAGE DE REMERCIEMENT
-    ============================== */
-    #merci {
-      display: none;
-      text-align: center;
-      background: #e8f5e9;
-      border: 1px solid #c8e6c9;
-      padding: 30px;
-      border-radius: 12px;
-      font-size: 1.1em;
-      max-width: 600px;
-      margin: 40px auto;
-    }
-    #merci h3 { margin-top: 0; font-size: 1.6em; color: #2e7d32; }
-
-    /* ==============================
-       TOAST – Notification
-    ============================== */
-    #toast {
+    /* ===============================
+       MODALE – Fenêtre de description produit
+    =============================== */
+    .modal {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(51,51,51,0.9);
-      color: #fff;
-      padding: 12px 20px;
-      border-radius: 6px;
-      z-index: 9999;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
       display: none;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-      font-size: 0.95em;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      overflow: auto;
+      animation: fadeIn 0.5s ease;
+    }
+    .modal.show {
+      display: flex;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .modal-content {
+      background: #fff;
+      border: 2px solid #0071e3;
+      border-radius: 16px;
+      max-width: 500px;
+      width: 90%;
+      padding: 20px;
+      text-align: left;
+      position: relative;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    }
+    .modal-content img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+    .modal-content h3 {
+      text-align: center;
+      font-size: 1.6em;
+      font-weight: 600;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .modal-content p {
+      white-space: pre-line;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      font-size: 1em;
+      color: #333;
+    }
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    .modal-buttons button,
+    .modal-buttons a {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 25px;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.3s;
+      text-decoration: none;
+      color: #fff;
+    }
+    .modal-buttons button {
+      background: #ccc;
+      color: #333;
+    }
+    .modal-buttons button:hover {
+      background: #bbb;
+    }
+    .modal-buttons a {
+      background: #0071e3;
+    }
+    .modal-buttons a:hover {
+      background: #005bb5;
     }
 
-    /* ==============================
-       MEDIA QUERIES – Autres adaptations sur mobile
-    ============================== */
+    /* ===============================
+       FADE-IN – Animation pour tous les éléments (sections, modale)
+    =============================== */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===============================
+       MEDIA QUERIES – Adaptations Mobile
+    =============================== */
     @media (max-width: 600px) {
       header { padding: 10px 20px; }
       header .logo { font-size: 1.5em; }
       nav ul { gap: 10px; }
       nav ul li a { font-size: 0.9em; }
-      .hero { padding: 20px 10px; }
+      .hero { padding: 40px 10px; }
       .hero h1 { font-size: 2em; }
-      .hero p { font-size: 0.95em; }
+      .hero p { font-size: 1em; }
       section { padding: 30px 15px; margin: 20px auto; }
-      .form-container { padding: 15px; }
-      .button { padding: 8px 15px; font-size: 0.9em; }
+      .discover-btn { padding: 8px 20px; font-size: 0.9em; }
+      .modal-content { font-size: 0.95em; }
+      .modal-content p { margin-bottom: 15px; }
     }
   </style>
 </head>
 <body>
   <!-- HEADER -->
-  <header id="header">
-    <div class="logo">CHEZ HAROUN</div>
+  <header>
+    <div class="logo nav-link-home" onclick="scrollToTop()">CHEZ HAROUN</div>
     <nav>
       <ul>
-        <li><a href="#accueil">Accueil</a></li>
+        <li><a class="nav-link-home" onclick="scrollToTop()">Accueil</a></li>
         <li><a href="#about">À propos</a></li>
         <li><a href="#produits">Produits</a></li>
-
       </ul>
     </nav>
   </header>
 
   <!-- HERO -->
   <section class="hero fade-in" id="accueil">
-    <h1>CHEZ AMIRI !</h1>
-    <p>Votre spécialiste en produits alimentaires en gros. Service rapide et fiable.</p>
-    <a class="hero-btn" href="#produits">Découvrir nos produits</a>
+    <h1>CHEZ HAROUN !</h1>
+    <p>Votre vitrine pour découvrir des produits d'exception.<br>Contactez-nous pour connaître nos tarifs.</p>
+    <!-- Bouton d'appel directement depuis le hero (l'affichage ne déclenche pas l'appel auto) -->
+    <a class="hero-btn" href="tel:+213550503073">Appelez-nous : +213 5 50 50 30 73 / +213 7 74 21 14 80</a>
   </section>
 
   <!-- À PROPOS -->
@@ -333,165 +363,133 @@
   <section class="fade-in" id="produits">
     <h2>Nos Produits</h2>
     <div class="product-grid">
-      <!-- TOMATES DCT -->
-      <div class="product" data-product-name="Tomates DCT">
-        <div class="img-container">
-          <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9415.jpeg" alt="Tomates DCT" />
-        </div>
+      <!-- PRODUIT 1 : TOMATES DCT -->
+      <div class="product-card" data-prod="tomates">
+        <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9415.jpeg" alt="Tomates DCT">
         <h3>Tomates DCT</h3>
-        <p class="price price-unselected">Prix à découvrir</p>
-        <p>Haute qualité, idéales pour vos recettes.</p>
+        <p class="price-unselected">Prix à découvrir</p>
         <div class="options">
-          <input type="radio" id="tomates-12" name="tomatesDCT" value="1/2" data-price="106.28" />
+          <input type="radio" id="tomates-12" name="tomates" value="1/2" data-price="106.28">
           <label for="tomates-12" class="option-label">1/2</label>
-          <input type="radio" id="tomates-44" name="tomatesDCT" value="4/4" data-price="196.14" />
+          <input type="radio" id="tomates-44" name="tomates" value="4/4" data-price="196.14">
           <label for="tomates-44" class="option-label">4/4</label>
         </div>
-        <p class="error-message"></p>
-        <button class="button add-to-cart" data-name="Tomates DCT" data-price="">Ajouter</button>
+        <button class="discover-btn" onclick="openModal('tomates')">Découvrir</button>
       </div>
 
-      <!-- HARISSA -->
-      <div class="product" data-product-name="Harissa">
-        <div class="img-container">
-          <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9414.jpeg" alt="Harissa" />
-        </div>
+      <!-- PRODUIT 2 : HARISSA -->
+      <div class="product-card" data-prod="harissa">
+        <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9414.jpeg" alt="Harissa">
         <h3>Harissa</h3>
-        <p class="price price-unselected">Prix à découvrir</p>
-        <p>Le piquant authentique du Maghreb</p>
+        <p class="price-unselected">Prix à découvrir</p>
         <div class="options">
-          <input type="radio" id="harissa-12" name="harissaOpt" value="1/2" data-price="77.14" />
+          <input type="radio" id="harissa-12" name="harissa" value="1/2" data-price="77.14">
           <label for="harissa-12" class="option-label">1/2</label>
-          <input type="radio" id="harissa-44" name="harissaOpt" value="4/4" data-price="145.71" />
+          <input type="radio" id="harissa-44" name="harissa" value="4/4" data-price="145.71">
           <label for="harissa-44" class="option-label">4/4</label>
-          <input type="radio" id="harissa-4oz" name="harissaOpt" value="4OZ" data-price="35.13" />
+          <input type="radio" id="harissa-4oz" name="harissa" value="4OZ" data-price="35.13">
           <label for="harissa-4oz" class="option-label">4 OZ</label>
         </div>
-        <p class="error-message"></p>
-        <button class="button add-to-cart" data-name="Harissa" data-price="">Ajouter</button>
+        <button class="discover-btn" onclick="openModal('harissa')">Découvrir</button>
       </div>
 
-      <!-- SAUCE PIZZA -->
-      <div class="product" data-product-name="Sauce Pizza">
-        <div class="img-container">
-          <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287851-img-9418.jpeg" alt="Sauce Pizza" />
-        </div>
+      <!-- PRODUIT 3 : SAUCE PIZZA -->
+      <div class="product-card" data-prod="sauce_pizza">
+        <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287851-img-9418.jpeg" alt="Sauce Pizza">
         <h3>Sauce Pizza</h3>
-        <p class="price price-unselected">Prix à découvrir</p>
-        <p>Base savoureuse pour pizzas</p>
+        <p class="price-unselected">Prix à découvrir</p>
         <div class="options">
-          <input type="radio" id="pizza-15" name="pizzaOpt" value="1/5" data-price="497.14" />
+          <input type="radio" id="pizza-15" name="pizza" value="1/5" data-price="497.14">
           <label for="pizza-15" class="option-label">1/5</label>
-          <input type="radio" id="pizza-13" name="pizzaOpt" value="1/3" data-price="334.28" />
+          <input type="radio" id="pizza-13" name="pizza" value="1/3" data-price="334.28">
           <label for="pizza-13" class="option-label">1/3</label>
         </div>
-        <p class="error-message"></p>
-        <button class="button add-to-cart" data-name="Sauce Pizza" data-price="">Ajouter</button>
+        <button class="discover-btn" onclick="openModal('sauce_pizza')">Découvrir</button>
       </div>
 
-      <!-- CONFITURE -->
-      <div class="product" data-product-name="Confiture">
-        <div class="img-container">
-          <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9417.jpeg" alt="Confiture" />
-        </div>
+      <!-- PRODUIT 4 : CONFITURE -->
+      <div class="product-card" data-prod="confiture">
+        <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9417.jpeg" alt="Confiture">
         <h3>Confiture</h3>
-        <p class="price">350.00 DA</p>
-        <p>Douceur artisanale</p>
-        <p class="error-message"></p>
-        <button class="button add-to-cart" data-name="Confiture" data-price="350.00">Ajouter</button>
+        <p class="price-unselected">Prix à découvrir</p>
+        <!-- Pas d'options pour la confiture -->
+        <button class="discover-btn" onclick="openModal('confiture')">Découvrir</button>
       </div>
     </div>
   </section>
 
-  
-
-  <!-- TOAST – Notification -->
-  <div id="toast"></div>
+  <!-- MODALE PRODUIT -->
+  <div class="modal" id="productModal">
+    <div class="modal-content">
+      <span class="close-btn" id="closeModal">&times;</span>
+      <img id="modalImage" src="" alt="Image produit">
+      <h3 id="modalTitle"></h3>
+      <p id="modalDesc"></p>
+      <div class="modal-buttons">
+        <button class="close-btn" onclick="closeModal()">Fermer</button>
+        <a class="call-btn2" href="tel:+213550503073">Nous Appeler : +213 5 50 50 30 73 / +213 7 74 21 14 80</a>
+      </div>
+    </div>
+  </div>
 
   <script>
-    /***************************************************************
-     * Dictionnaire des Pack Sizes (Qt/Unité)
-    ***************************************************************/
-    const PACK_SIZES = {
-      "Tomates DCT (1/2)": 24,
-      "Tomates DCT (4/4)": 12,
-      "Harissa (1/2)": 48,
-      "Harissa (4/4)": 24,
-      "Harissa (4OZ)": 12,
-      "Sauce Pizza (1/5)": 5,
-      "Sauce Pizza (1/3)": 3,
-      "Confiture": 1
+    /* Gestion du scroll pour "Accueil" */
+    function scrollToTop() {
+      window.scrollTo({top:0, behavior:"smooth"});
+    }
+    document.querySelectorAll('.nav-link-home').forEach(link => {
+      link.addEventListener("click", scrollToTop);
+    });
+
+    /* Descriptions produits */
+    const productDetails = {
+      tomates: {
+        title: "TOMATES DCT",
+        desc: "Le double concentré de tomate est un produit phare de l’usine Izdihar en Algérie. Il est disponible dans différentes tailles, notamment :\n• 400 g\n• 800 g\n\nCe produit est très populaire pour sa qualité et son utilisation dans diverses préparations culinaires.",
+        img: "https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9415.jpeg"
+      },
+      harissa: {
+        title: "HARISSA",
+        desc: "La harissa de la marque Izdihar est un produit populaire en Algérie, fabriqué à base de piment rouge fort. Elle est disponible dans plusieurs formats, notamment :\n• 135 g\n• 380 g\n\nAppréciée pour sa qualité et son goût relevé, elle est idéale pour accompagner divers plats traditionnels et modernes.",
+        img: "https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9414.jpeg"
+      },
+      sauce_pizza: {
+        title: "SAUCE PIZZA",
+        desc: "La sauce pizza d’Amor Benamor CAB est un produit de la gamme de condiments et sauces de la Conserverie Amor Benamor. Elle est disponible en bocal de 420 g.\nCette sauce est préparée à partir de tomates et d’épices, offrant une saveur riche et authentique.\nElle est appréciée pour sa facilité d’utilisation et sa qualité gustative, faisant d’elle un choix populaire tant parmi les consommateurs algériens qu’internationaux.",
+        img: "https://image.noelshack.com/fichiers/2025/15/4/1744287851-img-9418.jpeg"
+      },
+      confiture: {
+        title: "CONFITURE",
+        desc: "Les confitures produites par la Conserverie Amor Benamor (CAB) sont particulièrement réputées, notamment la confiture d’abricot.\nCe produit emblématique, présent sur le marché algérien depuis des décennies, est apprécié pour son goût équilibré et sa texture en gelée.\nFormats disponibles :\n• 425 g\n• 900 g",
+        img: "https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9417.jpeg"
+      }
     };
 
-    /***************************************************************
-     * Variables Globales & Éléments du DOM
-    ***************************************************************/
-    const cart = {};
-    const cartBody = document.getElementById('cart-body');
-    const subTotalDisplay = document.getElementById('total');
-    const tvaLine = document.getElementById('tvaLine');
-    const ttcLine = document.getElementById('ttcLine');
-    const totalWordsElem = document.getElementById('totalWords');
-    const checkoutBtn = document.getElementById('checkout-btn');
-    const toast = document.getElementById('toast');
-    const customOrderForm = document.getElementById('customOrderForm');
-    const orderDetailsField = document.getElementById('orderDetails');
+    /* Ouverture de la modale */
+    function openModal(prodKey) {
+      const modal = document.getElementById("productModal");
+      const details = productDetails[prodKey];
+      document.getElementById("modalImage").src = details.img;
+      document.getElementById("modalTitle").textContent = details.title;
+      document.getElementById("modalDesc").textContent = details.desc;
+      modal.classList.add("show");
+      document.body.style.overflow = "hidden";
+    }
 
-    /***************************************************************
-     * HEADER – Fond opaque au scroll
-    ***************************************************************/
-    window.addEventListener('scroll', () => {
-      const header = document.getElementById('header');
-      if (window.scrollY > 50) header.classList.add('scrolled');
-      else header.classList.remove('scrolled');
-    });
+    /* Fermeture de la modale */
+    function closeModal() {
+      const modal = document.getElementById("productModal");
+      modal.classList.remove("show");
+      document.body.style.overflow = "auto";
+    }
 
-    /***************************************************************
-     * FADE-IN – IntersectionObserver
-    ***************************************************************/
-    const fadeElements = document.querySelectorAll('.fade-in');
-    const observerOptions = { threshold: 0.2, rootMargin: "0px 0px -50px 0px" };
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, observerOptions);
-    fadeElements.forEach(el => observer.observe(el));
-
-    /***************************************************************
-     * GESTION DES OPTIONS RADIO – Toggle
-    ***************************************************************/
-    document.querySelectorAll('.product').forEach(prod => {
-      const radioButtons = prod.querySelectorAll('input[type="radio"]');
-      if (radioButtons.length > 0) {
-        radioButtons.forEach(rb => {
-          rb.addEventListener('pointerdown', function() { this.wasChecked = this.checked; });
-          rb.addEventListener('click', function() {
-            if (this.wasChecked) {
-              this.checked = false;
-              let anyChecked = false;
-              radioButtons.forEach(r => { if (r.checked) anyChecked = true; });
-              if (!anyChecked) {
-                prod.classList.remove('selected');
-                const priceElem = prod.querySelector('.price');
-                priceElem.textContent = "Prix à découvrir";
-                priceElem.classList.add('price-unselected');
-              }
-            } else {
-              prod.classList.add('selected');
-              const chosenPrice = parseFloat(this.getAttribute('data-price')) || 0;
-              const priceElem = prod.querySelector('.price');
-              priceElem.textContent = "Prix : " + chosenPrice.toFixed(2) + " DA";
-              priceElem.classList.remove('price-unselected');
-            }
-          });
-        });
+    document.getElementById("closeModal").onclick = closeModal;
+    window.onclick = function(event) {
+      const modal = document.getElementById("productModal");
+      if (event.target === modal) {
+        closeModal();
       }
-    });
-  
-  
+    };
+  </script>
 </body>
 </html>
