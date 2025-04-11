@@ -4,21 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CHEZ HAROUN</title>
-  
-  <!-- =============================================================================
-       CODE FINAL – Site pub / présentation
-       • Grille de produits avec options et bouton "Découvrir"
-       • Aucun panier ni commande en ligne (les prix ne sont pas affichés, juste "Prix à découvrir")
-       • Lors du clic sur "Découvrir", une modale s'ouvre au centre avec l'image, le titre et la description détaillée
-       • Dans la modale, deux boutons : "Fermer" et "Nous Appeler" (lien tel:)
-       • "CHEZ AMIRI" devient "CHEZ HAROUN"
-  ============================================================================= -->
-  
+
   <style>
     /* ===============================
        BASE – Typographie & Couleurs
     =============================== */
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+    }
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
@@ -27,7 +20,15 @@
       background: #f2f2f2;
       line-height: 1.6;
     }
-    a { text-decoration: none; color: inherit; }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Laisse une marge quand on saute vers une ancre (#about, #produits...) */
+    .hero, section {
+      scroll-margin-top: 100px; /* pour éviter que le titre ne soit masqué par le header sticky */
+    }
 
     /* ===============================
        HEADER
@@ -36,16 +37,30 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      padding: 20px 40px;
+      padding: 15px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: rgba(0,0,0,0.3);
+      background-color: rgba(0,0,0,0.2);
+      backdrop-filter: blur(8px);
       transition: background-color 0.5s ease;
     }
-    header.scrolled { background-color: rgba(0,0,0,1); }
-    header .logo { font-size: 1.8em; font-weight: bold; letter-spacing: 1px; color: #fff; }
-    nav ul { list-style: none; display: flex; gap: 30px; margin: 0; padding: 0; }
+    header.scrolled {
+      background-color: rgba(0,0,0,0.7);
+    }
+    header .logo {
+      font-size: 1.8em;
+      font-weight: 500;
+      letter-spacing: 1px;
+      color: #fff;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+      margin: 0;
+      padding: 0;
+    }
     nav ul li a {
       color: #fff;
       font-size: 1em;
@@ -53,10 +68,12 @@
       transition: color 0.3s;
       white-space: nowrap;
     }
-    nav ul li a:hover { color: #ccc; }
+    nav ul li a:hover {
+      color: #ddd;
+    }
 
     /* ===============================
-       HERO / ACCUEIL
+       HERO
     =============================== */
     .hero {
       background: linear-gradient(135deg, #283E51, #4B79A1);
@@ -69,8 +86,18 @@
       min-height: 70vh;
       padding: 30px 20px;
     }
-    .hero h1 { font-size: 3em; margin-bottom: 20px; text-transform: uppercase; }
-    .hero p { font-size: 1.1em; margin-bottom: 30px; max-width: 600px; }
+    .hero h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .hero p {
+      font-size: 1.1em;
+      margin-bottom: 30px;
+      max-width: 600px;
+      font-weight: 300;
+    }
     .hero .hero-btn {
       background: #0071e3;
       border: none;
@@ -82,10 +109,12 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-    .hero .hero-btn:hover { background: #005bb5; }
+    .hero .hero-btn:hover {
+      background: #005bb5;
+    }
 
     /* ===============================
-       SECTIONS GÉNÉRALES
+       SECTION – Général
     =============================== */
     section {
       margin: 40px auto;
@@ -98,11 +127,12 @@
     }
     section h2 {
       text-align: center;
-      font-weight: 300;
+      font-weight: 400;
       font-size: 2.2em;
       border-bottom: 1px solid #eaeaea;
       margin-bottom: 30px;
       padding-bottom: 10px;
+      letter-spacing: 0.5px;
     }
 
     /* ===============================
@@ -114,7 +144,9 @@
       gap: 30px;
     }
     @media (min-width: 768px) {
-      .product-grid { grid-template-columns: repeat(2, 1fr); }
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
     .product {
       background: #fafafa;
@@ -122,6 +154,7 @@
       border-radius: 12px;
       padding: 20px;
       text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
       margin-bottom: 10px;
       min-height: 450px;
       display: flex;
@@ -129,24 +162,39 @@
       justify-content: space-between;
       align-items: center;
     }
-    .product:hover { transform: translateY(-5px); box-shadow: 0 6px 18px rgba(0,0,0,0.1); }
-    .product h3 { margin: 15px 0 10px; font-size: 1.3em; letter-spacing: 0.5px; }
-    /* Le message pour le prix est fixe et affiché en bleu */
+    .product:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .product h3 {
+      margin: 15px 0 10px;
+      font-size: 1.3em;
+      letter-spacing: 0.5px;
+    }
     .price-unselected {
-      font-style: italic;
       color: #0071e3;
+      font-weight: 500;
+      font-style: normal;
+      margin-bottom: 5px;
     }
-    /* Bouton "Découvrir" */
-    .button { 
-      background: #0071e3; border: none; color: #fff;
-      padding: 10px 25px; cursor: pointer; border-radius: 20px;
-      font-size: 1em; transition: background 0.3s; letter-spacing: 0.5px; margin-top: 10px;
-    }
-    .button:hover { background: #005bb5; }
 
-    /* ===============================
-       CONTENEUR IMAGE PRODUIT
-    =============================== */
+    .button {
+      background: #0071e3;
+      color: #fff;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 25px; /* pour un style pill */
+      font-size: 1em;
+      transition: background 0.3s;
+      letter-spacing: 0.5px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .button:hover {
+      background: #005bb5;
+    }
+
+    /* Image container */
     .img-container {
       width: 100%;
       height: 220px;
@@ -165,93 +213,142 @@
     }
 
     /* ===============================
-       MODE STACKED – Pour le tableau (ne sera plus utilisé ici)
-       Nous avons supprimé le panier donc cette partie a été retirée.
-    ============================== */
-    
+       OPTIONS RADIO – plus discrètes
+    =============================== */
+    .options {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 10px 0;
+    }
+    .options input[type="radio"] {
+      display: none;
+    }
+    /* On crée un rond gris, le contour devient #0071e3 si coché */
+    .option-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: border-color 0.3s;
+    }
+    .option-label:hover { border-color: #0071e3; }
+    input[type="radio"]:checked + .option-label {
+      border-color: #0071e3;
+      background: #0071e3;
+    }
+    .option-label::after {
+      content: attr(for);
+      position: absolute;
+      clip: rect(0,0,0,0);
+      clip-path: inset(50%);
+      height:1px; width:1px; overflow:hidden;
+    }
+
     /* ===============================
-       MODALE – Fenêtre de description produit
-    ============================== */
+       MODALE – Fenêtre Apple-like
+    =============================== */
     #productModal {
-      display: none; /* caché par défaut */
+      display: none;
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 2000;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(4px);
+      z-index: 9999;
       align-items: center;
       justify-content: center;
+      padding: 10px;
     }
     #modalContent {
       background: #fff;
-      border: 2px solid #0071e3; /* bordure bleue */
-      border-radius: 12px;
+      border: 1px solid #ddd;
+      border-radius: 16px;
       max-width: 500px;
-      width: 90%;
+      width: 100%;
       padding: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      text-align: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      text-align: left;
       position: relative;
+      font-size: 1em;
     }
-    #modalContent img {
+    #modalClose {
+      position: absolute;
+      top: 15px; right: 20px;
+      font-size: 1.5em;
+      cursor: pointer;
+    }
+    #modalTitle {
+      text-align: center;
+      font-size: 1.6em;
+      font-weight: 600;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    #modalImage {
       width: 100%;
       height: 220px;
       object-fit: contain;
-      border-radius: 8px;
-      margin-bottom: 15px;
+      border-radius: 12px;
+      display: block;
+      margin: 0 auto 15px;
     }
-    #modalContent h3 {
-      margin: 10px 0;
-      font-size: 1.5em;
-      text-transform: uppercase;
-    }
-    #modalContent p {
-      font-size: 1em;
-      margin: 10px 0 20px;
-      line-height: 1.4em;
+    #modalDescription {
+      line-height: 1.5em;
+      white-space: pre-line; /* pour respecter les retours à la ligne dans la description */
+      margin-bottom: 20px;
     }
     #modalButtons {
       display: flex;
-      justify-content: space-around;
+      justify-content: space-evenly;
       gap: 10px;
     }
-    #modalButtons a, #modalButtons button {
+    /* Boutons pill dans la modale */
+    #modalButtons button, #modalButtons a {
       flex: 1;
-      padding: 10px;
-      font-size: 1em;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      text-decoration: none;
       text-align: center;
-    }
-    #modalButtons a {
       background: #0071e3;
       color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 25px;
+      font-size: 1em;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      text-decoration: none; /* pour le <a> */
+      transition: background 0.3s;
     }
-    #modalButtons a:hover { background: #005bb5; }
-    #modalButtons button {
+    #modalButtons button:hover, #modalButtons a:hover { background: #005bb5; }
+
+    /* 
+       EXEMPLE : on peut différencier "Fermer" et "Nous Appeler"
+       - "Fermer" => background gris clair
+       - "Nous Appeler" => background #0071e3
+    */
+    #modalCloseBtn {
       background: #ccc;
       color: #333;
     }
-    #modalButtons button:hover { background: #bbb; }
+    #modalCloseBtn:hover {
+      background: #bbb;
+    }
 
-    /* ===============================
-       MEDIA QUERIES – Mobile
-    ============================== */
-    @media (max-width: 600px) {
+    @media (max-width:600px) {
       header { padding: 10px 20px; }
-      header .logo { font-size: 1.5em; }
-      nav ul { gap: 10px; }
-      nav ul li a { font-size: 0.9em; }
-      .hero { padding: 20px 10px; }
+      header .logo { font-size: 1.4em; }
       .hero h1 { font-size: 2em; }
       .hero p { font-size: 0.95em; }
-      section { padding: 30px 15px; margin: 20px auto; }
-      .button { padding: 8px 15px; font-size: 0.9em; }
+      #modalContent { font-size: 0.95em; }
+      #modalDescription { margin-bottom: 15px; }
     }
   </style>
 </head>
+
 <body>
   <!-- HEADER -->
   <header id="header">
@@ -266,17 +363,17 @@
   </header>
 
   <!-- HERO -->
-  <section class="hero fade-in" id="accueil">
+  <section class="hero" id="accueil">
     <h1>CHEZ HAROUN !</h1>
     <p>Votre spécialiste pour découvrir des produits de qualité. Contactez-nous pour connaître nos prix.</p>
     <a class="hero-btn" href="#produits">Découvrir nos produits</a>
   </section>
 
   <!-- À PROPOS -->
-  <section class="fade-in" id="about">
+  <section id="about">
     <h2>À propos</h2>
     <p>
-      Depuis plusieurs années, nous sommes spécialisés dans la distribution en gros de produits d’alimentation générale,
+      Depuis plusieurs années, nous sommes spécialisés dans la distribution en gros de produits d’alimentation générale, 
       avec un fort engagement pour la qualité et le service.
     </p>
     <ul>
@@ -285,179 +382,180 @@
       <li>Boissons variées</li>
       <li>Et bien d'autres articles</li>
     </ul>
-    <p>Situés à Guelma, nous assurons des délais de livraison courts et un service fiable.</p>
+    <p>
+      Situés à Guelma, nous assurons des délais de livraison courts et un service fiable.
+    </p>
   </section>
 
   <!-- PRODUITS -->
-  <section class="fade-in" id="produits">
+  <section id="produits">
     <h2>Nos Produits</h2>
     <div class="product-grid">
       <!-- TOMATES DCT -->
-      <div class="product" data-product-name="Tomates DCT">
+      <div class="product" data-product="Tomates DCT">
         <div class="img-container">
           <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9415.jpeg" alt="Tomates DCT" />
         </div>
         <h3>Tomates DCT</h3>
         <p class="price-unselected">Prix à découvrir</p>
         <div class="options">
-          <input type="radio" id="tomates-12" name="tomatesDCT" value="1/2" data-price="106.28" />
-          <label for="tomates-12" class="option-label">1/2</label>
-          <input type="radio" id="tomates-44" name="tomatesDCT" value="4/4" data-price="196.14" />
-          <label for="tomates-44" class="option-label">4/4</label>
+          <input type="radio" id="tomates-12" name="tomatesDCT" />
+          <label for="tomates-12" class="option-label"></label>
+          <input type="radio" id="tomates-44" name="tomatesDCT" />
+          <label for="tomates-44" class="option-label"></label>
         </div>
-        <!-- Bouton renommé "Découvrir" -->
-        <button class="button discover-btn" data-product="Tomates DCT">Découvrir</button>
+        <button class="button discover-btn" data-prod="TomatesDCT">Découvrir</button>
       </div>
 
       <!-- HARISSA -->
-      <div class="product" data-product-name="Harissa">
+      <div class="product" data-product="Harissa">
         <div class="img-container">
           <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9414.jpeg" alt="Harissa" />
         </div>
         <h3>Harissa</h3>
         <p class="price-unselected">Prix à découvrir</p>
         <div class="options">
-          <input type="radio" id="harissa-12" name="harissaOpt" value="1/2" data-price="77.14" />
-          <label for="harissa-12" class="option-label">1/2</label>
-          <input type="radio" id="harissa-44" name="harissaOpt" value="4/4" data-price="145.71" />
-          <label for="harissa-44" class="option-label">4/4</label>
-          <input type="radio" id="harissa-4oz" name="harissaOpt" value="4OZ" data-price="35.13" />
-          <label for="harissa-4oz" class="option-label">4 OZ</label>
+          <input type="radio" id="harissa-12" name="harissaOpt" />
+          <label for="harissa-12" class="option-label"></label>
+          <input type="radio" id="harissa-44" name="harissaOpt" />
+          <label for="harissa-44" class="option-label"></label>
+          <input type="radio" id="harissa-4oz" name="harissaOpt" />
+          <label for="harissa-4oz" class="option-label"></label>
         </div>
-        <button class="button discover-btn" data-product="Harissa">Découvrir</button>
+        <button class="button discover-btn" data-prod="Harissa">Découvrir</button>
       </div>
 
       <!-- SAUCE PIZZA -->
-      <div class="product" data-product-name="Sauce Pizza">
+      <div class="product" data-product="Sauce Pizza">
         <div class="img-container">
           <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287851-img-9418.jpeg" alt="Sauce Pizza" />
         </div>
         <h3>Sauce Pizza</h3>
         <p class="price-unselected">Prix à découvrir</p>
         <div class="options">
-          <input type="radio" id="pizza-15" name="pizzaOpt" value="1/5" data-price="497.14" />
-          <label for="pizza-15" class="option-label">1/5</label>
-          <input type="radio" id="pizza-13" name="pizzaOpt" value="1/3" data-price="334.28" />
-          <label for="pizza-13" class="option-label">1/3</label>
+          <input type="radio" id="pizza-15" name="pizzaOpt" />
+          <label for="pizza-15" class="option-label"></label>
+          <input type="radio" id="pizza-13" name="pizzaOpt" />
+          <label for="pizza-13" class="option-label"></label>
         </div>
-        <button class="button discover-btn" data-product="Sauce Pizza">Découvrir</button>
+        <button class="button discover-btn" data-prod="SaucePizza">Découvrir</button>
       </div>
 
       <!-- CONFITURE -->
-      <div class="product" data-product-name="Confiture">
+      <div class="product" data-product="Confiture">
         <div class="img-container">
           <img src="https://image.noelshack.com/fichiers/2025/15/4/1744287517-img-9417.jpeg" alt="Confiture" />
         </div>
         <h3>Confiture</h3>
         <p class="price-unselected">Prix à découvrir</p>
-        <button class="button discover-btn" data-product="Confiture">Découvrir</button>
+        <!-- Pas d'options, c'est OK -->
+        <button class="button discover-btn" data-prod="Confiture">Découvrir</button>
       </div>
     </div>
   </section>
 
-  <!-- MODALE – Fenêtre de description produit -->
+  <!-- MODALE – Fenêtre style Apple -->
   <div id="productModal">
     <div id="modalContent">
-      <span id="closeModal" style="position:absolute;top:10px;right:15px;cursor:pointer;font-size:1.5em;">&times;</span>
-      <img id="modalImage" src="" alt="" />
+      <span id="modalClose">&times;</span>
+      <img id="modalImage" src="" alt="produit" />
       <h3 id="modalTitle"></h3>
       <p id="modalDescription"></p>
       <div id="modalButtons">
-        <button id="modalCloseBtn">Fermer</button>
-        <a id="modalCallBtn" href="">Nous Appeler</a>
+        <button id="modalCloseBtn" style="flex:1;">Fermer</button>
+        <a id="modalCallBtn" style="flex:1;" href="">Nous Appeler</a>
       </div>
     </div>
   </div>
 
   <script>
-    /**************************************************
-     * Objet descriptions produits
-     * Utiliser les textes fournis pour chaque produit
-    **************************************************/
-    const productDescriptions = {
-      "Tomates DCT": `Le double concentré de tomate est un produit phare de l’usine Izdihar en Algérie. Il est disponible dans différentes tailles, notamment : 
+    // Fix header scroll color
+    window.addEventListener("scroll", () => {
+      const header = document.getElementById("header");
+      if (window.scrollY > 50) header.classList.add("scrolled");
+      else header.classList.remove("scrolled");
+    });
+
+    // Descriptions HTML enrichies (avec retours à la ligne, balises, etc.)
+    const descriptions = {
+      "TomatesDCT": 
+`<strong>Le double concentré de tomate</strong> est un produit phare de l’usine <span style="color:#0071e3;">Izdihar</span> en Algérie.
+Il est disponible dans différentes tailles, notamment :
 • 400 g
 • 800 g
 
 Ce produit est très populaire pour sa qualité et son utilisation dans diverses préparations culinaires.`,
-      "Harissa": `La harissa de la marque Izdihar est un produit populaire en Algérie, fabriqué à base de piment rouge fort. Elle est disponible dans plusieurs formats, notamment :
+
+      "Harissa": 
+`La <strong>harissa</strong> de la marque <span style="color:#0071e3;">Izdihar</span> est un produit populaire en Algérie,
+fabriqué à base de piment rouge fort. Elle est disponible dans plusieurs formats, notamment :
 • 135 g
 • 380 g
 
-Ce produit est apprécié pour sa qualité et son goût relevé, idéale pour accompagner divers plats traditionnels et modernes.`,
-      "Sauce Pizza": `La sauce pizza d’Amor Benamor CAB est un produit de la gamme de condiments et sauces de la Conserverie Amor Benamor. Elle est disponible en bocal de 420 g. 
-Cette sauce est préparée à partir de tomates et d’épices, offrant une saveur riche et authentique. 
-Elle est appréciée pour sa facilité d’utilisation et sa qualité gustative, ce qui en fait un choix populaire parmi les consommateurs algériens et internationaux.`,
-      "Confiture": `Les confitures produites par la Conserverie Amor Benamor (CAB) sont particulièrement réputées, notamment la confiture d’abricot. 
-Ce produit emblématique, présent sur le marché algérien depuis des décennies, est apprécié pour son goût équilibré et sa texture en gelée.
+Idéale pour accompagner divers plats traditionnels et modernes, elle est appréciée pour son goût relevé.`,
+
+      "SaucePizza":
+`La <strong>Sauce Pizza</strong> d’Amor Benamor (<span style="color:#0071e3;">CAB</span>) est disponible en bocal de 420g.
+Préparée à partir de tomates et d’épices, elle offre une saveur riche et authentique.
+Facile d’utilisation, elle est un choix populaire parmi les consommateurs algériens et internationaux.`,
+
+      "Confiture":
+`Les <strong>confitures</strong> produites par la Conserverie <span style="color:#0071e3;">Amor Benamor (CAB)</span> 
+sont réputées, notamment la confiture d’abricot. Présente sur le marché algérien depuis des décennies,
+elle est appréciée pour son goût équilibré et sa texture en gelée.
+
 Formats disponibles :
 • 425 g
 • 900 g`
     };
 
-    // Numéro de téléphone à utiliser dans "Nous Appeler"
     const phoneNumber = "+213774211480";
 
-    /**************************************************
-     * GESTION DE LA MODALE
-     **************************************************/
-    const modal = document.getElementById("productModal");
+    // Sélecteurs modale
+    const productModal = document.getElementById("productModal");
+    const modalContent = document.getElementById("modalContent");
+    const modalClose = document.getElementById("modalClose");
+    const modalCloseBtn = document.getElementById("modalCloseBtn");
+    const modalCallBtn = document.getElementById("modalCallBtn");
     const modalImage = document.getElementById("modalImage");
     const modalTitle = document.getElementById("modalTitle");
     const modalDescription = document.getElementById("modalDescription");
-    const modalCallBtn = document.getElementById("modalCallBtn");
-    const closeModalElem = document.getElementById("closeModal");
-    const modalCloseBtn = document.getElementById("modalCloseBtn");
 
-    // Fonction pour ouvrir la modale avec les détails du produit
-    function openModal(productCard) {
-      // Récupérer les informations du produit
-      const prodTitle = productCard.querySelector("h3").textContent;
-      const prodImgSrc = productCard.querySelector(".img-container img").src;
-      // On utilise le nom sans options pour récupérer la description
-      const baseName = prodTitle.split(" (")[0];
-      const desc = productDescriptions[baseName] || "Description à venir.";
-
+    // Ouvrir la modale
+    function openModal(prodKey, imgSrc, title) {
       // Remplir la modale
-      modalImage.src = prodImgSrc;
-      modalTitle.textContent = prodTitle;
-      modalDescription.textContent = desc;
-      // Configurer le bouton "Nous Appeler"
-      modalCallBtn.href = `tel:${phoneNumber}`;
-      modalCallBtn.textContent = "Nous Appeler";
-      // Afficher la modale
-      modal.style.display = "flex";
+      modalImage.src = imgSrc;
+      modalTitle.textContent = title;
+      // Injection HTML : on autorise le formatage (retours à la ligne, bold, etc.)
+      modalDescription.innerHTML = descriptions[prodKey] || "Description à venir.";
+      // Lien d'appel
+      modalCallBtn.href = "tel:" + phoneNumber;
+      productModal.style.display = "flex";
     }
 
     // Fermer la modale
     function closeModal() {
-      modal.style.display = "none";
+      productModal.style.display = "none";
     }
+    modalClose.onclick = closeModal;
+    modalCloseBtn.onclick = closeModal;
 
-    // Écouteurs sur les éléments de fermeture
-    closeModalElem.addEventListener("click", closeModal);
-    modalCloseBtn.addEventListener("click", closeModal);
-    // Fermer la modale si l'utilisateur clique en dehors du contenu
-    window.addEventListener("click", function(e) {
-      if (e.target === modal) { closeModal(); }
-    });
+    // Fermer si on clique en dehors
+    window.onclick = (e) => {
+      if (e.target === productModal) closeModal();
+    };
 
-    /**************************************************
-     * ÉCOUTEUR SUR LES BOUTONS "DÉCOUVRIR"
-     **************************************************/
+    // Gérer les boutons "Découvrir"
     const discoverButtons = document.querySelectorAll(".discover-btn");
     discoverButtons.forEach(btn => {
-      btn.addEventListener("click", function() {
-        // On cherche la fiche produit parent de ce bouton
-        const productCard = this.closest(".product");
-        openModal(productCard);
+      btn.addEventListener("click", () => {
+        const productCard = btn.closest(".product");
+        const prodKey = btn.getAttribute("data-prod");
+        const imgSrc = productCard.querySelector(".img-container img").src;
+        const title = productCard.querySelector("h3").textContent;
+        openModal(prodKey, imgSrc, title);
       });
     });
-
-    /**************************************************
-     * SUPPRESSION de toute logique de panier et commande (inutilisée)
-     **************************************************/
-    // (Toutes les fonctions de panier, cart et formulaire ont été retirées puisque le site est publicitaire.)
   </script>
 </body>
 </html>
