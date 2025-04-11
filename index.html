@@ -1,361 +1,359 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CHEZ HAROUN</title>
-
-  <style>
-    /* ===============================
-       BASE – Typographie & Couleurs
-    =============================== */
-    html {
-      scroll-behavior: smooth;
-    }
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
-                   "Open Sans", "Helvetica Neue", sans-serif;
-      color: #333;
-      background: #f2f2f2;
-      line-height: 1.6;
-    }
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    /* Laisse une marge quand on saute vers une ancre (#about, #produits...) */
-    .hero, section {
-      scroll-margin-top: 100px; /* pour éviter que le titre ne soit masqué par le header sticky */
-    }
-
-    /* ===============================
-       HEADER
-    =============================== */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      padding: 15px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: rgba(0,0,0,0.2);
-      backdrop-filter: blur(8px);
-      transition: background-color 0.5s ease;
-    }
-    header.scrolled {
-      background-color: rgba(0,0,0,0.7);
-    }
-    header .logo {
-      font-size: 1.8em;
-      font-weight: 500;
-      letter-spacing: 1px;
-      color: #fff;
-    }
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 30px;
-      margin: 0;
-      padding: 0;
-    }
-    nav ul li a {
-      color: #fff;
-      font-size: 1em;
-      letter-spacing: 0.5px;
-      transition: color 0.3s;
-      white-space: nowrap;
-    }
-    nav ul li a:hover {
-      color: #ddd;
-    }
-
-    /* ===============================
-       HERO
-    =============================== */
-    .hero {
-      background: linear-gradient(135deg, #283E51, #4B79A1);
-      color: #fff;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 70vh;
-      padding: 30px 20px;
-    }
-    .hero h1 {
-      font-size: 3em;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-    .hero p {
-      font-size: 1.1em;
-      margin-bottom: 30px;
-      max-width: 600px;
-      font-weight: 300;
-    }
-    .hero .hero-btn {
-      background: #0071e3;
-      border: none;
-      color: #fff;
-      padding: 15px 40px;
-      border-radius: 25px;
-      font-size: 1em;
-      letter-spacing: 1px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .hero .hero-btn:hover {
-      background: #005bb5;
-    }
-
-    /* ===============================
-       SECTION – Général
-    =============================== */
-    section {
-      margin: 40px auto;
-      width: 90%;
-      max-width: 1000px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      padding: 60px 20px;
-    }
-    section h2 {
-      text-align: center;
-      font-weight: 400;
-      font-size: 2.2em;
-      border-bottom: 1px solid #eaeaea;
-      margin-bottom: 30px;
-      padding-bottom: 10px;
-      letter-spacing: 0.5px;
-    }
-
-    /* ===============================
-       PRODUITS – Grille
-    =============================== */
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
-    }
-    @media (min-width: 768px) {
-      .product-grid {
-        grid-template-columns: repeat(2, 1fr);
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CHEZ HAROUN</title>
+    
+    <!-- =============================================================================
+         CODE FINAL – Site Publicitaire
+         - Aucun panier ni système de commande en ligne.
+         - Les produits affichent "Prix à découvrir" en bleu.
+         - Bouton "Découvrir" ouvre une modale fade-in détaillant le produit.
+         - Un bouton "Appelez-nous" (deux numéros disponibles) est ajouté dans la zone hero.
+         - Les liens "Accueil" et le logo renvoient directement en haut (sans décalage).
+    ============================================================================= -->
+    
+    <style>
+      /* ===============================
+         BASE – Typographie & Couleurs
+      =============================== */
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        color: #333;
+        background: #f2f2f2;
+        line-height: 1.6;
       }
-    }
-    .product {
-      background: #fafafa;
-      border: 1px solid #eaeaea;
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-      transition: transform 0.3s, box-shadow 0.3s;
-      margin-bottom: 10px;
-      min-height: 450px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .product:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    .product h3 {
-      margin: 15px 0 10px;
-      font-size: 1.3em;
-      letter-spacing: 0.5px;
-    }
-    .price-unselected {
-      color: #0071e3;
-      font-weight: 500;
-      font-style: normal;
-      margin-bottom: 5px;
-    }
+      a { text-decoration: none; color: inherit; }
 
-    .button {
-      background: #0071e3;
-      color: #fff;
-      border: none;
-      padding: 10px 25px;
-      border-radius: 25px; /* pour un style pill */
-      font-size: 1em;
-      transition: background 0.3s;
-      letter-spacing: 0.5px;
-      margin-top: 10px;
-      cursor: pointer;
-    }
-    .button:hover {
-      background: #005bb5;
-    }
+      /* ===============================
+         HEADER
+      =============================== */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        padding: 15px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgba(0,0,0,0.2);
+        backdrop-filter: blur(8px);
+        transition: background-color 0.5s ease;
+      }
+      header.scrolled { background-color: rgba(0,0,0,0.7); }
+      header .logo {
+        font-size: 1.8em;
+        font-weight: 500;
+        letter-spacing: 1px;
+        color: #fff;
+      }
+      /* Pour que le logo renvoie vers le haut */
+      header .logo a { color: #fff; }
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 30px;
+        margin: 0;
+        padding: 0;
+      }
+      nav ul li a {
+        color: #fff;
+        font-size: 1em;
+        letter-spacing: 0.5px;
+        transition: color 0.3s;
+        white-space: nowrap;
+      }
+      nav ul li a:hover { color: #ddd; }
 
-    /* Image container */
-    .img-container {
-      width: 100%;
-      height: 220px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      border-radius: 12px;
-      background: #fff;
-      margin-bottom: 15px;
-    }
-    .img-container img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
+      /* ===============================
+         HERO
+      =============================== */
+      .hero {
+        background: linear-gradient(135deg, #283E51, #4B79A1);
+        color: #fff;
+        text-align: center;
+        padding: 30px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 70vh;
+      }
+      .hero h1 {
+        font-size: 3em;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+      .hero p {
+        font-size: 1.1em;
+        margin-bottom: 20px;
+        max-width: 600px;
+        font-weight: 300;
+      }
+      /* Zone des boutons dans la hero */
+      .hero-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+      }
+      .hero-btn {
+        background: #0071e3;
+        border: none;
+        color: #fff;
+        padding: 12px 25px;
+        border-radius: 25px;
+        font-size: 1em;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+      .hero-btn:hover { background: #005bb5; }
 
-    /* ===============================
-       OPTIONS RADIO – plus discrètes
-    =============================== */
-    .options {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin: 10px 0;
-    }
-    .options input[type="radio"] {
-      display: none;
-    }
-    /* On crée un rond gris, le contour devient #0071e3 si coché */
-    .option-label {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 24px;
-      height: 24px;
-      border: 2px solid #ccc;
-      border-radius: 50%;
-      cursor: pointer;
-      transition: border-color 0.3s;
-    }
-    .option-label:hover { border-color: #0071e3; }
-    input[type="radio"]:checked + .option-label {
-      border-color: #0071e3;
-      background: #0071e3;
-    }
-    .option-label::after {
-      content: attr(for);
-      position: absolute;
-      clip: rect(0,0,0,0);
-      clip-path: inset(50%);
-      height:1px; width:1px; overflow:hidden;
-    }
+      /* ===============================
+         SECTIONS
+      =============================== */
+      section {
+        margin: 20px auto 40px auto;
+        width: 90%;
+        max-width: 1000px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        padding: 40px 20px;
+      }
+      section h2 {
+        text-align: center;
+        font-weight: 400;
+        font-size: 2.2em;
+        border-bottom: 1px solid #eaeaea;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        letter-spacing: 0.5px;
+      }
 
-    /* ===============================
-       MODALE – Fenêtre Apple-like
-    =============================== */
-    #productModal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.3);
-      backdrop-filter: blur(4px);
-      z-index: 9999;
-      align-items: center;
-      justify-content: center;
-      padding: 10px;
-    }
-    #modalContent {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 16px;
-      max-width: 500px;
-      width: 100%;
-      padding: 20px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-      text-align: left;
-      position: relative;
-      font-size: 1em;
-    }
-    #modalClose {
-      position: absolute;
-      top: 15px; right: 20px;
-      font-size: 1.5em;
-      cursor: pointer;
-    }
-    #modalTitle {
-      text-align: center;
-      font-size: 1.6em;
-      font-weight: 600;
-      margin-bottom: 15px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    #modalImage {
-      width: 100%;
-      height: 220px;
-      object-fit: contain;
-      border-radius: 12px;
-      display: block;
-      margin: 0 auto 15px;
-    }
-    #modalDescription {
-      line-height: 1.5em;
-      white-space: pre-line; /* pour respecter les retours à la ligne dans la description */
-      margin-bottom: 20px;
-    }
-    #modalButtons {
-      display: flex;
-      justify-content: space-evenly;
-      gap: 10px;
-    }
-    /* Boutons pill dans la modale */
-    #modalButtons button, #modalButtons a {
-      flex: 1;
-      text-align: center;
-      background: #0071e3;
-      color: #fff;
-      padding: 10px;
-      border: none;
-      border-radius: 25px;
-      font-size: 1em;
-      letter-spacing: 0.5px;
-      cursor: pointer;
-      text-decoration: none; /* pour le <a> */
-      transition: background 0.3s;
-    }
-    #modalButtons button:hover, #modalButtons a:hover { background: #005bb5; }
+      /* ===============================
+         PRODUITS – Grille
+      =============================== */
+      .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+      }
+      @media (min-width: 768px) {
+        .product-grid { grid-template-columns: repeat(2, 1fr); }
+      }
+      .product {
+        background: #fafafa;
+        border: 1px solid #eaeaea;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 10px;
+        min-height: 450px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .product:hover { transform: translateY(-3px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+      .product h3 {
+        margin: 15px 0 10px;
+        font-size: 1.3em;
+        letter-spacing: 0.5px;
+      }
+      .price-unselected {
+        font-weight: 500;
+        color: #0071e3;
+      }
+      /* Bouton sur la fiche produit: renomme "Découvrir" */
+      .discover-btn {
+        background: #0071e3;
+        color: #fff;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 25px;
+        font-size: 1em;
+        transition: background 0.3s;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+      }
+      .discover-btn:hover { background: #005bb5; }
 
-    /* 
-       EXEMPLE : on peut différencier "Fermer" et "Nous Appeler"
-       - "Fermer" => background gris clair
-       - "Nous Appeler" => background #0071e3
-    */
-    #modalCloseBtn {
-      background: #ccc;
-      color: #333;
-    }
-    #modalCloseBtn:hover {
-      background: #bbb;
-    }
+      /* Conteneur image produit */
+      .img-container {
+        width: 100%;
+        height: 220px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border-radius: 12px;
+        background: #fff;
+        margin-bottom: 15px;
+      }
+      .img-container img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
 
-    @media (max-width:600px) {
-      header { padding: 10px 20px; }
-      header .logo { font-size: 1.4em; }
-      .hero h1 { font-size: 2em; }
-      .hero p { font-size: 0.95em; }
-      #modalContent { font-size: 0.95em; }
-      #modalDescription { margin-bottom: 15px; }
-    }
-  </style>
+      /* ===============================
+         OPTIONS RADIO – Style épuré
+      =============================== */
+      .options {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin: 10px 0;
+      }
+      .options input[type="radio"] { display: none; }
+      .option-label {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        border: 2px solid #ccc;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: border-color 0.3s;
+        position: relative;
+      }
+      .option-label:hover { border-color: #0071e3; }
+      .option-label::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: transparent;
+      }
+      input[type="radio"]:checked + .option-label::after {
+        background: #0071e3;
+      }
+
+      /* ===============================
+         MODALE – Fenêtre de description produit
+      =============================== */
+      #productModal {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.3);
+        backdrop-filter: blur(4px);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+      }
+      #productModal.show { display: flex; opacity: 1; }
+      #modalContent {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 16px;
+        max-width: 500px;
+        width: 90%;
+        padding: 20px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        text-align: left;
+        position: relative;
+        animation: modalFadeIn 0.5s ease;
+      }
+      @keyframes modalFadeIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      #modalClose {
+        position: absolute;
+        top: 15px; right: 20px;
+        font-size: 1.5em;
+        cursor: pointer;
+      }
+      #modalTitle {
+        text-align: center;
+        font-size: 1.6em;
+        font-weight: 600;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      #modalImage {
+        width: 100%;
+        height: 220px;
+        object-fit: contain;
+        border-radius: 12px;
+        display: block;
+        margin: 0 auto 15px;
+      }
+      #modalDescription {
+        line-height: 1.5em;
+        white-space: pre-line;
+        margin-bottom: 20px;
+      }
+      #modalButtons {
+        display: flex;
+        justify-content: space-evenly;
+        gap: 10px;
+      }
+      /* Boutons modale en style pill */
+      #modalButtons button,
+      #modalButtons a {
+        flex: 1;
+        padding: 10px;
+        font-size: 1em;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        transition: background 0.3s;
+      }
+      /* Bouton "Nous Appeler" en bleu, "Fermer" en gris */
+      #modalButtons a { background: #0071e3; color: #fff; }
+      #modalButtons a:hover { background: #005bb5; }
+      #modalButtons button { background: #ccc; color: #333; }
+      #modalButtons button:hover { background: #bbb; }
+
+      /* ===============================
+         HERO – Ajout "Appelez-nous" dans la zone hero
+      =============================== */
+      .hero-buttons { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px; }
+      .hero-btn.call-btn { background: #0071e3; }
+      .hero-btn.call-btn:hover { background: #005bb5; }
+
+      /* ===============================
+         MEDIA QUERIES – Mobile
+      =============================== */
+      @media (max-width: 600px) {
+        header { padding: 10px 20px; }
+        header .logo { font-size: 1.4em; }
+        nav ul { gap: 10px; }
+        nav ul li a { font-size: 0.9em; }
+        .hero h1 { font-size: 2em; }
+        .hero p { font-size: 0.95em; }
+        section { padding: 30px 15px; margin: 20px auto; }
+        .button { padding: 8px 15px; font-size: 0.9em; }
+        #modalContent { font-size: 0.95em; }
+        #modalDescription { margin-bottom: 15px; }
+      }
+    </style>
 </head>
-
 <body>
   <!-- HEADER -->
   <header id="header">
-    <div class="logo">CHEZ HAROUN</div>
+    <div class="logo"><a href="#" id="homeLink">CHEZ HAROUN</a></div>
     <nav>
       <ul>
-        <li><a href="#accueil">Accueil</a></li>
+        <li><a href="#" id="navHome">Accueil</a></li>
         <li><a href="#about">À propos</a></li>
         <li><a href="#produits">Produits</a></li>
       </ul>
@@ -365,7 +363,12 @@
   <!-- HERO -->
   <section class="hero" id="accueil">
     <h1>CHEZ HAROUN !</h1>
-    <p>Votre spécialiste pour découvrir des produits de qualité. Contactez-nous pour connaître nos prix.</p>
+    <p>Votre spécialiste pour découvrir des produits de qualité.</p>
+    <div class="hero-buttons">
+      <!-- Deux boutons "Appelez-nous" ; lorsqu'on clique, ils lancent l'appel via tel: -->
+      <a class="hero-btn call-btn" href="tel:+213550503073" title="Appeler +213 5 50 50 30 73">Appelez-nous</a>
+      <a class="hero-btn call-btn" href="tel:+213774211480" title="Appeler +213 7 74 21 14 80">Appelez-nous</a>
+    </div>
     <a class="hero-btn" href="#produits">Découvrir nos produits</a>
   </section>
 
@@ -373,7 +376,7 @@
   <section id="about">
     <h2>À propos</h2>
     <p>
-      Depuis plusieurs années, nous sommes spécialisés dans la distribution en gros de produits d’alimentation générale, 
+      Depuis plusieurs années, nous sommes spécialisés dans la distribution en gros de produits d’alimentation générale,
       avec un fort engagement pour la qualité et le service.
     </p>
     <ul>
@@ -382,9 +385,7 @@
       <li>Boissons variées</li>
       <li>Et bien d'autres articles</li>
     </ul>
-    <p>
-      Situés à Guelma, nous assurons des délais de livraison courts et un service fiable.
-    </p>
+    <p>Situés à Guelma, nous assurons des délais de livraison courts et un service fiable.</p>
   </section>
 
   <!-- PRODUITS -->
@@ -448,13 +449,12 @@
         </div>
         <h3>Confiture</h3>
         <p class="price-unselected">Prix à découvrir</p>
-        <!-- Pas d'options, c'est OK -->
         <button class="button discover-btn" data-prod="Confiture">Découvrir</button>
       </div>
     </div>
   </section>
 
-  <!-- MODALE – Fenêtre style Apple -->
+  <!-- MODALE – Fenêtre de description produit -->
   <div id="productModal">
     <div id="modalContent">
       <span id="modalClose">&times;</span>
@@ -462,56 +462,61 @@
       <h3 id="modalTitle"></h3>
       <p id="modalDescription"></p>
       <div id="modalButtons">
-        <button id="modalCloseBtn" style="flex:1;">Fermer</button>
-        <a id="modalCallBtn" style="flex:1;" href="">Nous Appeler</a>
+        <button id="modalCloseBtn">Fermer</button>
+        <a id="modalCallBtn" href="">Nous Appeler</a>
       </div>
     </div>
   </div>
 
   <script>
-    // Fix header scroll color
-    window.addEventListener("scroll", () => {
-      const header = document.getElementById("header");
-      if (window.scrollY > 50) header.classList.add("scrolled");
-      else header.classList.remove("scrolled");
+    // Animation Fade-In pour les éléments (déjà en CSS via .fade-in)
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll('.fade-in').forEach(el => {
+        el.classList.add('visible');
+      });
     });
 
-    // Descriptions HTML enrichies (avec retours à la ligne, balises, etc.)
+    // Gestion du scroll pour les liens "Accueil"
+    document.getElementById("homeLink").addEventListener("click", (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    document.getElementById("navHome").addEventListener("click", (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    /****************************************************
+     * Objet contenant les descriptions des produits.
+     * Les retours à la ligne et l'accentuation sont conservés.
+    ****************************************************/
     const descriptions = {
-      "TomatesDCT": 
-`<strong>Le double concentré de tomate</strong> est un produit phare de l’usine <span style="color:#0071e3;">Izdihar</span> en Algérie.
-Il est disponible dans différentes tailles, notamment :
-• 400 g
-• 800 g
-
+      "TomatesDCT": `<strong>Le double concentré de tomate</strong> est un produit phare de l’usine <span style="color:#0071e3;">Izdihar</span> en Algérie.<br>
+Disponible dans différentes tailles :<br>
+• 400 g<br>
+• 800 g<br><br>
 Ce produit est très populaire pour sa qualité et son utilisation dans diverses préparations culinaires.`,
-
-      "Harissa": 
-`La <strong>harissa</strong> de la marque <span style="color:#0071e3;">Izdihar</span> est un produit populaire en Algérie,
-fabriqué à base de piment rouge fort. Elle est disponible dans plusieurs formats, notamment :
-• 135 g
-• 380 g
-
-Idéale pour accompagner divers plats traditionnels et modernes, elle est appréciée pour son goût relevé.`,
-
-      "SaucePizza":
-`La <strong>Sauce Pizza</strong> d’Amor Benamor (<span style="color:#0071e3;">CAB</span>) est disponible en bocal de 420g.
-Préparée à partir de tomates et d’épices, elle offre une saveur riche et authentique.
-Facile d’utilisation, elle est un choix populaire parmi les consommateurs algériens et internationaux.`,
-
-      "Confiture":
-`Les <strong>confitures</strong> produites par la Conserverie <span style="color:#0071e3;">Amor Benamor (CAB)</span> 
-sont réputées, notamment la confiture d’abricot. Présente sur le marché algérien depuis des décennies,
-elle est appréciée pour son goût équilibré et sa texture en gelée.
-
-Formats disponibles :
-• 425 g
-• 900 g`
+      "Harissa": `<strong>La harissa</strong> de la marque <span style="color:#0071e3;">Izdihar</span> est fabriquée à partir de piment rouge fort.<br>
+Formats disponibles :<br>
+• 135 g<br>
+• 380 g<br><br>
+Appréciée pour son goût relevé, elle sublime vos plats traditionnels et modernes.`,
+      "SaucePizza": `<strong>La Sauce Pizza</strong> d’Amor Benamor CAB est préparée à partir de tomates et d’épices.<br>
+Disponible en bocal de 420 g.<br>
+Offrant une saveur riche et authentique, elle est appréciée tant localement qu’internationalement.`,
+      "Confiture": `<strong>Les confitures</strong> de Conserverie Amor Benamor (CAB) sont réputées, notamment la confiture d’abricot.<br>
+Formats disponibles :<br>
+• 425 g<br>
+• 900 g<br><br>
+Appréciées pour leur goût équilibré et leur texture en gelée.`
     };
 
-    const phoneNumber = "+213774211480";
+    // Numéros de téléphone pour "Nous Appeler"
+    const phoneNumbers = ["+213550503073", "+213774211480"];
 
-    // Sélecteurs modale
+    /****************************************************
+     * MODALE – Gestion de l'ouverture et fermeture
+    ****************************************************/
     const productModal = document.getElementById("productModal");
     const modalContent = document.getElementById("modalContent");
     const modalClose = document.getElementById("modalClose");
@@ -521,36 +526,36 @@ Formats disponibles :
     const modalTitle = document.getElementById("modalTitle");
     const modalDescription = document.getElementById("modalDescription");
 
-    // Ouvrir la modale
     function openModal(prodKey, imgSrc, title) {
-      // Remplir la modale
       modalImage.src = imgSrc;
       modalTitle.textContent = title;
-      // Injection HTML : on autorise le formatage (retours à la ligne, bold, etc.)
       modalDescription.innerHTML = descriptions[prodKey] || "Description à venir.";
-      // Lien d'appel
-      modalCallBtn.href = "tel:" + phoneNumber;
-      productModal.style.display = "flex";
+      
+      // Pour afficher deux numéros, on peut concaténer les deux liens dans le texte.
+      modalCallBtn.href = "tel:" + phoneNumbers[0]; // Choix par défaut (vous pouvez ajouter une logique de menu si besoin)
+      modalCallBtn.textContent = "Nous Appeler";
+      
+      productModal.classList.add("show");
+      // Empêcher le défilement du fond
+      document.body.style.overflow = "hidden";
     }
 
-    // Fermer la modale
     function closeModal() {
-      productModal.style.display = "none";
+      productModal.classList.remove("show");
+      document.body.style.overflow = "";
     }
     modalClose.onclick = closeModal;
     modalCloseBtn.onclick = closeModal;
-
-    // Fermer si on clique en dehors
     window.onclick = (e) => {
       if (e.target === productModal) closeModal();
     };
 
-    // Gérer les boutons "Découvrir"
+    // Gestion des boutons "Découvrir"
     const discoverButtons = document.querySelectorAll(".discover-btn");
     discoverButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const productCard = btn.closest(".product");
-        const prodKey = btn.getAttribute("data-prod");
+      btn.addEventListener("click", function() {
+        const productCard = this.closest(".product");
+        const prodKey = this.getAttribute("data-prod");
         const imgSrc = productCard.querySelector(".img-container img").src;
         const title = productCard.querySelector("h3").textContent;
         openModal(prodKey, imgSrc, title);
